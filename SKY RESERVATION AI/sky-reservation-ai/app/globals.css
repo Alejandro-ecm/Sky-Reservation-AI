@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 11%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 262 83% 65%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html { scroll-behavior: smooth; }
+}
+
+@layer components {
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+  .glass-card {
+    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/[0.08] rounded-2xl;
+  }
+  .glass-hover {
+    @apply hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-200;
+  }
+
+  /* Gradients */
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+  }
+  .gradient-text-emerald {
+    @apply bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent;
+  }
+
+  /* Gradient border via pseudo-element trick */
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(#111111, #111111) padding-box,
+      linear-gradient(135deg, #3b82f6, #8b5cf6) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Glow effects */
+  .glow-blue  { box-shadow: 0 0 40px rgba(59, 130, 246, 0.2); }
+  .glow-purple { box-shadow: 0 0 40px rgba(139, 92, 246, 0.2); }
+  .glow-emerald { box-shadow: 0 0 40px rgba(52, 211, 153, 0.15); }
+
+  /* Premium card */
+  .card-premium {
+    @apply bg-[#111111] border border-white/[0.07] rounded-2xl transition-all duration-200;
+    @apply hover:border-white/[0.12] hover:shadow-lg hover:shadow-black/30;
+  }
+
+  /* Noise texture overlay */
+  .noise-bg {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  /* Status badges */
+  .badge-success { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20; }
+  .badge-warning { @apply bg-yellow-500/10 text-yellow-400 border border-yellow-500/20; }
+  .badge-error   { @apply bg-red-500/10 text-red-400 border border-red-500/20; }
+  .badge-info    { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20; }
+  .badge-purple  { @apply bg-purple-500/10 text-purple-400 border border-purple-500/20; }
+}
+
+@layer utilities {
+  /* Animation delays */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-600 { animation-delay: 600ms; }
+  .animation-delay-800 { animation-delay: 800ms; }
+
+  /* Typography */
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+  .tracking-tightest { letter-spacing: -0.04em; }
+
+  /* Scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* Backdrop */
+  .blur-backdrop { backdrop-filter: blur(20px) saturate(180%); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #2a2a2a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #404040; }
+
+/* Text selection */
+::selection { background: rgba(59, 130, 246, 0.25); color: #fff; }
+
+/* Focus ring */
+:focus-visible { outline: 2px solid rgba(59, 130, 246, 0.6); outline-offset: 2px; border-radius: 6px; }
+
+/* Smooth transitions for interactive elements */
+button, a, [role="button"] { transition-property: color, background-color, border-color, opacity, transform, box-shadow; transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }

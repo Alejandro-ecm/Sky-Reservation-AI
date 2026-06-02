@@ -1,0 +1,344 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Bell,
+  Search,
+  ChevronDown,
+  User,
+  Settings,
+  LogOut,
+  Building2,
+  Check,
+  Calendar,
+  Phone,
+  Users,
+  AlertCircle,
+  X,
+} from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { getInitials, formatRelative } from "@/lib/utils/format";
+import { useNotifications, type AppNotification } from "@/hooks/use-notifications";
+
+const mockUser = {
+  full_name: "Carlos Mendoza",
+  email: "carlos@empresa.com",
+  role: "owner",
+};
+
+const mockTenants = [
+  { id: "1", name: "Barbería Elite", active: true },
+  { id: "2", name: "Sucursal Norte", active: false },
+];
+
+function notifTypeIcon(type: AppNotification["type"]) {
+  switch (type) {
+    case "new_reservation":
+      return <Calendar className="w-3.5 h-3.5 text-blue-400" />;
+    case "missed_call":
+      return <Phone className="w-3.5 h-3.5 text-red-400" />;
+    case "new_customer":
+      return <Users className="w-3.5 h-3.5 text-green-400" />;
+    default:
+      return <AlertCircle className="w-3.5 h-3.5 text-gray-400" />;
+  }
+}
+
+export function DashboardHeader() {
+  const router = useRouter();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [tenantOpen, setTenantOpen] = useState(false);
+  const [activeTenant, setActiveTenant] = useState(mockTenants[0]);
+
+  const { notifications, unreadCount, markAllRead, markRead, dismiss } =
+    useNotifications();
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    toast.success("Sesión cerrada");
+    router.push("/login");
+    router.refresh();
+  };
+
+  const handleMarkAllRead = async () => {
+    await markAllRead();
+    toast.success("Todas las notificaciones marcadas como leídas");
+  };
+
+  const closeAll = () => {
+    setNotifOpen(false);
+    setUserMenuOpen(false);
+    setTenantOpen(false);
+  };
+
+  return (
+    <header className="h-16 bg-[#0D0D0D] border-b border-white/[0.06] flex items-center justify-between px-6 flex-shrink-0 relative z-10">
+      {/* Search */}
+      <div className="flex items-center gap-3 flex-1 max-w-md">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <input
+            type="text"
+            placeholder="Buscar reservaciones, clientes..."
+            className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl pl-10 pr-4 py-2 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors"
+          />
+        </div>
+      </div>
+
+      {/* Right side */}
+      <div className="flex items-center gap-2">
+        {/* Tenant switcher */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setTenantOpen(!tenantOpen);
+              setNotifOpen(false);
+              setUserMenuOpen(false);
+            }}
+            className="flex items-center gap-2 bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.07] rounded-xl px-3 py-2 text-sm text-gray-300 transition-colors"
+          >
+            <Building2 className="w-3.5 h-3.5 text-blue-400" />
+            <span className="max-w-28 truncate">{activeTenant.name}</span>
+            <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
+          </button>
+
+          <AnimatePresence>
+            {tenantOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 top-full mt-2 w-56 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+              >
+                <div className="p-2">
+                  <p className="text-xs text-gray-500 px-3 py-1.5 font-medium">
+                    Cambiar empresa
+                  </p>
+                  {mockTenants.map((tenant) => (
+                    <button
+                      key={tenant.id}
+                      onClick={() => {
+                        setActiveTenant(tenant);
+                        setTenantOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                    >
+                      <span>{tenant.name}</span>
+                      {activeTenant.id === tenant.id && (
+                        <Check className="w-3.5 h-3.5 text-blue-400" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Notifications */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setNotifOpen(!notifOpen);
+              setUserMenuOpen(false);
+              setTenantOpen(false);
+            }}
+            className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] text-gray-400 hover:text-gray-200 transition-colors"
+          >
+            <Bell className="w-4 h-4" />
+            {unreadCount > 0 && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+              >
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </motion.span>
+            )}
+          </button>
+
+          <AnimatePresence>
+            {notifOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 top-full mt-2 w-80 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+              >
+                {/* Notif header */}
+                <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-sm text-white">
+                      Notificaciones
+                    </span>
+                    {unreadCount > 0 && (
+                      <span className="text-[10px] font-medium bg-blue-600 text-white rounded-full px-1.5 py-0.5">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={() => void handleMarkAllRead()}
+                      className="text-xs text-blue-400 cursor-pointer hover:text-blue-300 transition-colors"
+                    >
+                      Marcar todas leídas
+                    </button>
+                  )}
+                </div>
+
+                {/* Notif list */}
+                <div className="max-h-80 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="py-10 text-center">
+                      <Bell className="w-8 h-8 text-gray-700 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500">Sin notificaciones</p>
+                    </div>
+                  ) : (
+                    notifications.map((n) => (
+                      <motion.div
+                        key={n.id}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className={`flex items-start gap-3 p-4 hover:bg-white/[0.03] transition-colors border-b border-white/[0.03] last:border-0 group ${
+                          !n.read ? "bg-blue-500/[0.03]" : ""
+                        }`}
+                      >
+                        {/* Type icon */}
+                        <div className="w-7 h-7 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5">
+                          {notifTypeIcon(n.type)}
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-white leading-tight">
+                            {n.title}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-0.5 line-clamp-2 leading-relaxed">
+                            {n.body}
+                          </p>
+                          <p className="text-[10px] text-gray-600 mt-1">
+                            {formatRelative(n.created_at)}
+                          </p>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {!n.read && (
+                            <button
+                              onClick={() => void markRead(n.id)}
+                              title="Marcar como leída"
+                              className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-blue-400 transition-colors"
+                            >
+                              <Check className="w-3 h-3" />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => void dismiss(n.id)}
+                            title="Descartar"
+                            className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-red-400 transition-colors"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </motion.div>
+                    ))
+                  )}
+                </div>
+
+                {/* Footer */}
+                <div className="p-2 border-t border-white/[0.05]">
+                  <button
+                    onClick={() => {
+                      router.push("/settings");
+                      closeAll();
+                    }}
+                    className="w-full text-xs text-center text-gray-500 hover:text-white py-1.5 transition-colors"
+                  >
+                    Ver configuración de notificaciones
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* User menu */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setUserMenuOpen(!userMenuOpen);
+              setNotifOpen(false);
+              setTenantOpen(false);
+            }}
+            className="flex items-center gap-2.5 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] rounded-xl px-2.5 py-1.5 transition-colors"
+          >
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white">
+              {getInitials(mockUser.full_name)}
+            </div>
+            <div className="hidden sm:block text-left">
+              <p className="text-xs font-medium text-white leading-tight">
+                {mockUser.full_name.split(" ")[0]}
+              </p>
+              <p className="text-[10px] text-gray-500 leading-tight capitalize">
+                {mockUser.role}
+              </p>
+            </div>
+            <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
+          </button>
+
+          <AnimatePresence>
+            {userMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 top-full mt-2 w-56 bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+              >
+                <div className="p-4 border-b border-white/5">
+                  <p className="font-semibold text-sm text-white">
+                    {mockUser.full_name}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">{mockUser.email}</p>
+                </div>
+                <div className="p-2">
+                  {[
+                    { icon: User, label: "Mi Perfil", href: "/dashboard/profile" },
+                    { icon: Settings, label: "Configuración", href: "/settings" },
+                  ].map((item) => (
+                    <button
+                      key={item.label}
+                      onClick={() => {
+                        router.push(item.href);
+                        closeAll();
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                    >
+                      <item.icon className="w-4 h-4" />
+                      {item.label}
+                    </button>
+                  ))}
+                  <div className="h-px bg-white/5 my-1" />
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Cerrar Sesión
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </header>
+  );
+}
