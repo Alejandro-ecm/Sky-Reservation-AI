@@ -9,6 +9,7 @@ const requiredEnvSchema = z.object({
   VAPI_WEBHOOK_SECRET: z.string().min(1),
   META_APP_SECRET: z.string().min(1),
   STRIPE_SECRET_KEY: z.string().min(1),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1),
   UPSTASH_REDIS_REST_URL: z.string().min(1),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
 });
@@ -17,7 +18,6 @@ const optionalEnvKeys = [
   "STRIPE_PRICE_STARTER_MONTHLY",
   "STRIPE_PRICE_PRO_MONTHLY",
   "STRIPE_PRICE_ENTERPRISE_MONTHLY",
-  "STRIPE_WEBHOOK_SECRET",
   "MERCADOPAGO_ACCESS_TOKEN",
 ] as const;
 
@@ -30,10 +30,14 @@ export function validateEnv(): void {
 
   if (!result.success) {
     const missing = result.error.errors.map((e) => e.path.join(".")).join(", ");
-    throw new Error(
+    const message =
       `[Sky Reservation AI] Missing required environment variables: ${missing}\n` +
-        `Add them to .env.local (dev) or to Vercel Environment Variables (prod).`
-    );
+      `Add them to .env.local (dev) or to Vercel Environment Variables (prod).`;
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(message);
+    } else {
+      console.warn(message);
+    }
   }
 
   const missingOptional = optionalEnvKeys.filter((key) => !process.env[key]);

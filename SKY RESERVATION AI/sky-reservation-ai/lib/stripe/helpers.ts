@@ -161,12 +161,14 @@ export async function syncStripeSubscription(
         ? stripeSubscription.customer
         : stripeSubscription.customer.id,
     payment_provider: "stripe",
-    current_period_start: (stripeSubscription as unknown as Record<string, number>).current_period_start
-      ? new Date((stripeSubscription as unknown as Record<string, number>).current_period_start * 1000).toISOString()
-      : null,
-    current_period_end: (stripeSubscription as unknown as Record<string, number>).current_period_end
-      ? new Date((stripeSubscription as unknown as Record<string, number>).current_period_end * 1000).toISOString()
-      : null,
+    current_period_start: (() => {
+      const v = (stripeSubscription as unknown as Record<string, unknown>).current_period_start;
+      return typeof v === "number" ? new Date(v * 1000).toISOString() : null;
+    })(),
+    current_period_end: (() => {
+      const v = (stripeSubscription as unknown as Record<string, unknown>).current_period_end;
+      return typeof v === "number" ? new Date(v * 1000).toISOString() : null;
+    })(),
     trial_ends_at: stripeSubscription.trial_end
       ? new Date(stripeSubscription.trial_end * 1000).toISOString()
       : null,

@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import type { VapiWebhookEvent, VapiCall } from "@/lib/vapi/types";
@@ -14,13 +15,25 @@ function getServiceClient() {
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret
+    // Verify webhook secret (timing-safe to prevent timing attacks)
     const secret = request.headers.get("x-vapi-secret");
     const expectedSecret = process.env.VAPI_WEBHOOK_SECRET;
 
-    if (expectedSecret && secret !== expectedSecret) {
-      console.warn("Vapi webhook: invalid secret");
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (expectedSecret) {
+      const secretBuf = Buffer.from(secret ?? "");
+      const expectedBuf = Buffer.from(expectedSecret);
+      const valid =
+        secretBuf.length === expectedBuf.length &&
+        timingSafeEqual(secretBuf, expectedBuf);
+      if (!valid) {
+        console.warn(JSON.stringify({
+          service: "vapi-webhook",
+          level: "warn",
+          event: "INVALID_SECRET",
+          timestamp: new Date().toISOString(),
+        }));
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
     }
 
     const body = (await request.json()) as VapiWebhookEvent;
@@ -44,7 +57,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    console.error("Vapi webhook error:", error);
+    console.error(JSON.stringify({
+      service: "vapi-webhook",
+      level: "error",
+      event: "HANDLER_EXCEPTION",
+      error_message: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    }));
     // Always return 200 to prevent Vapi from retrying
     return NextResponse.json({ received: true });
   }
@@ -99,9 +118,22 @@ async function handleCallEnded(
     });
 
     if (error) {
-      console.error("Failed to save Vapi conversation:", error);
+      console.error(JSON.stringify({
+        service: "vapi-webhook",
+        level: "error",
+        event: "CONVERSATION_SAVE_FAILED",
+        call_id: call.id,
+        error_message: error.message,
+        timestamp: new Date().toISOString(),
+      }));
     }
   } catch (error) {
-    console.error("handleCallEnded error:", error);
+    console.error(JSON.stringify({
+      service: "vapi-webhook",
+      level: "error",
+      event: "CALL_ENDED_EXCEPTION",
+      error_message: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    }));
   }
 }

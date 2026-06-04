@@ -63,7 +63,13 @@ export async function POST(request: NextRequest) {
 
   // Fire and forget
   processWebhook(body).catch((err) =>
-    console.error("WhatsApp webhook processing error:", err)
+    console.error(JSON.stringify({
+      service: "whatsapp-webhook",
+      level: "error",
+      event: "PROCESSING_EXCEPTION",
+      error_message: err instanceof Error ? err.message : String(err),
+      timestamp: new Date().toISOString(),
+    }))
   );
 
   return NextResponse.json({ received: true });
@@ -90,20 +96,15 @@ async function processWebhook(body: MetaWebhookBody) {
         .eq("settings->whatsapp_phone_id", phoneNumberId)
         .maybeSingle();
 
-      // If we can't find tenant by phone ID, try to find by checking all tenants
-      // For initial setup, we'll use the first tenant as fallback
-      let tenantId = tenantConfig?.id;
+      const tenantId = tenantConfig?.id;
       if (!tenantId) {
-        const { data: firstTenant } = await supabase
-          .from("tenants")
-          .select("id")
-          .limit(1)
-          .single();
-        tenantId = firstTenant?.id;
-      }
-
-      if (!tenantId) {
-        console.error("No tenant found for WhatsApp webhook");
+        console.warn(JSON.stringify({
+          service: "whatsapp-webhook",
+          level: "warn",
+          event: "UNKNOWN_TENANT",
+          phone_number_id: phoneNumberId,
+          timestamp: new Date().toISOString(),
+        }));
         continue;
       }
 
@@ -221,7 +222,14 @@ async function processWebhook(body: MetaWebhookBody) {
               .eq("id", customerId);
           }
         } catch (err) {
-          console.error(`Error processing message from ${from}:`, err);
+          console.error(JSON.stringify({
+            service: "whatsapp-webhook",
+            level: "error",
+            event: "MESSAGE_PROCESSING_FAILED",
+            from,
+            error_message: err instanceof Error ? err.message : String(err),
+            timestamp: new Date().toISOString(),
+          }));
         }
       }
     }

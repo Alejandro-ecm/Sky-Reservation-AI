@@ -21,7 +21,12 @@ export async function POST(request: NextRequest) {
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!webhookSecret) {
-    console.error("STRIPE_WEBHOOK_SECRET not set");
+    console.error(JSON.stringify({
+      service: "stripe-webhook",
+      level: "error",
+      event: "MISSING_WEBHOOK_SECRET",
+      timestamp: new Date().toISOString(),
+    }));
     return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 });
   }
 
@@ -31,7 +36,13 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Stripe webhook signature verification failed:", message);
+    console.error(JSON.stringify({
+      service: "stripe-webhook",
+      level: "error",
+      event: "SIGNATURE_VERIFICATION_FAILED",
+      error_message: message,
+      timestamp: new Date().toISOString(),
+    }));
     return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
   }
 
@@ -176,10 +187,25 @@ export async function POST(request: NextRequest) {
       }
 
       default:
-        console.warn(`[stripe-webhook] unhandled event type: ${event.type}`);
+        console.warn(JSON.stringify({
+          service: "stripe-webhook",
+          level: "warn",
+          event: "UNHANDLED_EVENT_TYPE",
+          stripe_event_type: event.type,
+          stripe_event_id: event.id,
+          timestamp: new Date().toISOString(),
+        }));
     }
   } catch (err) {
-    console.error("Stripe webhook handler error:", err);
+    console.error(JSON.stringify({
+      service: "stripe-webhook",
+      level: "error",
+      event: "HANDLER_EXCEPTION",
+      stripe_event_type: event.type,
+      stripe_event_id: event.id,
+      error_message: err instanceof Error ? err.message : String(err),
+      timestamp: new Date().toISOString(),
+    }));
     // Still return 200 to avoid Stripe retrying
   }
 
