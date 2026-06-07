@@ -27,16 +27,16 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const navItems = [
-  { label: "Dashboard",      href: "/dashboard",             icon: LayoutDashboard },
-  { label: "Reservaciones",  href: "/dashboard/reservations",icon: Calendar },
-  { label: "Conversaciones", href: "/dashboard/conversations",icon: MessageSquare },
-  { label: "CRM",            href: "/dashboard/crm",          icon: Users },
-  { label: "Analytics",      href: "/dashboard/analytics",    icon: BarChart3 },
-  { label: "Voice AI",       href: "/dashboard/voice-ai",     icon: Phone },
-  { label: "WhatsApp AI",    href: "/dashboard/whatsapp",     icon: MessagesSquare },
-  { label: "Automatizaciones",href: "/dashboard/automations", icon: Zap },
-  { label: "Facturación",    href: "/dashboard/billing",      icon: CreditCard },
-  { label: "Configuración",  href: "/dashboard/settings",     icon: Settings },
+  { label: "Dashboard",       href: "/dashboard",      icon: LayoutDashboard },
+  { label: "Reservaciones",   href: "/reservations",   icon: Calendar },
+  { label: "Conversaciones",  href: "/conversations",  icon: MessageSquare },
+  { label: "CRM",             href: "/crm",            icon: Users },
+  { label: "Analytics",       href: "/analytics",      icon: BarChart3 },
+  { label: "Voice AI",        href: "/voice-ai",       icon: Phone },
+  { label: "WhatsApp AI",     href: "/whatsapp",       icon: MessagesSquare },
+  { label: "Automatizaciones",href: "/automations",    icon: Zap },
+  { label: "Facturación",     href: "/billing",        icon: CreditCard },
+  { label: "Configuración",   href: "/settings",       icon: Settings },
 ];
 
 export function DashboardSidebar() {
