@@ -108,6 +108,7 @@ export default function StaffPage() {
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingName, setEditingName] = useState("");
+  const [editingRole, setEditingRole] = useState<StaffRole>("staff");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [form, setForm] = useState<StaffFormState>({ name: "", role: "staff" });
 
@@ -155,19 +156,19 @@ export default function StaffPage() {
     }
   }
 
-  async function handleUpdateName(id: string) {
+  async function handleUpdateMember(id: string) {
     if (!editingName.trim()) return;
     try {
       const res = await fetch(`/api/staff/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: editingName.trim() }),
+        body: JSON.stringify({ name: editingName.trim(), role: editingRole }),
       });
       if (!res.ok) {
         const err = (await res.json()) as { error: string };
         throw new Error(err.error);
       }
-      toast.success("Nombre actualizado");
+      toast.success("Miembro actualizado");
       setEditingId(null);
       await fetchStaff();
     } catch (err) {
@@ -312,13 +313,13 @@ export default function StaffPage() {
                         value={editingName}
                         onChange={(e) => setEditingName(e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter") void handleUpdateName(member.id);
+                          if (e.key === "Enter") void handleUpdateMember(member.id);
                           if (e.key === "Escape") setEditingId(null);
                         }}
                         className="flex-1 bg-white/5 border border-white/20 rounded-lg px-2 py-1 text-sm text-white outline-none focus:border-white/40 min-w-0"
                       />
                       <button
-                        onClick={() => void handleUpdateName(member.id)}
+                        onClick={() => void handleUpdateMember(member.id)}
                         className="h-7 w-7 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
                       >
                         <Check className="h-3.5 w-3.5 text-white" />
@@ -335,13 +336,32 @@ export default function StaffPage() {
                   )}
                 </div>
 
-                {/* Role badge */}
+                {/* Role badge / inline role selector */}
                 <div>
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${ROLE_COLORS[member.role ?? "staff"]}`}
-                  >
-                    {ROLE_LABELS[member.role ?? "staff"]}
-                  </span>
+                  {editingId === member.id ? (
+                    <div className="flex gap-1">
+                      {(["admin", "staff", "viewer"] as StaffRole[]).map((r) => (
+                        <button
+                          key={r}
+                          type="button"
+                          onClick={() => setEditingRole(r)}
+                          className={`px-2 py-0.5 rounded-full text-xs font-medium border transition-colors ${
+                            editingRole === r
+                              ? ROLE_COLORS[r] + " border-current"
+                              : "bg-white/5 border-white/10 text-white/30 hover:bg-white/10"
+                          }`}
+                        >
+                          {ROLE_LABELS[r]}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${ROLE_COLORS[member.role ?? "staff"]}`}
+                    >
+                      {ROLE_LABELS[member.role ?? "staff"]}
+                    </span>
+                  )}
                 </div>
 
                 {/* Availability */}
@@ -358,6 +378,7 @@ export default function StaffPage() {
                     onClick={() => {
                       setEditingId(member.id);
                       setEditingName(member.name);
+                      setEditingRole(member.role ?? "staff");
                     }}
                     className="h-8 w-8 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 flex items-center justify-center transition-colors"
                   >

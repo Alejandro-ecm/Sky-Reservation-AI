@@ -283,13 +283,21 @@ async function handleWhatsAppWebhook(body: Record<string, unknown>) {
       const matchedTenant = tenants?.find((t) => {
         const settings = t.settings as Record<string, unknown> | null;
         const ai = settings?.ai_settings as Record<string, unknown> | null;
-        return ai?.whatsapp_phone_id === phoneNumberId ||
-               process.env.META_WHATSAPP_PHONE_ID === phoneNumberId;
+        return ai?.whatsapp_phone_id === phoneNumberId;
       });
 
-      // Fall back to the first tenant if only one exists (single-tenant setup)
-      const tenantId = matchedTenant?.id ?? tenants?.[0]?.id ?? null;
-      if (!tenantId) continue;
+      // Global env-var fallback only when there is exactly one tenant (single-tenant setup).
+      // Never fall back to an arbitrary tenant — that would route messages cross-tenant.
+      const tenantId =
+        matchedTenant?.id ??
+        (process.env.META_WHATSAPP_PHONE_ID === phoneNumberId && tenants?.length === 1
+          ? tenants[0].id
+          : null);
+
+      if (!tenantId) {
+        console.warn("[whatsapp] no tenant matched phone_number_id:", phoneNumberId, "— skipping message");
+        continue;
+      }
 
       for (const msg of messages) {
         if (msg.type !== "text" || !msg.text?.body) continue;
