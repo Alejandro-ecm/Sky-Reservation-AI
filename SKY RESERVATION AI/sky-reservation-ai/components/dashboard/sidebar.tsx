@@ -20,6 +20,8 @@ import {
   Building2,
   Zap,
   CreditCard,
+  UserCog,
+  Scissors,
 } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { createClient } from "@/lib/supabase/client";
@@ -35,6 +37,8 @@ const navItems = [
   { label: "Voice AI",        href: "/voice-ai",       icon: Phone },
   { label: "WhatsApp AI",     href: "/whatsapp",       icon: MessagesSquare },
   { label: "Automatizaciones",href: "/automations",    icon: Zap },
+  { label: "Staff",           href: "/staff",          icon: UserCog },
+  { label: "Servicios",       href: "/services",       icon: Scissors },
   { label: "Facturación",     href: "/billing",        icon: CreditCard },
   { label: "Configuración",   href: "/settings",       icon: Settings },
 ];

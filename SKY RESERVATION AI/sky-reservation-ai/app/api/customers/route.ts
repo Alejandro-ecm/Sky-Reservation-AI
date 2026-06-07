@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { logAuditEvent } from "@/lib/security/audit-logger";
+import { getClientIP } from "@/lib/security/sanitize";
 
 const CreateCustomerSchema = z.object({
   name: z.string().min(1).max(200).trim(),
@@ -121,6 +123,14 @@ export async function POST(request: NextRequest) {
       if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
+      void logAuditEvent({
+        tenant_id: profile.tenant_id,
+        user_id: user.id,
+        action: "customer.create",
+        resource_type: "customer",
+        resource_id: data.id,
+        ip_address: getClientIP(request.headers),
+      });
       return NextResponse.json({ data }, { status: 201 });
     }
 
@@ -140,6 +150,15 @@ export async function POST(request: NextRequest) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    void logAuditEvent({
+      tenant_id: profile.tenant_id,
+      user_id: user.id,
+      action: "customer.create",
+      resource_type: "customer",
+      resource_id: data.id,
+      ip_address: getClientIP(request.headers),
+    });
 
     return NextResponse.json({ data }, { status: 201 });
   } catch (err) {

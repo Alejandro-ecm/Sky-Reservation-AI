@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { sendMessage } from "@/lib/whatsapp/client";
+import { logAuditEvent } from "@/lib/security/audit-logger";
+import { getClientIP } from "@/lib/security/sanitize";
 
 const CreateReservationSchema = z.object({
   customer_id: z.string().uuid(),
@@ -186,6 +188,15 @@ export async function POST(request: NextRequest) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    void logAuditEvent({
+      tenant_id: profile.tenant_id,
+      user_id: user.id,
+      action: "reservation.create",
+      resource_type: "reservation",
+      resource_id: data.id,
+      ip_address: getClientIP(request.headers),
+    });
 
     // Auto-send WhatsApp confirmation if customer has phone
     const customerPhone = data?.customer?.phone;

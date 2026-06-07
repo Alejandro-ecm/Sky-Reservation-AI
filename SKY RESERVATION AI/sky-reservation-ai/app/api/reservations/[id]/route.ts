@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { logAuditEvent } from "@/lib/security/audit-logger";
+import { getClientIP } from "@/lib/security/sanitize";
 
 // ============================================================
 // GET — single reservation
@@ -128,6 +130,15 @@ export async function PUT(
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    void logAuditEvent({
+      tenant_id: profile.tenant_id,
+      user_id: user.id,
+      action: "reservation.update",
+      resource_type: "reservation",
+      resource_id: id,
+      ip_address: getClientIP(request.headers),
+    });
+
     return NextResponse.json({ data });
   } catch (err) {
     console.error("Reservation PUT error:", err);
@@ -172,6 +183,15 @@ export async function DELETE(
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    void logAuditEvent({
+      tenant_id: profile.tenant_id,
+      user_id: user.id,
+      action: "reservation.delete",
+      resource_type: "reservation",
+      resource_id: id,
+      ip_address: getClientIP(_request.headers),
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { logAuditEvent } from "@/lib/security/audit-logger";
+import { getClientIP } from "@/lib/security/sanitize";
 
 // GET tenant settings + team members
 export async function GET(_request: NextRequest) {
@@ -93,6 +95,15 @@ export async function PUT(request: NextRequest) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    void logAuditEvent({
+      tenant_id: profile.tenant_id,
+      user_id: user.id,
+      action: "settings.update",
+      resource_type: "tenant",
+      resource_id: profile.tenant_id,
+      ip_address: getClientIP(request.headers),
+    });
 
     return NextResponse.json({ data });
   } catch (err) {
