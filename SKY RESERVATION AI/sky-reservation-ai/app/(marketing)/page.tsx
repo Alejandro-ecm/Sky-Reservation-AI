@@ -685,8 +685,13 @@ function Footer() {
             <span className="font-bold text-white">Sky <span className="text-gray-500">Reservation AI</span></span>
           </div>
           <div className="flex items-center gap-8 text-sm text-gray-500">
-            {["Privacidad", "Términos", "API Docs", "Contacto"].map((l) => (
-              <a key={l} href="#" className="hover:text-white transition-colors">{l}</a>
+            {[
+              { label: "Privacidad", href: "/privacy" },
+              { label: "Términos", href: "/terms" },
+              { label: "API Docs", href: "https://docs.skyreservation.ai" },
+              { label: "Contacto", href: "mailto:hola@skyreservation.ai" },
+            ].map((l) => (
+              <a key={l.label} href={l.href} className="hover:text-white transition-colors">{l.label}</a>
             ))}
           </div>
           <p className="text-xs text-gray-600">© 2026 Sky Technologies LATAM</p>

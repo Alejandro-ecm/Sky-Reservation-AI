@@ -266,11 +266,11 @@ export default function RegisterPage() {
         {/* Terms */}
         <p className="text-center text-xs text-gray-600 mt-4">
           Al registrarte, aceptas nuestros{" "}
-          <a href="#" className="text-gray-500 hover:text-gray-400 underline">
+          <a href="/terms" className="text-gray-500 hover:text-gray-400 underline">
             Términos de Servicio
           </a>{" "}
           y{" "}
-          <a href="#" className="text-gray-500 hover:text-gray-400 underline">
+          <a href="/privacy" className="text-gray-500 hover:text-gray-400 underline">
             Política de Privacidad
           </a>
           .
