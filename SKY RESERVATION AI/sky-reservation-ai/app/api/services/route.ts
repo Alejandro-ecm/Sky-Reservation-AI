@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { ensureProfile } from "@/lib/supabase/ensure-profile";
 
 const CreateServiceSchema = z.object({
   name: z.string().min(1).max(200).trim(),
@@ -21,14 +22,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("tenant_id")
-      .eq("id", user.id)
-      .single();
+    const profile = await ensureProfile(user);
 
     if (!profile) {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+      return NextResponse.json({ error: "Account not configured" }, { status: 403 });
     }
 
     const includeInactive = request.nextUrl.searchParams.get("include_inactive") === "1";
@@ -67,14 +64,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("tenant_id")
-      .eq("id", user.id)
-      .single();
+    const profile = await ensureProfile(user);
 
     if (!profile) {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+      return NextResponse.json({ error: "Account not configured" }, { status: 403 });
     }
 
     const parsed = CreateServiceSchema.safeParse(await request.json());

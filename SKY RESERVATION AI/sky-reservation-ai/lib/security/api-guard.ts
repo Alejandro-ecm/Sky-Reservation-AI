@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { ensureProfile } from "@/lib/supabase/ensure-profile";
 import { apiLimiter, authLimiter, type RateLimitResult } from "./rate-limiter";
 import { getClientIP } from "./sanitize";
 
@@ -43,14 +44,10 @@ export function withAuth(handler: HandlerFn) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("tenant_id")
-      .eq("id", user.id)
-      .single();
+    const profile = await ensureProfile(user);
 
     if (!profile?.tenant_id) {
-      return NextResponse.json({ error: "Tenant not found" }, { status: 403 });
+      return NextResponse.json({ error: "Account not configured" }, { status: 403 });
     }
 
     return handler(req, { userId: user.id, tenantId: profile.tenant_id }, params);

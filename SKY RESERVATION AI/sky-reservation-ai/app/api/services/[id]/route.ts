@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { ensureProfile } from "@/lib/supabase/ensure-profile";
 
 export async function PUT(
   request: NextRequest,
@@ -16,14 +17,10 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("tenant_id")
-      .eq("id", user.id)
-      .single();
+    const profile = await ensureProfile(user);
 
     if (!profile) {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+      return NextResponse.json({ error: "Account not configured" }, { status: 403 });
     }
 
     const body = (await request.json()) as {
@@ -68,14 +65,10 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("tenant_id")
-      .eq("id", user.id)
-      .single();
+    const profile = await ensureProfile(user);
 
     if (!profile) {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+      return NextResponse.json({ error: "Account not configured" }, { status: 403 });
     }
 
     // Soft delete
