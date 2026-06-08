@@ -146,7 +146,7 @@ function CreateAssistantModal({
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
                 placeholder="Sofía — Recepcionista"
-                className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/40"
+                className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30"
               />
             </div>
             <div>
@@ -158,7 +158,7 @@ function CreateAssistantModal({
                 onChange={(e) => setForm({ ...form, businessName: e.target.value })}
                 required
                 placeholder="Salón Elegance"
-                className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/40"
+                className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30"
               />
             </div>
           </div>
@@ -172,7 +172,7 @@ function CreateAssistantModal({
               onChange={(e) => setForm({ ...form, services: e.target.value })}
               rows={3}
               placeholder={"Corte de cabello — $25\nTinte completo — $80\nBarba — $20"}
-              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/40 resize-none"
+              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 resize-none"
             />
           </div>
 
@@ -184,7 +184,7 @@ function CreateAssistantModal({
               value={form.hours}
               onChange={(e) => setForm({ ...form, hours: e.target.value })}
               placeholder="Lun-Vie: 9am-7pm, Sáb: 10am-5pm"
-              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/40"
+              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30"
             />
           </div>
 
@@ -200,7 +200,7 @@ function CreateAssistantModal({
                   onClick={() => setForm({ ...form, voice: v })}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm transition-all ${
                     form.voice === v
-                      ? "bg-indigo-500/20 border-indigo-500/40 text-indigo-300"
+                      ? "bg-[#00E5FF]/15 border-[#00E5FF]/30 text-[#00E5FF]/80"
                       : "bg-white/[0.04] border-white/[0.07] text-gray-400 hover:border-white/20"
                   }`}
                 >
@@ -222,7 +222,7 @@ function CreateAssistantModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 text-white text-sm font-medium py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20"
+              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-50 text-black text-sm font-medium py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#00E5FF]/20"
             >
               {loading ? (
                 <>
@@ -313,7 +313,7 @@ export default function VoiceAIPage() {
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20"
+            className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#00E5FF]/20"
           >
             <Plus className="w-4 h-4" />
             Crear Asistente
@@ -327,8 +327,8 @@ export default function VoiceAIPage() {
               label: "Total Llamadas",
               value: totalCalls,
               icon: Phone,
-              color: "text-indigo-400",
-              bg: "bg-indigo-500/10 border-indigo-500/20",
+              color: "text-[#00E5FF]",
+              bg: "bg-[#00E5FF]/10 border-[#00E5FF]/20",
             },
             {
               label: "Atendidas",
@@ -352,7 +352,7 @@ export default function VoiceAIPage() {
               bg: "bg-amber-500/10 border-amber-500/20",
             },
           ].map((stat) => (
-            <div key={stat.label} className={`relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border ${stat.bg} rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(79,70,229,0.1)]`}>
+            <div key={stat.label} className={`relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border ${stat.bg} rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,229,255,0.1)]`}>
               {/* Watermark icon */}
               <div className={`absolute -bottom-2 -right-2 ${stat.color} opacity-[0.05] pointer-events-none`}>
                 <stat.icon className="w-20 h-20" />
@@ -376,10 +376,10 @@ export default function VoiceAIPage() {
               {assistants.map((assistant) => (
                 <div
                   key={assistant.id}
-                  className="glass-card p-4 border border-indigo-500/10 hover:border-indigo-500/20 flex items-center gap-3 transition-all duration-300 hover:-translate-y-0.5"
+                  className="glass-card p-4 border border-[#00E5FF]/10 hover:border-[#00E5FF]/20 flex items-center gap-3 transition-all duration-300 hover:-translate-y-0.5"
                 >
-                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
-                    <Mic className="w-5 h-5 text-indigo-400" />
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00E5FF]/15 to-[#7000FF]/15 border border-[#00E5FF]/20 flex items-center justify-center flex-shrink-0">
+                    <Mic className="w-5 h-5 text-[#00E5FF]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-white truncate">{assistant.name}</p>
@@ -416,12 +416,12 @@ export default function VoiceAIPage() {
               {/* Voice AI simulator widget */}
               <div className="flex flex-col items-center gap-3">
                 <div className="relative">
-                  <div className="w-20 h-20 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-                    <Phone className="w-9 h-9 text-indigo-400" />
+                  <div className="w-20 h-20 rounded-full bg-[#00E5FF]/10 border border-[#00E5FF]/20 flex items-center justify-center">
+                    <Phone className="w-9 h-9 text-[#00E5FF]" />
                   </div>
-                  <div className="absolute inset-0 rounded-full border border-indigo-500/20 animate-ping opacity-20" />
+                  <div className="absolute inset-0 rounded-full border border-[#00E5FF]/20 animate-ping opacity-20" />
                   <div
-                    className="absolute rounded-full border border-indigo-500/10 animate-ping opacity-10"
+                    className="absolute rounded-full border border-[#00E5FF]/10 animate-ping opacity-10"
                     style={{ inset: "-8px", animationDuration: "2s", animationDelay: "0.6s" }}
                   />
                 </div>
@@ -430,7 +430,7 @@ export default function VoiceAIPage() {
                   {[4, 8, 14, 10, 20, 14, 9, 16, 11, 7, 13, 8, 4].map((h, i) => (
                     <motion.div
                       key={i}
-                      className="w-[3px] rounded-full bg-indigo-400/55"
+                      className="w-[3px] rounded-full bg-[#00E5FF]/55"
                       animate={{ scaleY: [0.35, 1, 0.35] }}
                       transition={{
                         duration: 1.1 + (i % 4) * 0.25,
@@ -465,7 +465,7 @@ export default function VoiceAIPage() {
               </ul>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="mt-2 flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20"
+                className="mt-2 flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#00E5FF]/20"
               >
                 <Plus className="w-4 h-4" />
                 Crear asistente de voz
@@ -503,8 +503,8 @@ export default function VoiceAIPage() {
                       >
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-                              <PhoneCall className="w-3.5 h-3.5 text-indigo-400" />
+                            <div className="w-8 h-8 rounded-lg bg-[#00E5FF]/10 border border-[#00E5FF]/20 flex items-center justify-center">
+                              <PhoneCall className="w-3.5 h-3.5 text-[#00E5FF]" />
                             </div>
                             <div>
                               <p className="text-sm font-medium text-white">
@@ -554,7 +554,7 @@ export default function VoiceAIPage() {
                           </p>
                         </td>
                         <td className="px-5 py-4">
-                          <button className="text-xs text-gray-500 hover:text-indigo-400 flex items-center gap-1 transition-colors">
+                          <button className="text-xs text-gray-500 hover:text-[#00E5FF] flex items-center gap-1 transition-colors">
                             <FileText className="w-3.5 h-3.5" />
                             Transcript
                           </button>
@@ -590,7 +590,7 @@ export default function VoiceAIPage() {
                                           className={`text-xs px-3 py-2 rounded-lg max-w-lg ${
                                             msg.role === "user"
                                               ? "bg-white/[0.04] text-gray-300 ml-0"
-                                              : "bg-indigo-500/10 text-indigo-300 ml-8"
+                                              : "bg-[#00E5FF]/10 text-[#00E5FF]/80 ml-8"
                                           }`}
                                         >
                                           <span className="font-medium">

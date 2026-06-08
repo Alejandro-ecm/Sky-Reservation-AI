@@ -18,7 +18,7 @@ const endpoints = [
     method: "GET",
     path: "/api/public/[slug]/availability",
     desc: "Devuelve slots disponibles por fecha, servicio y miembro del staff.",
-    color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
+    color: "text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/20",
   },
   {
     method: "POST",
@@ -46,7 +46,7 @@ export default function DocsPage() {
     <article className="max-w-none">
       {/* Header */}
       <div className="mb-10">
-        <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium px-3 py-1.5 rounded-full mb-4">
+        <div className="inline-flex items-center gap-2 bg-[#00E5FF]/10 border border-[#00E5FF]/20 text-[#00E5FF] text-xs font-medium px-3 py-1.5 rounded-full mb-4">
           <Code2 className="w-3.5 h-3.5" />
           Documentación técnica
         </div>
@@ -60,15 +60,15 @@ export default function DocsPage() {
       {/* Base URL */}
       <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-5 mb-8">
         <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Base URL</p>
-        <code className="text-sm text-indigo-300 font-mono">https://tu-dominio.vercel.app</code>
+        <code className="text-sm text-[#00E5FF]/80 font-mono">https://tu-dominio.vercel.app</code>
       </div>
 
       {/* Features */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
         {features.map((f) => (
           <div key={f.title} className="flex items-start gap-3 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4">
-            <div className="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <f.icon className="w-4 h-4 text-indigo-400" />
+            <div className="w-8 h-8 rounded-xl bg-[#00E5FF]/10 border border-[#00E5FF]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <f.icon className="w-4 h-4 text-[#00E5FF]" />
             </div>
             <div>
               <p className="text-sm font-semibold text-white mb-0.5">{f.title}</p>
@@ -117,12 +117,12 @@ curl "https://tu-dominio.vercel.app/api/public/mi-negocio/availability\\
       </div>
 
       {/* Contact CTA */}
-      <div className="bg-gradient-to-br from-indigo-600/10 to-purple-600/8 border border-indigo-500/20 rounded-2xl p-6 text-center">
+      <div className="bg-gradient-to-br from-[#00E5FF]/08 to-[#7000FF]/06 border border-[#00E5FF]/20 rounded-2xl p-6 text-center">
         <p className="text-sm font-semibold text-white mb-1">¿Necesitas integración personalizada?</p>
         <p className="text-xs text-zinc-500 mb-4">Nuestro equipo técnico puede ayudarte a conectar Sky AI con tu stack existente.</p>
         <a
           href="mailto:api@skyreservation.ai"
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#00E5FF]/20"
         >
           Contactar equipo API
           <ArrowRight className="w-4 h-4" />

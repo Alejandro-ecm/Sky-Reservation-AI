@@ -46,7 +46,7 @@ const STATUS_CONFIG: Record<string, { icon: React.ElementType; color: string; bg
   confirmed: { icon: CheckCircle2, color: "text-emerald-400", bg: "bg-emerald-500/10", label: "Reservación confirmada" },
   pending:   { icon: AlertCircle,  color: "text-yellow-400",  bg: "bg-yellow-500/10",  label: "Reservación pendiente" },
   cancelled: { icon: XCircle,     color: "text-red-400",     bg: "bg-red-500/10",     label: "Reservación cancelada" },
-  completed: { icon: CheckCircle2, color: "text-indigo-400", bg: "bg-indigo-500/10",  label: "Servicio completado" },
+  completed: { icon: CheckCircle2, color: "text-[#00E5FF]",  bg: "bg-[#00E5FF]/10",   label: "Servicio completado" },
   no_show:   { icon: AlertCircle,  color: "text-orange-400", bg: "bg-orange-500/10",  label: "No-show registrado" },
 };
 
@@ -205,7 +205,7 @@ export default function DashboardPage() {
         icon: Lightbulb,
         title: `Lead score: ${overview.avg_lead_score}/100`,
         desc: overview.avg_lead_score >= 70 ? "Clientes de alta calidad" : "Margen de mejora disponible",
-        color: "text-indigo-400 bg-indigo-500/10",
+        color: "text-[#00E5FF] bg-[#00E5FF]/10",
       });
     }
     return list;
@@ -223,9 +223,9 @@ export default function DashboardPage() {
       sub: `${overview.total_reservations.toLocaleString()} total`,
       trend: pct(overview.reservations_this_month, overview.reservations_last_month),
       icon: Calendar,
-      iconBg: "bg-indigo-500/10 text-indigo-400",
-      glowBg: "bg-indigo-600",
-      accentRgb: "79, 70, 229",
+      iconBg: "bg-[#00E5FF]/10 text-[#00E5FF]",
+      glowBg: "bg-[#00E5FF]",
+      accentRgb: "0, 229, 255",
     },
     {
       title: "Conversaciones activas",
@@ -263,14 +263,14 @@ export default function DashboardPage() {
       {/* ─── Greeting Card ─────────────────────────────────────── */}
       <div className="greeting-card">
         {/* Ambient orbs */}
-        <div className="absolute -top-12 -right-12 w-48 h-48 bg-indigo-600/[0.07] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#00E5FF]/[0.04] rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-8 left-1/3 w-32 h-32 bg-purple-600/[0.05] rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative flex items-start justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-4 h-4 text-indigo-400/70" />
-              <span className="text-xs text-indigo-400/70 font-medium uppercase tracking-widest">Sky AI</span>
+              <Sparkles className="w-4 h-4 text-[#00E5FF]/70" />
+              <span className="text-xs text-[#00E5FF]/70 font-medium uppercase tracking-widest">Sky AI</span>
             </div>
             <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
               {greeting}, <span className="capitalize">{firstName}</span>
@@ -286,7 +286,7 @@ export default function DashboardPage() {
             {/* Quick stat pills */}
             {!loading && overview && (
               <div className="flex flex-wrap gap-2 mt-4">
-                <span className="inline-flex items-center gap-1.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs px-3 py-1.5 rounded-full">
+                <span className="inline-flex items-center gap-1.5 bg-[#00E5FF]/10 border border-[#00E5FF]/20 text-[#00E5FF]/80 text-xs px-3 py-1.5 rounded-full">
                   <Calendar className="w-3 h-3" />
                   {overview.reservations_this_month} reservaciones este mes
                 </span>
@@ -393,7 +393,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
         >
           <div className="flex items-center gap-2 mb-3">
-            <Zap className="w-3.5 h-3.5 text-indigo-400" />
+            <Zap className="w-3.5 h-3.5 text-[#00E5FF]" />
             <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">IA Insights</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -419,7 +419,7 @@ export default function DashboardPage() {
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold text-white">Actividad Reciente</h2>
-          <a href="/reservations" className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors">
+          <a href="/reservations" className="text-xs text-[#00E5FF] hover:text-[#00E5FF]/80 flex items-center gap-1 transition-colors">
             Ver todo <ArrowRight className="w-3 h-3" />
           </a>
         </div>
@@ -440,7 +440,7 @@ export default function DashboardPage() {
         ) : recentActivity.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-10 text-center">
             <div className="w-14 h-14 rounded-2xl bg-white/[0.03] border border-white/[0.06] mx-auto mb-4 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-indigo-400/60" />
+              <Sparkles className="w-6 h-6 text-[#00E5FF]/60" />
             </div>
             <p className="text-sm font-medium text-zinc-400">Sin actividad aún</p>
             <p className="text-xs text-zinc-600 mt-1 max-w-xs">
@@ -448,7 +448,7 @@ export default function DashboardPage() {
             </p>
             <a
               href="/reservations"
-              className="inline-flex items-center gap-1.5 mt-4 text-xs text-indigo-400 hover:text-indigo-300 border border-indigo-500/20 hover:border-indigo-500/40 bg-indigo-500/[0.06] px-4 py-2 rounded-full transition-all duration-300"
+              className="inline-flex items-center gap-1.5 mt-4 text-xs text-[#00E5FF] hover:text-[#00E5FF]/80 border border-[#00E5FF]/20 hover:border-[#00E5FF]/40 bg-[#00E5FF]/[0.06] px-4 py-2 rounded-full transition-all duration-300"
             >
               Crear primera reservación <ArrowRight className="w-3 h-3" />
             </a>
@@ -491,7 +491,7 @@ function KpiRow({ label, value, icon: Icon, color }: { label: string; value: str
   const colors: Record<string, string> = {
     emerald: "bg-emerald-500/10 text-emerald-400",
     yellow:  "bg-yellow-500/10 text-yellow-400",
-    blue:    "bg-indigo-500/10 text-indigo-400",
+    blue:    "bg-[#00E5FF]/10 text-[#00E5FF]",
     purple:  "bg-purple-500/10 text-purple-400",
   };
   return (

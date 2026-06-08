@@ -363,11 +363,11 @@ export default function WhatsAppPage() {
       <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Conversaciones",  value: total,         icon: MessageCircle, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
-          { label: "Auto-respondidas", value: autoResponded, icon: Bot,           color: "text-indigo-400",  bg: "bg-indigo-500/10 border-indigo-500/20" },
+          { label: "Auto-respondidas", value: autoResponded, icon: Bot,           color: "text-[#00E5FF]",  bg: "bg-[#00E5FF]/10 border-[#00E5FF]/20" },
           { label: "Tiempo Prom.",    value: "< 1s",        icon: Clock,         color: "text-purple-400",  bg: "bg-purple-500/10 border-purple-500/20" },
           { label: "Activas Ahora",   value: activeCount,   icon: Activity,      color: "text-amber-400",   bg: "bg-amber-500/10 border-amber-500/20" },
         ].map((stat) => (
-          <div key={stat.label} className={`relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border ${stat.bg} rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(79,70,229,0.1)]`}>
+          <div key={stat.label} className={`relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border ${stat.bg} rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(0,229,255,0.1)]`}>
             {/* Watermark icon */}
             <div className={`absolute -bottom-2 -right-2 ${stat.color} opacity-[0.05] pointer-events-none`}>
               <stat.icon className="w-20 h-20" />

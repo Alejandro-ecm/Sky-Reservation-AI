@@ -5,14 +5,14 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
   return (
     <div
       className="min-h-screen text-zinc-300"
-      style={{ background: "radial-gradient(ellipse at 20% 10%, rgba(79,70,229,0.06) 0%, transparent 50%), #050505" }}
+      style={{ background: "radial-gradient(ellipse at 20% 10%, rgba(0,229,255,0.04) 0%, transparent 50%), #050505" }}
     >
       {/* Header */}
       <header className="border-b border-white/[0.05] bg-zinc-950/80 backdrop-blur-xl px-6 py-4 sticky top-0 z-10">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 w-fit group">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-all duration-300">
-              <Sparkles className="w-3.5 h-3.5 text-white" />
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center shadow-sm shadow-[#00E5FF]/20 group-hover:shadow-[#00E5FF]/35 transition-all duration-300">
+              <Sparkles className="w-3.5 h-3.5 text-black" />
             </div>
             <span className="font-bold text-sm text-white">
               Sky <span className="text-zinc-500">Reservation AI</span>
