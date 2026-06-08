@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { withAuthRateLimit } from "@/lib/security/api-guard";
+import { z } from "zod";
 
 function getServiceSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -23,25 +25,25 @@ function randomDigits(n: number): string {
     .padStart(n, "0");
 }
 
-interface AIConfig {
-  first_message?: string;
-  voice_type?: "femenino" | "masculino";
-  language?: "español" | "english" | "español+english";
-  business_hours_type?: "weekdays" | "custom";
-  business_hours?: Record<string, { open: string; close: string; enabled: boolean }>;
-}
+const onboardingSchema = z.object({
+  businessName: z.string().min(1, "Nombre del negocio requerido").max(120),
+  industry: z.string().min(1, "Industria requerida").max(80),
+  city: z.string().min(1, "Ciudad requerida").max(80),
+  phone: z.string().max(30).optional(),
+  businessEmail: z.string().email("Email inválido").optional(),
+  plan: z.enum(["starter", "pro", "enterprise"], { message: "Plan inválido" }),
+  aiConfig: z.object({
+    first_message: z.string().max(500).optional(),
+    voice_type: z.enum(["femenino", "masculino"]).optional(),
+    language: z.enum(["español", "english", "español+english"]).optional(),
+    business_hours_type: z.enum(["weekdays", "custom"]).optional(),
+    business_hours: z
+      .record(z.object({ open: z.string(), close: z.string(), enabled: z.boolean() }))
+      .optional(),
+  }).optional().default({}),
+});
 
-interface OnboardingBody {
-  businessName: string;
-  industry: string;
-  city: string;
-  phone: string;
-  businessEmail?: string;
-  plan: "starter" | "pro" | "enterprise";
-  aiConfig: AIConfig;
-}
-
-export async function POST(request: NextRequest) {
+async function handler(request: NextRequest): Promise<NextResponse> {
   try {
     const supabase = await createClient();
     const {
@@ -52,15 +54,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = (await request.json()) as OnboardingBody;
-    const { businessName, industry, city, phone, businessEmail, plan, aiConfig } = body;
-
-    if (!businessName || !industry || !city || !plan) {
+    const parsed = onboardingSchema.safeParse(await request.json());
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Missing required fields: businessName, industry, city, plan" },
+        { error: parsed.error.errors[0]?.message ?? "Datos inválidos" },
         { status: 400 }
       );
     }
+    const { businessName, industry, city, phone, businessEmail, plan, aiConfig } = parsed.data;
 
     const serviceSupabase = getServiceSupabase();
 
@@ -181,3 +182,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+export const POST = withAuthRateLimit(handler);
