@@ -58,6 +58,30 @@
     @apply hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-300;
   }
 
+  /* ─── Premium Neural Glass (Sky Technologies brand) ──────────── */
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 1rem;
+  }
+
+  .glass-premium-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-premium-hover:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 229, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.1);
+  }
+
+  /* ─── Cyan glow utility ──────────────────────────────────────── */
+  .glow-cyan  { box-shadow: 0 0 40px rgba(0, 229, 255, 0.15); }
+  .glow-neural { box-shadow: 0 0 25px rgba(0, 229, 255, 0.12), 0 20px 40px rgba(0, 0, 0, 0.35); }
+
   /* ─── Premium Metric Card (KPI tiles) ───────────────────────── */
   .metric-card {
     @apply relative overflow-hidden;
@@ -120,6 +144,18 @@
     @apply hover:from-indigo-500 hover:to-purple-500;
     @apply shadow-lg shadow-indigo-500/20;
     @apply transition-all duration-300;
+  }
+
+  /* Neural CTA — cyan→purple per brand identity */
+  .btn-neural {
+    @apply bg-gradient-to-r from-[#00E5FF] to-[#7000FF] text-black font-bold;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    @apply transition-all duration-300;
+  }
+
+  .btn-neural:hover {
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.45);
+    transform: translateY(-1px);
   }
 
   /* ─── Greeting card (dashboard hero) ────────────────────────── */
@@ -205,11 +241,11 @@
 ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
 
 /* ─── Text selection ─────────────────────────────────────────────── */
-::selection { background: rgba(79, 70, 229, 0.3); color: #fff; }
+::selection { background: rgba(0, 229, 255, 0.2); color: #fff; }
 
 /* ─── Focus ring ─────────────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid rgba(79, 70, 229, 0.6);
+  outline: 2px solid rgba(0, 229, 255, 0.5);
   outline-offset: 2px;
   border-radius: 6px;
 }

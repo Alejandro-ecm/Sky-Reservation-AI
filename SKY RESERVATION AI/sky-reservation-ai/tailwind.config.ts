@@ -59,6 +59,10 @@ const config: Config = {
           darker: "#111111",
           glass: "rgba(255, 255, 255, 0.05)",
         },
+        // Neural design tokens — Sky Technologies brand
+        backendDark:  "#050505",
+        neuralCyan:   "#00E5FF",
+        neuralPurple: "#7000FF",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -115,8 +119,12 @@ const config: Config = {
         "glow-indigo": "0 0 24px rgba(79, 70, 229, 0.2), 0 0 48px rgba(79, 70, 229, 0.06)",
         "glow-purple": "0 0 24px rgba(139, 92, 246, 0.2), 0 0 48px rgba(139, 92, 246, 0.06)",
         "glow-emerald": "0 0 24px rgba(52, 211, 153, 0.15)",
+        "glow-cyan": "0 0 25px rgba(0, 229, 255, 0.18), 0 0 50px rgba(0, 229, 255, 0.06)",
         "metric-hover": "0 0 24px rgba(79, 70, 229, 0.1), 0 20px 40px rgba(0, 0, 0, 0.35)",
+        "metric-hover-cyan": "0 0 25px rgba(0, 229, 255, 0.12), 0 20px 40px rgba(0, 0, 0, 0.35)",
         "nav-active": "0 0 10px rgba(79, 70, 229, 0.8), 0 0 20px rgba(79, 70, 229, 0.35)",
+        "nav-cyan": "0 0 10px rgba(0, 229, 255, 0.7), 0 0 20px rgba(0, 229, 255, 0.3)",
+        "toggle-on": "0 0 10px #00E5FF, 0 0 20px rgba(0, 229, 255, 0.4)",
       },
     },
   },

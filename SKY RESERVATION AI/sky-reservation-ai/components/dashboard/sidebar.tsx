@@ -63,13 +63,13 @@ export function DashboardSidebar() {
       initial={false}
       animate={{ width: collapsed ? 72 : 240 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="relative flex-shrink-0 h-screen bg-zinc-950/90 backdrop-blur-2xl border-r border-white/[0.05] flex flex-col z-20"
+      className="relative flex-shrink-0 h-screen bg-black/20 backdrop-blur-md border-r border-white/[0.05] flex flex-col z-20"
     >
       {/* Logo */}
       <div className="h-16 flex items-center px-4 border-b border-white/[0.05]">
         <Link href="/dashboard" className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-indigo-500/25">
-            <Sparkles className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center flex-shrink-0 shadow-lg shadow-[#00E5FF]/20">
+            <Sparkles className="w-4 h-4 text-black" />
           </div>
           <AnimatePresence>
             {!collapsed && (
@@ -80,7 +80,7 @@ export function DashboardSidebar() {
                 transition={{ duration: 0.2 }}
                 className="font-bold text-lg whitespace-nowrap overflow-hidden"
               >
-                <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#00E5FF] to-[#7000FF] bg-clip-text text-transparent">
                   Sky
                 </span>
                 <span className="text-white"> AI</span>
@@ -117,14 +117,14 @@ export function DashboardSidebar() {
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative",
                 isActive
-                  ? "bg-gradient-to-r from-indigo-600/[0.13] to-transparent text-indigo-300"
+                  ? "bg-gradient-to-r from-[#00E5FF]/[0.08] to-transparent text-[#00E5FF]"
                   : "text-zinc-500 hover:text-zinc-200 hover:bg-white/[0.04]"
               )}
             >
               <item.icon
                 className={cn(
                   "w-4 h-4 flex-shrink-0 transition-colors duration-300",
-                  isActive ? "text-indigo-300" : "text-zinc-500 group-hover:text-zinc-200"
+                  isActive ? "text-[#00E5FF]" : "text-zinc-500 group-hover:text-zinc-200"
                 )}
               />
               <AnimatePresence>
@@ -147,8 +147,8 @@ export function DashboardSidebar() {
                   layoutId="activeNav"
                   className="absolute left-0 top-0 h-full w-[2px] rounded-r-full"
                   style={{
-                    background: "linear-gradient(to bottom, #818cf8, #a78bfa)",
-                    boxShadow: "0 0 10px rgba(79, 70, 229, 0.8), 0 0 20px rgba(79, 70, 229, 0.4)",
+                    background: "linear-gradient(to bottom, #00E5FF, rgba(0,229,255,0.5))",
+                    boxShadow: "0 0 10px rgba(0,229,255,0.8), 0 0 20px rgba(0,229,255,0.35)",
                   }}
                 />
               )}
@@ -170,8 +170,8 @@ export function DashboardSidebar() {
           "flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.07] backdrop-blur-sm",
           collapsed && "justify-center"
         )}>
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-600/25 to-purple-600/20 border border-white/[0.08] flex items-center justify-center flex-shrink-0">
-            <Building2 className="w-3.5 h-3.5 text-indigo-300" />
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00E5FF]/15 to-[#7000FF]/15 border border-[#00E5FF]/15 flex items-center justify-center flex-shrink-0">
+            <Building2 className="w-3.5 h-3.5 text-[#00E5FF]" />
           </div>
           <AnimatePresence>
             {!collapsed && (

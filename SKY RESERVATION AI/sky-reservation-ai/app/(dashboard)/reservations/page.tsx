@@ -94,7 +94,7 @@ export default function ReservationsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [view, setView] = useState<"table" | "calendar">("table");
+  const [view, setView] = useState<"table" | "calendar">("calendar");
   const [showForm, setShowForm] = useState(false);
   const [formInitialDate, setFormInitialDate] = useState<string | undefined>();
   const [formInitialTime, setFormInitialTime] = useState<string | undefined>();
