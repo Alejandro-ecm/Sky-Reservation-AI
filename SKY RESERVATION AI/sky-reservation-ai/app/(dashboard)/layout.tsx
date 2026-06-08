@@ -15,7 +15,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-[#0A0A0A] overflow-hidden">
+    <div
+      className="flex h-screen overflow-hidden"
+      style={{ background: "radial-gradient(ellipse at 15% 20%, rgba(79,70,229,0.07) 0%, transparent 55%), radial-gradient(ellipse at 88% 82%, rgba(139,92,246,0.05) 0%, transparent 55%), #050505" }}
+    >
       <DashboardSidebar />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <DashboardHeader />

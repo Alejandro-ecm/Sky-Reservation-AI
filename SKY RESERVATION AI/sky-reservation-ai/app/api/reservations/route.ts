@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { sendMessage } from "@/lib/whatsapp/client";
 import { logAuditEvent } from "@/lib/security/audit-logger";
 import { getClientIP } from "@/lib/security/sanitize";
+import { executeAutomations } from "@/lib/n8n/engine";
 
 const CreateReservationSchema = z.object({
   customer_id: z.string().uuid(),
@@ -196,6 +197,17 @@ export async function POST(request: NextRequest) {
       resource_type: "reservation",
       resource_id: data.id,
       ip_address: getClientIP(request.headers),
+    });
+
+    void executeAutomations("new_reservation", {
+      tenantId: profile.tenant_id,
+      reservationId: data.id,
+      customerName: data.customer?.name ?? "",
+      customerPhone: data.customer?.phone ?? null,
+      customerEmail: data.customer?.email ?? null,
+      serviceName: data.service?.name ?? "",
+      startTime: data.start_time,
+      endTime: data.end_time ?? undefined,
     });
 
     // Auto-send WhatsApp confirmation if customer has phone

@@ -111,6 +111,13 @@ const config: Config = {
       backgroundSize: {
         "300%": "300%",
       },
+      boxShadow: {
+        "glow-indigo": "0 0 24px rgba(79, 70, 229, 0.2), 0 0 48px rgba(79, 70, 229, 0.06)",
+        "glow-purple": "0 0 24px rgba(139, 92, 246, 0.2), 0 0 48px rgba(139, 92, 246, 0.06)",
+        "glow-emerald": "0 0 24px rgba(52, 211, 153, 0.15)",
+        "metric-hover": "0 0 24px rgba(79, 70, 229, 0.1), 0 20px 40px rgba(0, 0, 0, 0.35)",
+        "nav-active": "0 0 10px rgba(79, 70, 229, 0.8), 0 0 20px rgba(79, 70, 229, 0.35)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

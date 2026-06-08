@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { logAuditEvent } from "@/lib/security/audit-logger";
 import { getClientIP } from "@/lib/security/sanitize";
+import { executeAutomations } from "@/lib/n8n/engine";
 
 const CreateCustomerSchema = z.object({
   name: z.string().min(1).max(200).trim(),
@@ -131,6 +132,17 @@ export async function POST(request: NextRequest) {
         resource_id: data.id,
         ip_address: getClientIP(request.headers),
       });
+      // Only fire new_customer for genuinely new records (created within last 5s)
+      if (new Date(data.created_at) > new Date(Date.now() - 5000)) {
+        void executeAutomations("new_customer", {
+          tenantId: profile.tenant_id,
+          customerId: data.id,
+          customerName: data.name,
+          customerPhone: data.phone ?? null,
+          customerEmail: data.email ?? null,
+          leadScore: data.lead_score ?? 0,
+        });
+      }
       return NextResponse.json({ data }, { status: 201 });
     }
 
@@ -158,6 +170,15 @@ export async function POST(request: NextRequest) {
       resource_type: "customer",
       resource_id: data.id,
       ip_address: getClientIP(request.headers),
+    });
+
+    void executeAutomations("new_customer", {
+      tenantId: profile.tenant_id,
+      customerId: data.id,
+      customerName: data.name,
+      customerPhone: null,
+      customerEmail: data.email ?? null,
+      leadScore: data.lead_score ?? 0,
     });
 
     return NextResponse.json({ data }, { status: 201 });

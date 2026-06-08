@@ -6,6 +6,7 @@ import { getClientIP } from "@/lib/security/sanitize";
 import { sendEmail } from "@/lib/resend/client";
 import { bookingConfirmationHtml, bookingConfirmationSubject } from "@/lib/resend/templates/booking-confirmation";
 import { sendMessage } from "@/lib/whatsapp/client";
+import { executeAutomations } from "@/lib/n8n/engine";
 
 const BookingSchema = z.object({
   service_id: z.string().uuid(),
@@ -169,6 +170,31 @@ export async function POST(
     if (resErr || !reservation) {
       console.error("[public/book] reservation insert:", resErr?.message);
       return NextResponse.json({ error: "Error al crear la reservación" }, { status: 500 });
+    }
+
+    // Trigger automations for new reservation
+    void executeAutomations("new_reservation", {
+      tenantId: tenant.id,
+      reservationId: reservation.id,
+      customerName: customer_name,
+      customerPhone: phone,
+      customerEmail: email,
+      serviceName: svc.name,
+      startTime: startIso,
+      endTime: endIso,
+    });
+
+    // Trigger new_customer automation only for genuinely new customers
+    if (!existingCustomer) {
+      void executeAutomations("new_customer", {
+        tenantId: tenant.id,
+        customerId: customerId,
+        customerName: customer_name,
+        customerPhone: phone,
+        customerEmail: email,
+        leadScore: 0,
+        source: "public_booking",
+      });
     }
 
     const settings = tenant.settings as Record<string, unknown>;

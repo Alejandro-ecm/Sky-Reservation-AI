@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createHmac, timingSafeEqual } from "crypto";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { sendMessage, markAsRead } from "@/lib/whatsapp/client";
 import { processIncomingMessage } from "@/lib/whatsapp/ai-responder";
@@ -58,8 +59,28 @@ export async function GET(request: NextRequest) {
 // POST — Process incoming messages
 // ============================================================
 export async function POST(request: NextRequest) {
-  // Always return 200 immediately (process async)
-  const body = (await request.json()) as MetaWebhookBody;
+  const secret = process.env.META_WEBHOOK_SECRET;
+  if (!secret) {
+    console.error("[whatsapp-webhook] META_WEBHOOK_SECRET not configured — rejecting");
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+  }
+
+  const rawBody = await request.text();
+  const sig = request.headers.get("x-hub-signature-256") ?? "";
+  const expected = "sha256=" + createHmac("sha256", secret).update(rawBody).digest("hex");
+  let valid = false;
+  try {
+    const expectedBuf = Buffer.from(expected);
+    const sigBuf = Buffer.from(sig);
+    valid = expectedBuf.length === sigBuf.length && timingSafeEqual(expectedBuf, sigBuf);
+  } catch {
+    valid = false;
+  }
+  if (!valid) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 403 });
+  }
+
+  const body = JSON.parse(rawBody) as MetaWebhookBody;
 
   // Fire and forget
   processWebhook(body).catch((err) =>
@@ -164,6 +185,13 @@ async function processWebhook(body: MetaWebhookBody) {
             .maybeSingle();
 
           const conversationHistory: Message[] = existingConvo?.messages ?? [];
+
+          // IDEMPOTENCY: skip if this message was already processed (Meta retry)
+          const isDuplicate = conversationHistory.some((m) => m.id === message.id);
+          if (isDuplicate) {
+            console.log(`[whatsapp-webhook] Duplicate message ${message.id} — skipping`);
+            continue;
+          }
 
           // Generate AI response
           const aiResponse = await processIncomingMessage(
