@@ -7,12 +7,12 @@ function generateNonce(): string {
 }
 
 function buildCsp(nonce: string): string {
+  const isDev = process.env.NODE_ENV === "development";
   return [
     "default-src 'self'",
-    // nonce-based: no unsafe-inline, no unsafe-eval
-    // strict-dynamic lets nonced scripts load their own children (Next.js chunks)
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://js.stripe.com`,
-    // unsafe-inline for styles is low-risk (no script execution)
+    // In dev, React/Turbopack require eval() for call stack reconstruction.
+    // strict-dynamic lets nonced scripts load their own children (Next.js chunks).
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""} https://js.stripe.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: https: blob:",
