@@ -15,13 +15,15 @@ let upstashApi: Ratelimit | null = null;
 let upstashAuth: Ratelimit | null = null;
 let upstashWebhook: Ratelimit | null = null;
 let upstashAi: Ratelimit | null = null;
+let upstashPublicBook: Ratelimit | null = null;
 
 if (hasUpstash) {
   const redis = Redis.fromEnv();
-  upstashApi     = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(100, "1 m"), prefix: "sky:api" });
-  upstashAuth    = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10,  "1 m"), prefix: "sky:auth" });
-  upstashWebhook = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(200, "1 m"), prefix: "sky:webhook" });
-  upstashAi      = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(30,  "1 m"), prefix: "sky:ai" });
+  upstashApi       = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(100, "1 m"),  prefix: "sky:api" });
+  upstashAuth      = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(10,  "1 m"),  prefix: "sky:auth" });
+  upstashWebhook   = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(200, "1 m"),  prefix: "sky:webhook" });
+  upstashAi        = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(30,  "1 m"),  prefix: "sky:ai" });
+  upstashPublicBook = new Ratelimit({ redis, limiter: Ratelimit.slidingWindow(5,  "1 h"),  prefix: "sky:book" });
 }
 
 // In-memory fallback for local dev without Upstash configured
@@ -76,4 +78,9 @@ export async function webhookLimiter(ip: string): Promise<RateLimitResult> {
 export async function aiLimiter(tenantId: string): Promise<RateLimitResult> {
   if (upstashAi) return upstashLimit(upstashAi, tenantId);
   return localLimit(`ai:${tenantId}`, 30, 60_000);
+}
+
+export async function publicBookingLimiter(ip: string): Promise<RateLimitResult> {
+  if (upstashPublicBook) return upstashLimit(upstashPublicBook, ip);
+  return localLimit(`book:${ip}`, 5, 60 * 60_000);
 }
