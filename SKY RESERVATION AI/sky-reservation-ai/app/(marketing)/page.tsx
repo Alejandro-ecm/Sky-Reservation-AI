@@ -8,6 +8,7 @@ import {
   Star, ChevronDown, Check, ArrowRight, Zap, Shield, Globe,
   Menu, X, Sparkles, TrendingUp, Clock, Bot, Play, ChevronRight,
   DollarSign, HeartHandshake, Infinity as InfinityIcon, Lock, Cpu, Rocket,
+  Instagram, Twitter, Linkedin, Youtube,
 } from "lucide-react";
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
@@ -806,63 +807,61 @@ function CTASection() {
 }
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
+const FOOTER_COLS = [
+  {
+    title: "Soporte",
+    links: [
+      { label: "Centro de Ayuda",            href: "#" },
+      { label: "Estado del sistema",          href: "#" },
+      { label: "Reportar un problema",        href: "mailto:soporte@skyreservation.ai" },
+      { label: "Seguridad",                   href: "#" },
+      { label: "Documentación",               href: "/docs" },
+    ],
+  },
+  {
+    title: "Plataforma",
+    links: [
+      { label: "Funcionalidades",             href: "#features" },
+      { label: "Voice AI — Recepcionista",    href: "#features" },
+      { label: "WhatsApp AI",                 href: "#features" },
+      { label: "Automaciones inteligentes",   href: "#features" },
+      { label: "CRM & Clientes",              href: "#features" },
+      { label: "API para desarrolladores",    href: "/docs" },
+    ],
+  },
+  {
+    title: "Empresa",
+    links: [
+      { label: "Sky Technologies LATAM",      href: "#" },
+      { label: "Blog",                        href: "#" },
+      { label: "Sala de prensa",              href: "#" },
+      { label: "Empleos",                     href: "#" },
+      { label: "Política de Privacidad",      href: "/privacy" },
+      { label: "Términos de Servicio",        href: "/terms" },
+    ],
+  },
+];
+
+const SOCIALS = [
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Twitter,   href: "#", label: "Twitter / X" },
+  { icon: Linkedin,  href: "#", label: "LinkedIn" },
+  { icon: Youtube,   href: "#", label: "YouTube" },
+];
+
 function Footer() {
-  const cols = [
-    {
-      title: "Producto",
-      links: [
-        { label: "Características", href: "#features" },
-        { label: "Precios", href: "#pricing" },
-        { label: "FAQ", href: "#faq" },
-        { label: "Demo en vivo", href: "#features" },
-      ],
-    },
-    {
-      title: "Legal",
-      links: [
-        { label: "Política de Privacidad", href: "/privacy" },
-        { label: "Términos de Servicio", href: "/terms" },
-        { label: "API Docs", href: "/docs" },
-      ],
-    },
-    {
-      title: "Contacto",
-      links: [
-        { label: "hola@skyreservation.ai", href: "mailto:hola@skyreservation.ai" },
-        { label: "soporte@skyreservation.ai", href: "mailto:soporte@skyreservation.ai" },
-        { label: "api@skyreservation.ai", href: "mailto:api@skyreservation.ai" },
-      ],
-    },
-  ];
-
   return (
-    <footer className="border-t border-white/[0.05] pt-16 pb-8 px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Main grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
-          {/* Brand column */}
-          <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center shadow-lg shadow-[#00E5FF]/20">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-white text-base">
-                Sky <span className="text-zinc-500">AI</span>
-              </span>
-            </Link>
-            <p className="text-sm text-zinc-500 leading-relaxed mb-5 max-w-[210px]">
-              Automatiza tu negocio con IA. Llamadas, WhatsApp y reservaciones 24/7.
-            </p>
-            <div className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-xs text-emerald-400 font-medium">Sistema operativo</span>
-            </div>
-          </div>
+    <footer className="relative border-t border-white/[0.05]">
+      {/* subtle top Neural accent */}
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#00E5FF]/30 to-transparent" />
 
-          {/* Link columns */}
-          {cols.map((col) => (
+      <div className="max-w-6xl mx-auto px-6 pt-16 pb-10">
+
+        {/* ── Main 3-column grid ─────────────────────────────────────────── */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-8 mb-14">
+          {FOOTER_COLS.map((col) => (
             <div key={col.title}>
-              <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-5">
+              <p className="text-[11px] font-black text-zinc-400 uppercase tracking-[0.14em] mb-5">
                 {col.title}
               </p>
               <ul className="space-y-3">
@@ -870,7 +869,7 @@ function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-zinc-500 hover:text-white transition-colors duration-200"
+                      className="text-sm text-zinc-500 hover:text-white transition-colors duration-200 hover:translate-x-0.5 inline-block"
                     >
                       {link.label}
                     </a>
@@ -881,15 +880,54 @@ function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/[0.05] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-zinc-600">
-            © 2026 Sky Technologies LATAM. Todos los derechos reservados.
-          </p>
-          <p className="text-xs text-zinc-700">
-            Hecho en México · Tecnología con propósito
-          </p>
+        {/* ── Divider ───────────────────────────────────────────────────── */}
+        <div className="h-px bg-white/[0.06] mb-8" />
+
+        {/* ── Bottom bar ────────────────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+
+          {/* Brand + copyright */}
+          <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center shadow-[0_0_12px_rgba(0,229,255,0.3)] group-hover:shadow-[0_0_20px_rgba(0,229,255,0.5)] transition-shadow">
+                <Sparkles className="w-3.5 h-3.5 text-black" />
+              </div>
+              <span className="text-sm font-bold text-white">Sky AI</span>
+            </Link>
+
+            <span className="text-zinc-800 hidden sm:inline">·</span>
+
+            <p className="text-xs text-zinc-600">
+              © 2026 Sky Technologies LATAM
+            </p>
+
+            <span className="text-zinc-800 hidden sm:inline">·</span>
+
+            <div className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs text-zinc-600">Todos los sistemas operativos</span>
+            </div>
+          </div>
+
+          {/* Social icons */}
+          <div className="flex items-center gap-1.5">
+            {SOCIALS.map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.07] hover:bg-[#00E5FF]/10 hover:border-[#00E5FF]/25 flex items-center justify-center text-zinc-500 hover:text-[#00E5FF] transition-all duration-200 group"
+              >
+                <Icon className="w-3.5 h-3.5" />
+              </a>
+            ))}
+          </div>
         </div>
+
+        {/* ── Tagline ───────────────────────────────────────────────────── */}
+        <p className="text-center text-[10px] text-zinc-800 mt-7 tracking-widest uppercase">
+          Hecho con ❤ en México · Tecnología con propósito
+        </p>
       </div>
     </footer>
   );
