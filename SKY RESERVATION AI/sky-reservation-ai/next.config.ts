@@ -19,7 +19,6 @@ const nextConfig: NextConfig = {
     optimizePackageImports: [
       "lucide-react",
       "framer-motion",
-      "recharts",
       "@radix-ui/react-dialog",
       "@radix-ui/react-dropdown-menu",
     ],

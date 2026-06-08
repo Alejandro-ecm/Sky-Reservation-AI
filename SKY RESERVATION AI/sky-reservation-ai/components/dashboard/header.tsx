@@ -22,17 +22,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { getInitials, formatRelative } from "@/lib/utils/format";
 import { useNotifications, type AppNotification } from "@/hooks/use-notifications";
-
-const mockUser = {
-  full_name: "Carlos Mendoza",
-  email: "carlos@empresa.com",
-  role: "owner",
-};
-
-const mockTenants = [
-  { id: "1", name: "Barbería Elite", active: true },
-  { id: "2", name: "Sucursal Norte", active: false },
-];
+import { useUser } from "@/hooks/use-user";
 
 function notifTypeIcon(type: AppNotification["type"]) {
   switch (type) {
@@ -52,10 +42,15 @@ export function DashboardHeader() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [tenantOpen, setTenantOpen] = useState(false);
-  const [activeTenant, setActiveTenant] = useState(mockTenants[0]);
 
+  const { profile, tenant, isLoading: userLoading } = useUser();
   const { notifications, unreadCount, markAllRead, markRead, dismiss } =
     useNotifications();
+
+  const displayName = profile?.full_name ?? profile?.email?.split("@")[0] ?? "Usuario";
+  const displayEmail = profile?.email ?? "";
+  const displayRole = profile?.role ?? "owner";
+  const displayTenant = tenant?.name ?? "Mi Empresa";
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -103,7 +98,11 @@ export function DashboardHeader() {
             className="flex items-center gap-2 bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.07] rounded-xl px-3 py-2 text-sm text-gray-300 transition-colors"
           >
             <Building2 className="w-3.5 h-3.5 text-blue-400" />
-            <span className="max-w-28 truncate">{activeTenant.name}</span>
+            {userLoading ? (
+              <span className="w-20 h-3 bg-white/10 rounded animate-pulse" />
+            ) : (
+              <span className="max-w-28 truncate">{displayTenant}</span>
+            )}
             <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
           </button>
 
@@ -118,23 +117,12 @@ export function DashboardHeader() {
               >
                 <div className="p-2">
                   <p className="text-xs text-gray-500 px-3 py-1.5 font-medium">
-                    Cambiar empresa
+                    Empresa activa
                   </p>
-                  {mockTenants.map((tenant) => (
-                    <button
-                      key={tenant.id}
-                      onClick={() => {
-                        setActiveTenant(tenant);
-                        setTenantOpen(false);
-                      }}
-                      className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
-                    >
-                      <span>{tenant.name}</span>
-                      {activeTenant.id === tenant.id && (
-                        <Check className="w-3.5 h-3.5 text-blue-400" />
-                      )}
-                    </button>
-                  ))}
+                  <div className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-sm text-gray-300 bg-white/[0.03]">
+                    <span className="truncate">{displayTenant}</span>
+                    <Check className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -280,15 +268,24 @@ export function DashboardHeader() {
             className="flex items-center gap-2.5 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] rounded-xl px-2.5 py-1.5 transition-colors"
           >
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white">
-              {getInitials(mockUser.full_name)}
+              {userLoading ? "…" : getInitials(displayName)}
             </div>
             <div className="hidden sm:block text-left">
-              <p className="text-xs font-medium text-white leading-tight">
-                {mockUser.full_name.split(" ")[0]}
-              </p>
-              <p className="text-[10px] text-gray-500 leading-tight capitalize">
-                {mockUser.role}
-              </p>
+              {userLoading ? (
+                <div className="space-y-1">
+                  <div className="w-16 h-2.5 bg-white/10 rounded animate-pulse" />
+                  <div className="w-10 h-2 bg-white/10 rounded animate-pulse" />
+                </div>
+              ) : (
+                <>
+                  <p className="text-xs font-medium text-white leading-tight">
+                    {displayName.split(" ")[0]}
+                  </p>
+                  <p className="text-[10px] text-gray-500 leading-tight capitalize">
+                    {displayRole}
+                  </p>
+                </>
+              )}
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
           </button>
@@ -304,9 +301,9 @@ export function DashboardHeader() {
               >
                 <div className="p-4 border-b border-white/5">
                   <p className="font-semibold text-sm text-white">
-                    {mockUser.full_name}
+                    {displayName}
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">{mockUser.email}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{displayEmail}</p>
                 </div>
                 <div className="p-2">
                   {[

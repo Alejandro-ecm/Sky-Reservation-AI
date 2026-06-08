@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils/cn";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useUser } from "@/hooks/use-user";
 
 const navItems = [
   { label: "Dashboard",       href: "/dashboard",      icon: LayoutDashboard },
@@ -47,6 +48,7 @@ export function DashboardSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { tenant } = useUser();
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -176,8 +178,12 @@ export function DashboardSidebar() {
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden min-w-0"
               >
-                <p className="text-xs font-medium text-white truncate">Mi Empresa</p>
-                <p className="text-xs text-gray-600">Plan Pro</p>
+                <p className="text-xs font-medium text-white truncate">
+                  {tenant?.name ?? "Mi Empresa"}
+                </p>
+                <p className="text-xs text-gray-600 capitalize">
+                  {tenant?.plan ? `Plan ${tenant.plan}` : "Plan Starter"}
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
