@@ -21,6 +21,7 @@ import {
   Star,
   Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -183,9 +184,11 @@ const PLAN_FEATURES: Array<{
 
 function PlanTable({
   currentPlan,
+  checkoutLoading,
   onSelectPlan,
 }: {
   currentPlan: string;
+  checkoutLoading: string | null;
   onSelectPlan: (plan: string, provider: "stripe" | "mercadopago") => void;
 }) {
   const plans = ["starter", "pro", "enterprise"] as const;
@@ -255,8 +258,12 @@ function PlanTable({
                 ) : (
                   <button
                     onClick={() => onSelectPlan(plan, "stripe")}
-                    className="text-xs px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-lg transition-all"
+                    disabled={!!checkoutLoading}
+                    className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
                   >
+                    {checkoutLoading === plan ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : null}
                     Seleccionar
                   </button>
                 )}
@@ -325,7 +332,7 @@ export default function BillingPage() {
       });
       const json = await safeJson<{ url?: string; error?: string }>(res);
       if (json?.url) window.location.href = json.url;
-      else console.error("Portal error:", json?.error ?? "Non-JSON response");
+      else toast.error(json?.error ?? "No se pudo abrir el portal de facturación.");
     } catch (err) {
       console.error("Portal error:", err);
     } finally {
@@ -349,7 +356,11 @@ export default function BillingPage() {
           }),
         });
         const json = await safeJson<{ url?: string; error?: string }>(res);
-        if (json?.url) window.location.href = json.url;
+        if (json?.url) {
+          window.location.href = json.url;
+        } else {
+          toast.error(json?.error ?? "No se pudo iniciar el checkout. Intenta nuevamente.");
+        }
       } else {
         const res = await fetch("/api/billing/mercadopago/checkout", {
           method: "POST",
@@ -357,10 +368,15 @@ export default function BillingPage() {
           body: JSON.stringify({ plan }),
         });
         const json = await safeJson<{ url?: string; error?: string }>(res);
-        if (json?.url) window.location.href = json.url;
+        if (json?.url) {
+          window.location.href = json.url;
+        } else {
+          toast.error(json?.error ?? "No se pudo iniciar el checkout. Intenta nuevamente.");
+        }
       }
     } catch (err) {
       console.error("Checkout error:", err);
+      toast.error("Error de conexión. Verifica tu internet e intenta nuevamente.");
     } finally {
       setCheckoutLoading(null);
     }
@@ -537,6 +553,7 @@ export default function BillingPage() {
             </div>
             <PlanTable
               currentPlan={plan}
+              checkoutLoading={checkoutLoading}
               onSelectPlan={(p, provider) => handleSelectPlan(p, provider)}
             />
           </motion.div>
