@@ -30,12 +30,22 @@ interface Customer {
   email: string | null;
 }
 
+interface InitialReservation {
+  id: string;
+  start_time: string;
+  notes: string | null;
+  customer?: { id: string; name: string } | null;
+  service?: { id: string; duration_minutes: number } | null;
+  staff?: { id: string } | null;
+}
+
 interface ReservationFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   initialDate?: string;
   initialTime?: string;
+  initialReservation?: InitialReservation;
 }
 
 // ============================================================
@@ -79,7 +89,9 @@ export function ReservationForm({
   onSuccess,
   initialDate,
   initialTime,
+  initialReservation,
 }: ReservationFormProps) {
+  const isEditing = !!initialReservation;
   const [services, setServices] = useState<Service[]>([]);
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -106,6 +118,34 @@ export function ReservationForm({
   const timeSlots = selectedService
     ? generateTimeSlots(selectedService.duration_minutes)
     : generateTimeSlots(30);
+
+  // Pre-populate form when editing
+  useEffect(() => {
+    if (!isOpen) return;
+    if (initialReservation) {
+      const d = new Date(initialReservation.start_time);
+      const date = d.toISOString().split("T")[0];
+      const time = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+      reset({
+        customer_id: initialReservation.customer?.id ?? "",
+        service_id: initialReservation.service?.id ?? "",
+        staff_id: initialReservation.staff?.id ?? "",
+        date,
+        time,
+        notes: initialReservation.notes ?? "",
+      });
+      if (initialReservation.customer?.name) {
+        setCustomerSearch(initialReservation.customer.name);
+      }
+    } else {
+      reset({
+        date: initialDate ?? new Date().toISOString().split("T")[0],
+        time: initialTime ?? "09:00",
+      });
+      setCustomerSearch("");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, initialReservation]);
 
   // Fetch data
   useEffect(() => {
@@ -136,31 +176,48 @@ export function ReservationForm({
     setError(null);
 
     try {
-      const service = services.find((s) => s.id === data.service_id);
+      const service = services.find((s) => s.id === data.service_id)
+        ?? initialReservation?.service;
       const duration = service?.duration_minutes ?? 60;
 
       const start = new Date(`${data.date}T${data.time}:00`);
       const end = new Date(start.getTime() + duration * 60 * 1000);
 
-      const response = await fetch("/api/reservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          customer_id: data.customer_id,
-          service_id: data.service_id,
-          staff_id: data.staff_id || undefined,
-          start_time: start.toISOString(),
-          end_time: end.toISOString(),
-          notes: data.notes || undefined,
-        }),
-      });
+      let response: Response;
+
+      if (isEditing) {
+        response = await fetch(`/api/reservations/${initialReservation!.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            start_time: start.toISOString(),
+            end_time: end.toISOString(),
+            staff_id: data.staff_id || null,
+            notes: data.notes || null,
+          }),
+        });
+      } else {
+        response = await fetch("/api/reservations", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customer_id: data.customer_id,
+            service_id: data.service_id,
+            staff_id: data.staff_id || undefined,
+            start_time: start.toISOString(),
+            end_time: end.toISOString(),
+            notes: data.notes || undefined,
+          }),
+        });
+      }
 
       const result = await response.json() as { error?: string };
       if (!response.ok) {
-        throw new Error(result.error ?? "Error creating reservation");
+        throw new Error(result.error ?? (isEditing ? "Error al actualizar" : "Error al crear"));
       }
 
       reset();
+      setCustomerSearch("");
       onSuccess();
       onClose();
     } catch (err) {
@@ -195,8 +252,12 @@ export function ReservationForm({
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/[0.06]">
               <div>
-                <h2 className="text-lg font-bold text-white">Nueva Reservación</h2>
-                <p className="text-xs text-gray-500 mt-0.5">Completa los datos para agendar</p>
+                <h2 className="text-lg font-bold text-white">
+                  {isEditing ? "Editar Reservación" : "Nueva Reservación"}
+                </h2>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  {isEditing ? "Modifica fecha, hora, staff o notas" : "Completa los datos para agendar"}
+                </p>
               </div>
               <button
                 onClick={onClose}
@@ -348,10 +409,10 @@ export function ReservationForm({
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Agendando...
+                      {isEditing ? "Guardando..." : "Agendando..."}
                     </>
                   ) : (
-                    "Agendar Reservación"
+                    isEditing ? "Guardar Cambios" : "Agendar Reservación"
                   )}
                 </button>
               </div>

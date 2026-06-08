@@ -99,6 +99,7 @@ export default function ReservationsPage() {
   const [formInitialDate, setFormInitialDate] = useState<string | undefined>();
   const [formInitialTime, setFormInitialTime] = useState<string | undefined>();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingReservation, setEditingReservation] = useState<Reservation | null>(null);
 
   const fetchReservations = useCallback(async () => {
     setLoading(true);
@@ -345,6 +346,7 @@ export default function ReservationsPage() {
                             <td className="px-5 py-4">
                               <div className="flex items-center gap-2">
                                 <button
+                                  onClick={() => { setEditingReservation(reservation); setShowForm(true); }}
                                   className="w-7 h-7 rounded-lg bg-white/[0.04] hover:bg-blue-500/20 flex items-center justify-center text-gray-500 hover:text-blue-400 transition-all"
                                   title="Editar"
                                 >
@@ -398,10 +400,11 @@ export default function ReservationsPage() {
       {/* Reservation Form Modal */}
       <ReservationForm
         isOpen={showForm}
-        onClose={() => setShowForm(false)}
+        onClose={() => { setShowForm(false); setEditingReservation(null); }}
         onSuccess={fetchReservations}
         initialDate={formInitialDate}
         initialTime={formInitialTime}
+        initialReservation={editingReservation ?? undefined}
       />
     </>
   );
