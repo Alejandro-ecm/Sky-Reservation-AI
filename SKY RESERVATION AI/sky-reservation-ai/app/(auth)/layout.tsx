@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 
@@ -18,7 +18,7 @@ export default function AuthLayout({
     <div className="min-h-screen bg-[#0A0A0A] flex flex-col">
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00E5FF]/[0.08] rounded-full blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px]" />
         <div
           className="absolute inset-0 opacity-[0.02]"
@@ -32,11 +32,11 @@ export default function AuthLayout({
       {/* Header */}
       <header className="relative z-10 px-6 py-5">
         <Link href="/" className="inline-flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-white" />
           </div>
           <span className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#00E5FF] to-[#7000FF] bg-clip-text text-transparent">
               Sky
             </span>
             <span className="text-white"> AI</span>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -140,7 +140,7 @@ function AICard() {
             <div className="flex items-center gap-1.5">
               <div className="w-5 h-5 rounded-lg flex items-center justify-center"
                 style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.2)" }}>
-                <Bot className="w-3 h-3 text-indigo-400" />
+                <Bot className="w-3 h-3 text-[#00E5FF]" />
               </div>
               <span className="text-[10px] font-medium text-zinc-500">Sofía AI</span>
             </div>
@@ -217,7 +217,7 @@ function AIMessage({ role, text, highlight }: { role: "user" | "ai"; text: strin
   return (
     <div className={`flex items-start gap-2 ${isAI ? "" : "flex-row-reverse"}`}>
       <div className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[7px] font-bold mt-0.5 ${
-        isAI ? "bg-indigo-500/15 text-indigo-400 border border-indigo-500/20" : "bg-zinc-800/80 text-zinc-500 border border-white/[0.06]"
+        isAI ? "bg-[#00E5FF]/15 text-[#00E5FF] border border-[#00E5FF]/20" : "bg-zinc-800/80 text-zinc-500 border border-white/[0.06]"
       }`}>
         {isAI ? "AI" : "C"}
       </div>
@@ -412,9 +412,9 @@ function StatsBar() {
 
 // ─── Features ────────────────────────────────────────────────────────────────
 const features = [
-  { icon: Phone, title: "IA Recepcionista de Voz", desc: "Responde llamadas como un humano. Agenda, cancela y reagenda citas automáticamente en tiempo real.", color: "from-indigo-500 to-indigo-600", tag: "Voice AI" },
+  { icon: Phone, title: "IA Recepcionista de Voz", desc: "Responde llamadas como un humano. Agenda, cancela y reagenda citas automáticamente en tiempo real.", color: "from-[#00E5FF] to-[#7000FF]", tag: "Voice AI" },
   { icon: MessageSquare, title: "WhatsApp Inteligente", desc: "Convierte cada mensaje en una reservación. Respuestas en segundos, disponible 24/7, nunca pierde un lead.", color: "from-emerald-500 to-emerald-600", tag: "WhatsApp" },
-  { icon: Calendar, title: "Reservaciones Inteligentes", desc: "Calendario dinámico que detecta conflictos, gestiona disponibilidad y confirma citas automáticamente.", color: "from-purple-500 to-purple-600", tag: "Scheduling" },
+  { icon: Calendar, title: "Reservaciones Inteligentes", desc: "Calendario dinámico que detecta conflictos, gestiona disponibilidad y confirma citas automáticamente.", color: "from-purple-500 to-[#7000FF]", tag: "Scheduling" },
   { icon: Users, title: "CRM con Lead Scoring IA", desc: "Clasifica clientes automáticamente. Identifica quiénes van a comprar y cuándo necesitan seguimiento.", color: "from-orange-500 to-orange-600", tag: "CRM" },
   { icon: BarChart3, title: "Analytics en Tiempo Real", desc: "Métricas que importan: conversiones, horarios pico, ingresos y clientes recurrentes con insights IA.", color: "from-pink-500 to-pink-600", tag: "Analytics" },
   { icon: Zap, title: "Automatizaciones", desc: "Workflows inteligentes que siguen a tus clientes, recuperan perdidos y convierten sin intervención humana.", color: "from-yellow-500 to-yellow-600", tag: "Automation" },
@@ -430,7 +430,7 @@ function FeaturesSection() {
         <div className="text-center mb-16">
           <motion.p
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-            className="text-sm text-indigo-400 font-medium mb-3"
+            className="text-sm text-[#00E5FF] font-medium mb-3"
           >
             Todo lo que necesitas
           </motion.p>
@@ -496,7 +496,7 @@ function HowItWorks() {
             className="text-4xl font-black text-white mb-4"
           >
             Configurado y funcionando en{" "}
-            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">menos de un día</span>
+            <span className="bg-gradient-to-r from-[#00E5FF] to-[#7000FF] bg-clip-text text-transparent">menos de un día</span>
           </motion.h2>
         </div>
         <div className="space-y-4">
@@ -508,7 +508,7 @@ function HowItWorks() {
               transition={{ delay: i * 0.12 }}
               className="flex gap-5 p-5 bg-[#0e0e0e] border border-white/[0.07] rounded-2xl hover:border-white/[0.12] transition-colors group"
             >
-              <span className="text-3xl font-black text-white/10 group-hover:text-indigo-500/30 transition-colors flex-shrink-0 w-12">{s.n}</span>
+              <span className="text-3xl font-black text-white/10 group-hover:text-[#00E5FF]/25 transition-colors flex-shrink-0 w-12">{s.n}</span>
               <div>
                 <h3 className="font-bold text-white mb-1">{s.title}</h3>
                 <p className="text-sm text-gray-500">{s.desc}</p>
@@ -536,7 +536,7 @@ function ROISection() {
         <div className="text-center mb-14">
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="text-4xl font-black text-white mb-4">
             Ahorra hasta{" "}
-            <span className="bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">$1,750 al mes</span>
+            <span className="bg-gradient-to-r from-emerald-400 to-[#00E5FF] bg-clip-text text-transparent">$1,750 al mes</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="text-gray-400">
             Compara el costo real de contratar vs automatizar
@@ -549,7 +549,7 @@ function ROISection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.15 }}
-              className={`p-6 rounded-2xl border ${c.bad ? "bg-[#0e0e0e] border-white/[0.07]" : "bg-gradient-to-br from-indigo-600/10 to-purple-600/10 border-indigo-500/30"}`}
+              className={`p-6 rounded-2xl border ${c.bad ? "bg-[#0e0e0e] border-white/[0.07]" : "bg-gradient-to-br from-[#00E5FF]/[0.06] to-[#7000FF]/[0.06] border-[#00E5FF]/25"}`}
             >
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-bold text-white">{c.label}</h3>
@@ -625,10 +625,10 @@ function PricingSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.1 }}
-              className={`relative rounded-2xl p-6 border ${plan.highlight ? "bg-gradient-to-b from-indigo-600/10 to-purple-600/5 border-indigo-500/40 shadow-2xl shadow-indigo-500/10" : "bg-[#0e0e0e] border-white/[0.07]"}`}
+              className={`relative rounded-2xl p-6 border ${plan.highlight ? "bg-gradient-to-b from-[#00E5FF]/[0.06] to-[#7000FF]/[0.03] border-[#00E5FF]/30 shadow-2xl shadow-[#00E5FF]/10" : "bg-[#0e0e0e] border-white/[0.07]"}`}
             >
               {plan.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-bold px-4 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] text-white text-xs font-bold px-4 py-1 rounded-full">
                   MÁS POPULAR
                 </div>
               )}
@@ -648,7 +648,7 @@ function PricingSection() {
               </ul>
               <Link
                 href={plan.href}
-                className={`block text-center text-sm font-semibold py-3 rounded-xl transition-all duration-300 ${plan.highlight ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-500/20" : "bg-white/[0.04] border border-white/[0.08] text-white hover:bg-white/[0.08]"}`}
+                className={`block text-center text-sm font-semibold py-3 rounded-xl transition-all duration-300 ${plan.highlight ? "bg-gradient-to-r from-[#00E5FF] to-[#7000FF] text-black hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 shadow-lg shadow-[#00E5FF]/20" : "bg-white/[0.04] border border-white/[0.08] text-white hover:bg-white/[0.08]"}`}
               >
                 {plan.cta}
               </Link>
@@ -777,12 +777,12 @@ function CTASection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
-          className="relative bg-gradient-to-br from-indigo-600/15 to-purple-600/10 border border-indigo-500/20 rounded-3xl p-12 text-center overflow-hidden"
+          className="relative bg-gradient-to-br from-[#00E5FF]/[0.08] to-[#7000FF]/[0.06] border border-[#00E5FF]/20 rounded-3xl p-12 text-center overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5" />
-          <div className="absolute -top-20 -right-20 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00E5FF]/[0.03] to-[#7000FF]/[0.03]" />
+          <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#00E5FF]/10 rounded-full blur-3xl" />
           <div className="relative">
-            <Rocket className="w-12 h-12 text-indigo-400 mx-auto mb-5" />
+            <Rocket className="w-12 h-12 text-[#00E5FF] mx-auto mb-5" />
             <h2 className="text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
               Tu negocio merece<br />trabajar las 24 horas.
             </h2>
@@ -843,7 +843,7 @@ function Footer() {
           {/* Brand column */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center shadow-lg shadow-[#00E5FF]/20">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-white text-base">

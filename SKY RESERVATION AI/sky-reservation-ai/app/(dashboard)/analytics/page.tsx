@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -360,10 +360,10 @@ export default function AnalyticsPage() {
   function getHeatColor(val: number): string {
     const intensity = val / peakMax;
     if (intensity === 0) return "bg-white/[0.03]";
-    if (intensity < 0.25) return "bg-blue-500/20";
-    if (intensity < 0.5) return "bg-blue-500/40";
-    if (intensity < 0.75) return "bg-blue-500/60";
-    return "bg-blue-500/90";
+    if (intensity < 0.25) return "bg-[#00E5FF]/15";
+    if (intensity < 0.5) return "bg-[#00E5FF]/35";
+    if (intensity < 0.75) return "bg-[#00E5FF]/55";
+    return "bg-[#00E5FF]/85";
   }
 
   const sortedCustomers = [...topCustomers].sort((a, b) => {
@@ -446,7 +446,7 @@ export default function AnalyticsPage() {
             onClick={() => setPeriod(p)}
             className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all ${
               period === p
-                ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                ? "bg-[#00E5FF] text-black shadow-lg shadow-[#00E5FF]/25"
                 : "text-gray-400 hover:text-white"
             }`}
           >
@@ -465,8 +465,8 @@ export default function AnalyticsPage() {
         {/* Total Reservaciones */}
         <motion.div variants={stagger.item} className="glass-card p-5">
           <div className="flex items-center justify-between mb-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-              <Calendar className="w-4.5 h-4.5 text-blue-400" />
+            <div className="w-9 h-9 rounded-xl bg-[#00E5FF]/10 border border-[#00E5FF]/20 flex items-center justify-center">
+              <Calendar className="w-4.5 h-4.5 text-[#00E5FF]" />
             </div>
             {resPctChange >= 0 ? (
               <TrendingUp className="w-4 h-4 text-green-400" />
@@ -576,7 +576,7 @@ export default function AnalyticsPage() {
                 onClick={() => setMetricTab(m.id)}
                 className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                   metricTab === m.id
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#00E5FF] text-black"
                     : "text-gray-400 hover:text-white"
                 }`}
               >
@@ -636,7 +636,7 @@ export default function AnalyticsPage() {
         {/* Channel Distribution */}
         <div className="glass-card p-6">
           <div className="flex items-center gap-2 mb-1">
-            <Phone className="w-4 h-4 text-blue-400" />
+            <Phone className="w-4 h-4 text-[#00E5FF]" />
             <h2 className="font-bold text-white">Distribución de Canales</h2>
           </div>
           <p className="text-xs text-gray-500 mb-5">Por tipo de conversación</p>
@@ -874,7 +874,7 @@ export default function AnalyticsPage() {
                     </td>
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0">
                           {c.name
                             .split(" ")
                             .map((n) => n[0])

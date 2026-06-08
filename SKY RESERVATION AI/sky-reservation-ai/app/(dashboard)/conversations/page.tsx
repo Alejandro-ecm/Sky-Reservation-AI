@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -10,7 +10,7 @@ import type { Conversation, ConversationChannel, ConversationStatus, Message } f
 
 const channelConfig: Record<ConversationChannel, { icon: typeof MessageSquare; color: string; bg: string; label: string }> = {
   whatsapp: { icon: MessageSquare, color: "text-green-400",  bg: "bg-green-500/10 border-green-500/20",   label: "WhatsApp" },
-  voice:    { icon: Phone,         color: "text-blue-400",   bg: "bg-blue-500/10 border-blue-500/20",     label: "Llamada" },
+  voice:    { icon: Phone,         color: "text-[#00E5FF]",   bg: "bg-[#00E5FF]/10 border-[#00E5FF]/20",     label: "Llamada" },
   sms:      { icon: MessageSquare, color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20", label: "SMS" },
   web:      { icon: MessageSquare, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20", label: "Web" },
 };
@@ -61,7 +61,7 @@ export default function ConversationsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar..."
-              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl pl-9 pr-4 py-2 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors"
+              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl pl-9 pr-4 py-2 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
             />
           </div>
         </div>
@@ -106,12 +106,12 @@ export default function ConversationsPage() {
                 onClick={() => setSelectedId(conv.id)}
                 className={`w-full flex items-start gap-3 p-4 text-left border-b border-white/[0.04] transition-colors ${
                   selectedId === conv.id
-                    ? "bg-blue-600/10 border-l-2 border-l-blue-500"
+                    ? "bg-[#00E5FF]/[0.08] border-l-2 border-l-[#00E5FF]"
                     : "hover:bg-white/[0.03]"
                 }`}
               >
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-400 flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00E5FF]/15 to-[#7000FF]/15 border border-[#00E5FF]/20 flex items-center justify-center text-sm font-bold text-[#00E5FF] flex-shrink-0">
                     {name.charAt(0).toUpperCase()}
                   </div>
                   <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#0D0D0D] ${statusDot[conv.status]}`} />
@@ -159,7 +159,7 @@ function ConversationDetail({ conv }: { conv: Conversation }) {
       {/* Header */}
       <div className="p-4 border-b border-white/[0.06] flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-400">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00E5FF]/15 to-[#7000FF]/15 border border-[#00E5FF]/20 flex items-center justify-center text-sm font-bold text-[#00E5FF]">
             {name.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -196,14 +196,14 @@ function ConversationDetail({ conv }: { conv: Conversation }) {
                 className={`max-w-sm rounded-2xl px-4 py-2.5 text-sm ${
                   msg.role === "user"
                     ? "bg-white/[0.06] text-gray-200 rounded-tl-none"
-                    : "bg-blue-600/20 border border-blue-500/20 text-blue-100 rounded-tr-none"
+                    : "bg-[#00E5FF]/15 border border-[#00E5FF]/20 text-[#00E5FF]/90 rounded-tr-none"
                 }`}
               >
                 {msg.content}
                 <p className="text-[10px] text-gray-500 mt-1">{formatTime(msg.timestamp)}</p>
               </div>
               {msg.role === "assistant" && (
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex-shrink-0 flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex-shrink-0 flex items-center justify-center">
                   <Bot className="w-3.5 h-3.5 text-white" />
                 </div>
               )}

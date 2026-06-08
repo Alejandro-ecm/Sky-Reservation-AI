@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -115,7 +115,7 @@ export default function ForgotPasswordPage() {
               <p className="text-gray-400 text-sm mb-2">
                 Enviamos un enlace de recuperación a:
               </p>
-              <p className="text-blue-400 font-medium text-sm mb-6">
+              <p className="text-[#00E5FF] font-medium text-sm mb-6">
                 {submittedEmail.current}
               </p>
               <p className="text-gray-500 text-xs mb-6">
@@ -142,7 +142,7 @@ export default function ForgotPasswordPage() {
 
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-[#00E5FF] hover:text-[#00E5FF]/80 transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Volver al inicio de sesión
@@ -170,7 +170,7 @@ export default function ForgotPasswordPage() {
                       {...register("email")}
                       type="email"
                       placeholder="tu@empresa.com"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.07] transition-all duration-200"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 focus:bg-white/[0.07] transition-all duration-200"
                     />
                   </div>
                   {errors.email && (
@@ -183,7 +183,7 @@ export default function ForgotPasswordPage() {
                   whileTap={{ scale: 0.99 }}
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/20 mt-6"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 mt-6"
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -197,7 +197,7 @@ export default function ForgotPasswordPage() {
               <p className="text-center text-sm text-gray-500 mt-6">
                 <Link
                   href="/login"
-                  className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
+                  className="inline-flex items-center gap-1 text-[#00E5FF] hover:text-[#00E5FF]/80 transition-colors"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   Volver al inicio de sesión

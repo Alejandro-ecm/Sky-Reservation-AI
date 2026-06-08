@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -44,7 +44,7 @@ interface Customer {
 
 const tagColors: Record<string, string> = {
   VIP: "bg-yellow-500/10 border-yellow-500/20 text-yellow-400",
-  Fiel: "bg-blue-500/10 border-blue-500/20 text-blue-400",
+  Fiel: "bg-[#00E5FF]/10 border-[#00E5FF]/20 text-[#00E5FF]",
   Nuevo: "bg-green-500/10 border-green-500/20 text-green-400",
   Recurrente: "bg-purple-500/10 border-purple-500/20 text-purple-400",
   Inactivo: "bg-red-500/10 border-red-500/20 text-red-400",
@@ -120,7 +120,7 @@ function AddCustomerForm({
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: "auto" }}
       exit={{ opacity: 0, height: 0 }}
-      className="glass-card p-5 border border-blue-500/20 overflow-hidden"
+      className="glass-card p-5 border border-[#00E5FF]/20 overflow-hidden"
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-white">Nuevo Cliente</h3>
@@ -139,20 +139,20 @@ function AddCustomerForm({
           onChange={(e) => setName(e.target.value)}
           placeholder="Nombre *"
           required
-          className="bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40"
+          className="bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30"
         />
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="Teléfono"
-          className="bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40"
+          className="bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30"
         />
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           type="email"
-          className="bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40"
+          className="bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30"
         />
         <div className="col-span-3 flex gap-3 justify-end">
           <button
@@ -165,7 +165,7 @@ function AddCustomerForm({
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium px-4 py-2 rounded-xl disabled:opacity-50"
+            className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] text-black text-sm font-medium px-4 py-2 rounded-xl disabled:opacity-50"
           >
             {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
             Guardar Cliente
@@ -385,7 +385,7 @@ export default function CRMPage() {
         </div>
         <button
           onClick={() => setShowAddForm((v) => !v)}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+          className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20"
         >
           <Plus className="w-4 h-4" />
           Nuevo Cliente
@@ -407,7 +407,7 @@ export default function CRMPage() {
       {/* Stats */}
       <motion.div variants={rowItem} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Total Clientes", value: total, icon: Users, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
+          { label: "Total Clientes", value: total, icon: Users, color: "text-[#00E5FF]", bg: "bg-[#00E5FF]/10 border-[#00E5FF]/20" },
           { label: "Score Promedio", value: `${avgScore}/100`, icon: TrendingUp, color: "text-green-400", bg: "bg-green-500/10 border-green-500/20" },
           { label: "VIP", value: vipCount, icon: Tag, color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20" },
           { label: "Score Bajo", value: inactiveCount, icon: Users, color: "text-red-400", bg: "bg-red-500/10 border-red-500/20" },
@@ -436,14 +436,14 @@ export default function CRMPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por nombre, teléfono o email..."
-              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors"
+              className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
             />
           </div>
           <button
             onClick={() => setShowFilters((v) => !v)}
             className={`flex items-center gap-2 bg-white/[0.04] border rounded-xl px-4 py-2.5 text-sm transition-colors ${
               showFilters
-                ? "border-blue-500/40 text-blue-400"
+                ? "border-[#00E5FF]/30 text-[#00E5FF]"
                 : "border-white/[0.07] text-gray-400 hover:text-white"
             }`}
           >
@@ -468,7 +468,7 @@ export default function CRMPage() {
                   value={scoreMin}
                   onChange={(e) => setScoreMin(e.target.value)}
                   placeholder="0"
-                  className="w-20 bg-white/[0.04] border border-white/[0.07] rounded-lg px-3 py-1.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                  className="w-20 bg-white/[0.04] border border-white/[0.07] rounded-lg px-3 py-1.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                 />
               </div>
             </motion.div>
@@ -512,7 +512,7 @@ export default function CRMPage() {
                     >
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-400">
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00E5FF]/15 to-[#7000FF]/15 border border-[#00E5FF]/20 flex items-center justify-center text-sm font-bold text-[#00E5FF]">
                             {customer.name.charAt(0)}
                           </div>
                           <span className="text-sm font-medium text-white">{customer.name}</span>

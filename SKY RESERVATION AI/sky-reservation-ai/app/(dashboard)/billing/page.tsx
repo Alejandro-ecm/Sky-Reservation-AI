@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -40,7 +40,7 @@ async function safeJson<T>(res: Response): Promise<T | null> {
 
 const PLAN_GRADIENT: Record<string, string> = {
   starter: "from-slate-400 to-slate-500",
-  pro: "from-blue-400 to-purple-500",
+  pro: "from-[#00E5FF] to-[#7000FF]",
   enterprise: "from-amber-400 to-orange-500",
 };
 
@@ -96,7 +96,7 @@ interface Invoice {
 function StatusBadge({ status }: { status: string }) {
   const configs: Record<string, { label: string; className: string }> = {
     active: { label: "Activo", className: "bg-green-500/20 text-green-400 border-green-500/30" },
-    trialing: { label: "Prueba Gratis", className: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
+    trialing: { label: "Prueba Gratis", className: "bg-[#00E5FF]/15 text-[#00E5FF] border-[#00E5FF]/25" },
     past_due: { label: "Pago Pendiente", className: "bg-red-500/20 text-red-400 border-red-500/30" },
     cancelled: { label: "Cancelado", className: "bg-gray-500/20 text-gray-400 border-gray-500/30" },
   };
@@ -150,7 +150,7 @@ function UsageMeter({
               ? "bg-red-500"
               : isHigh
               ? "bg-yellow-500"
-              : `bg-gradient-to-r ${color.includes("blue") ? "from-blue-500 to-blue-400" : color.includes("green") ? "from-green-500 to-green-400" : "from-purple-500 to-purple-400"}`
+              : `bg-gradient-to-r ${color.includes("blue") ? "from-[#00E5FF] to-[#00E5FF]/80" : color.includes("green") ? "from-green-500 to-green-400" : "from-purple-500 to-purple-400"}`
           }`}
         />
       </div>
@@ -204,14 +204,14 @@ function PlanTable({
                 <div
                   className={`inline-flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg ${
                     currentPlan === plan
-                      ? "bg-blue-500/20 border border-blue-500/40"
+                      ? "bg-[#00E5FF]/15 border border-[#00E5FF]/30"
                       : "bg-white/5 border border-white/10"
                   }`}
                 >
-                  <span className={`font-semibold capitalize text-sm ${currentPlan === plan ? "text-blue-300" : "text-gray-300"}`}>
+                  <span className={`font-semibold capitalize text-sm ${currentPlan === plan ? "text-[#00E5FF]/80" : "text-gray-300"}`}>
                     {plan}
                     {currentPlan === plan && (
-                      <span className="ml-1.5 text-xs text-blue-400">(actual)</span>
+                      <span className="ml-1.5 text-xs text-[#00E5FF]">(actual)</span>
                     )}
                   </span>
                 </div>
@@ -230,7 +230,7 @@ function PlanTable({
                   <td
                     key={plan}
                     className={`py-2.5 px-4 text-center text-xs ${
-                      isCurrent ? "text-blue-300 font-medium" : "text-gray-400"
+                      isCurrent ? "text-[#00E5FF]/80 font-medium" : "text-gray-400"
                     }`}
                   >
                     {val === "✓" ? (
@@ -251,7 +251,7 @@ function PlanTable({
             {plans.map((plan) => (
               <td key={plan} className="py-3 px-4 text-center">
                 {currentPlan === plan ? (
-                  <span className="inline-flex items-center gap-1 text-xs text-blue-400">
+                  <span className="inline-flex items-center gap-1 text-xs text-[#00E5FF]">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     Plan actual
                   </span>
@@ -259,7 +259,7 @@ function PlanTable({
                   <button
                     onClick={() => onSelectPlan(plan, "stripe")}
                     disabled={!!checkoutLoading}
-                    className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-50 disabled:cursor-not-allowed text-black rounded-lg transition-all"
                   >
                     {checkoutLoading === plan ? (
                       <Loader2 className="w-3 h-3 animate-spin" />
@@ -429,8 +429,8 @@ export default function BillingPage() {
                   <StatusBadge status={subscription?.status ?? "trialing"} />
                 </div>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                <Star className="w-5 h-5 text-blue-400" />
+              <div className="w-10 h-10 rounded-xl bg-[#00E5FF]/15 flex items-center justify-center">
+                <Star className="w-5 h-5 text-[#00E5FF]" />
               </div>
             </div>
 
@@ -462,7 +462,7 @@ export default function BillingPage() {
                   icon={MessageSquare}
                   used={usage.conversations}
                   limit={limits.conversations_per_month}
-                  color="text-blue-400"
+                  color="text-[#00E5FF]"
                 />
                 <UsageMeter
                   label="Minutos de voz"
@@ -515,7 +515,7 @@ export default function BillingPage() {
                 disabled={!!checkoutLoading}
                 className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-sm text-gray-300"
               >
-                <CreditCard className="w-4 h-4 text-blue-400" />
+                <CreditCard className="w-4 h-4 text-[#00E5FF]" />
                 <span>Pagar con Stripe</span>
                 <span className="ml-auto text-xs text-gray-600">Internacional</span>
                 <ChevronRight className="w-3.5 h-3.5 text-gray-600" />
@@ -525,7 +525,7 @@ export default function BillingPage() {
                 disabled={!!checkoutLoading}
                 className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-sm text-gray-300"
               >
-                <Globe className="w-4 h-4 text-blue-300" />
+                <Globe className="w-4 h-4 text-[#00E5FF]/80" />
                 <span>Pagar con Mercado Pago</span>
                 <span className="ml-auto text-xs text-gray-600">LATAM</span>
                 <ChevronRight className="w-3.5 h-3.5 text-gray-600" />

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -143,7 +143,7 @@ export default function RegisterPage() {
               {...register("full_name")}
               type="text"
               placeholder="Juan García"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.07] transition-all duration-200"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 focus:bg-white/[0.07] transition-all duration-200"
             />
             {errors.full_name && (
               <p className="mt-1.5 text-xs text-red-400">{errors.full_name.message}</p>
@@ -159,7 +159,7 @@ export default function RegisterPage() {
               {...register("business_name")}
               type="text"
               placeholder="Mi Empresa S.A."
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.07] transition-all duration-200"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 focus:bg-white/[0.07] transition-all duration-200"
             />
             {errors.business_name && (
               <p className="mt-1.5 text-xs text-red-400">{errors.business_name.message}</p>
@@ -175,7 +175,7 @@ export default function RegisterPage() {
               {...register("email")}
               type="email"
               placeholder="tu@empresa.com"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.07] transition-all duration-200"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 focus:bg-white/[0.07] transition-all duration-200"
             />
             {errors.email && (
               <p className="mt-1.5 text-xs text-red-400">{errors.email.message}</p>
@@ -192,7 +192,7 @@ export default function RegisterPage() {
                 {...register("password")}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pr-10 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.07] transition-all duration-200"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pr-10 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 focus:bg-white/[0.07] transition-all duration-200"
               />
               <button
                 type="button"
@@ -231,7 +231,7 @@ export default function RegisterPage() {
                 {...register("confirm_password")}
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="••••••••"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pr-10 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 focus:bg-white/[0.07] transition-all duration-200"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pr-10 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 focus:bg-white/[0.07] transition-all duration-200"
               />
               <button
                 type="button"
@@ -252,7 +252,7 @@ export default function RegisterPage() {
             whileTap={{ scale: 0.99 }}
             type="submit"
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/20 mt-2"
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 mt-2"
           >
             {isLoading ? (
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -281,7 +281,7 @@ export default function RegisterPage() {
           ¿Ya tienes cuenta?{" "}
           <Link
             href="/login"
-            className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+            className="text-[#00E5FF] hover:text-[#00E5FF]/80 font-medium transition-colors"
           >
             Inicia sesión
           </Link>

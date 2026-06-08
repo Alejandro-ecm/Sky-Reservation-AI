@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -81,7 +81,7 @@ const PLANS: Array<{
     name: "Pro",
     price: "$149",
     badge: "RECOMENDADO",
-    gradient: "from-blue-600 to-purple-600",
+    gradient: "from-[#00E5FF] to-[#7000FF]",
     features: [
       "1,000 conversaciones/mes",
       "600 min de voz",
@@ -125,7 +125,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
       </div>
       <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+          className="h-full bg-gradient-to-r from-[#00E5FF] to-[#7000FF] rounded-full"
           initial={{ width: "0%" }}
           animate={{ width: `${(step / total) * 100}%` }}
           transition={{ duration: 0.4, ease: "easeOut" }}
@@ -153,7 +153,7 @@ function StepWelcome({
       exit={{ opacity: 0, y: -24 }}
       className="text-center"
     >
-      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/30">
+      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#00E5FF]/25">
         <Sparkles className="w-10 h-10 text-white" />
       </div>
       <h1 className="text-3xl font-bold text-white mb-3">
@@ -177,8 +177,8 @@ function StepWelcome({
             key={i}
             className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10"
           >
-            <div className="w-7 h-7 rounded-lg bg-blue-500/20 flex items-center justify-center">
-              <Icon className="w-3.5 h-3.5 text-blue-400" />
+            <div className="w-7 h-7 rounded-lg bg-[#00E5FF]/15 flex items-center justify-center">
+              <Icon className="w-3.5 h-3.5 text-[#00E5FF]" />
             </div>
             <span className="text-xs text-gray-400">{label}</span>
           </div>
@@ -186,7 +186,7 @@ function StepWelcome({
       </div>
       <button
         onClick={onNext}
-        className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 text-sm"
+        className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 text-sm"
       >
         Empezar
         <ArrowRight className="w-4 h-4" />
@@ -222,8 +222,8 @@ function StepBusiness({
       exit={{ opacity: 0, y: -24 }}
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-          <Building2 className="w-5 h-5 text-blue-400" />
+        <div className="w-10 h-10 rounded-xl bg-[#00E5FF]/15 flex items-center justify-center">
+          <Building2 className="w-5 h-5 text-[#00E5FF]" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Tu Negocio</h2>
@@ -240,7 +240,7 @@ function StepBusiness({
           <input
             {...register("businessName")}
             placeholder="Ej: Spa Magnolia, Clínica San Rafael..."
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-colors text-sm"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-[#00E5FF]/30 transition-colors text-sm"
           />
           {errors.businessName && (
             <p className="mt-1 text-xs text-red-400">{errors.businessName.message}</p>
@@ -254,7 +254,7 @@ function StepBusiness({
           </label>
           <select
             {...register("industry")}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-colors text-sm appearance-none"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-[#00E5FF]/30 transition-colors text-sm appearance-none"
           >
             <option value="" className="bg-gray-900">
               Selecciona tu industria...
@@ -279,7 +279,7 @@ function StepBusiness({
             <input
               {...register("city")}
               placeholder="Buenos Aires..."
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-colors text-sm"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-[#00E5FF]/30 transition-colors text-sm"
             />
             {errors.city && (
               <p className="mt-1 text-xs text-red-400">{errors.city.message}</p>
@@ -292,7 +292,7 @@ function StepBusiness({
             <input
               {...register("phone")}
               placeholder="+54 11 1234-5678"
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-colors text-sm"
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-[#00E5FF]/30 transition-colors text-sm"
             />
             {errors.phone && (
               <p className="mt-1 text-xs text-red-400">{errors.phone.message}</p>
@@ -309,7 +309,7 @@ function StepBusiness({
             {...register("businessEmail")}
             type="email"
             placeholder="contacto@tunegocio.com"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-colors text-sm"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-[#00E5FF]/30 transition-colors text-sm"
           />
           {errors.businessEmail && (
             <p className="mt-1 text-xs text-red-400">{errors.businessEmail.message}</p>
@@ -319,7 +319,7 @@ function StepBusiness({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 text-sm mt-2"
+          className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-50 text-black font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 text-sm mt-2"
         >
           Continuar
           <ChevronRight className="w-4 h-4" />
@@ -367,12 +367,12 @@ function StepPlan({
               onClick={() => onSelect(plan.key)}
               className={`relative w-full text-left p-4 rounded-xl border transition-all duration-200 ${
                 isSelected
-                  ? "border-blue-500/60 bg-blue-500/10 ring-1 ring-blue-500/30"
+                  ? "border-blue-500/60 bg-[#00E5FF]/10 ring-1 ring-blue-500/30"
                   : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/8"
               }`}
             >
               {plan.badge && (
-                <span className="absolute -top-2.5 left-4 px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full">
+                <span className="absolute -top-2.5 left-4 px-2 py-0.5 text-xs font-bold bg-gradient-to-r from-[#00E5FF] to-[#7000FF] text-black rounded-full">
                   {plan.badge}
                 </span>
               )}
@@ -423,7 +423,7 @@ function StepPlan({
       <button
         onClick={onNext}
         disabled={!selectedPlan}
-        className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 text-sm"
+        className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-40 disabled:cursor-not-allowed text-black font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 text-sm"
       >
         Continuar con {selectedPlan ? PLANS.find((p) => p.key === selectedPlan)?.name : "..."}
         <ChevronRight className="w-4 h-4" />
@@ -472,7 +472,7 @@ function StepAI({
             onChange={(e) => onChange({ ...config, first_message: e.target.value })}
             rows={3}
             placeholder="Hola, soy tu asistente de Sky AI. ¿En qué te puedo ayudar hoy?"
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-colors text-sm resize-none"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-[#00E5FF]/30 transition-colors text-sm resize-none"
           />
         </div>
 
@@ -488,14 +488,14 @@ function StepAI({
                 onClick={() => onChange({ ...config, voice_type: v })}
                 className={`flex items-center gap-2 p-3 rounded-xl border transition-all text-sm ${
                   config.voice_type === v
-                    ? "border-blue-500/60 bg-blue-500/10 text-white"
+                    ? "border-blue-500/60 bg-[#00E5FF]/10 text-white"
                     : "border-white/10 bg-white/5 text-gray-400 hover:border-white/20"
                 }`}
               >
                 <Mic className="w-4 h-4" />
                 <span className="capitalize">{v}</span>
                 {config.voice_type === v && (
-                  <Check className="w-3.5 h-3.5 text-blue-400 ml-auto" />
+                  <Check className="w-3.5 h-3.5 text-[#00E5FF] ml-auto" />
                 )}
               </button>
             ))}
@@ -520,7 +520,7 @@ function StepAI({
                 onClick={() => onChange({ ...config, language: key })}
                 className={`flex items-center justify-center gap-1.5 p-2.5 rounded-xl border transition-all text-xs ${
                   config.language === key
-                    ? "border-blue-500/60 bg-blue-500/10 text-white"
+                    ? "border-blue-500/60 bg-[#00E5FF]/10 text-white"
                     : "border-white/10 bg-white/5 text-gray-400 hover:border-white/20"
                 }`}
               >
@@ -548,14 +548,14 @@ function StepAI({
                 onClick={() => onChange({ ...config, business_hours_type: key })}
                 className={`flex items-center gap-2 p-3 rounded-xl border transition-all text-sm ${
                   config.business_hours_type === key
-                    ? "border-blue-500/60 bg-blue-500/10 text-white"
+                    ? "border-blue-500/60 bg-[#00E5FF]/10 text-white"
                     : "border-white/10 bg-white/5 text-gray-400 hover:border-white/20"
                 }`}
               >
                 <Clock className="w-4 h-4" />
                 {label}
                 {config.business_hours_type === key && (
-                  <Check className="w-3.5 h-3.5 text-blue-400 ml-auto" />
+                  <Check className="w-3.5 h-3.5 text-[#00E5FF] ml-auto" />
                 )}
               </button>
             ))}
@@ -565,7 +565,7 @@ function StepAI({
 
       <button
         onClick={onNext}
-        className="w-full flex items-center justify-center gap-2 py-3.5 mt-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 text-sm"
+        className="w-full flex items-center justify-center gap-2 py-3.5 mt-6 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 text-sm"
       >
         Finalizar configuración
         <ChevronRight className="w-4 h-4" />
@@ -622,7 +622,7 @@ function StepSuccess({ onGoToDashboard }: { onGoToDashboard: () => void }) {
 
       <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto mb-8">
         {[
-          { icon: Sparkles, label: "IA Activada", color: "text-blue-400", bg: "bg-blue-500/20" },
+          { icon: Sparkles, label: "IA Activada", color: "text-[#00E5FF]", bg: "bg-[#00E5FF]/15" },
           { icon: Zap, label: "14 días gratis", color: "text-yellow-400", bg: "bg-yellow-500/20" },
           { icon: Shield, label: "Datos seguros", color: "text-green-400", bg: "bg-green-500/20" },
         ].map(({ icon: Icon, label, color, bg }) => (
@@ -638,7 +638,7 @@ function StepSuccess({ onGoToDashboard }: { onGoToDashboard: () => void }) {
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button
           onClick={onGoToDashboard}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 text-sm"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[#00E5FF]/20 text-sm"
         >
           <ArrowRight className="w-4 h-4" />
           Ir al Dashboard

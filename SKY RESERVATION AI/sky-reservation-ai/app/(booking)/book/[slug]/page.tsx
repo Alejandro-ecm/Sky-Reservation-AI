@@ -100,15 +100,15 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
         <div key={i} className="flex items-center gap-2">
           <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
             i + 1 < current
-              ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white"
+              ? "bg-gradient-to-br from-[#00E5FF] to-[#7000FF] text-black"
               : i + 1 === current
-              ? "bg-gradient-to-br from-blue-600 to-purple-600 text-white ring-4 ring-blue-500/20"
+              ? "bg-gradient-to-br from-[#00E5FF] to-[#7000FF] text-black ring-4 ring-[#00E5FF]/20"
               : "bg-white/[0.06] text-gray-600"
           }`}>
             {i + 1 < current ? <CheckCircle className="w-4 h-4" /> : i + 1}
           </div>
           {i < total - 1 && (
-            <div className={`h-px flex-1 w-8 transition-all ${i + 1 < current ? "bg-blue-500/60" : "bg-white/[0.08]"}`} />
+            <div className={`h-px flex-1 w-8 transition-all ${i + 1 < current ? "bg-[#00E5FF]/55" : "bg-white/[0.08]"}`} />
           )}
         </div>
       ))}
@@ -274,7 +274,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
             ¿Necesitas cancelar?{" "}
             {tenant.phone && <span className="text-gray-500">{tenant.phone}</span>}
             {tenant.phone && tenant.email && " · "}
-            {tenant.email && <a href={`mailto:${tenant.email}`} className="text-blue-400 hover:text-blue-300">{tenant.email}</a>}
+            {tenant.email && <a href={`mailto:${tenant.email}`} className="text-[#00E5FF] hover:text-[#00E5FF]/80">{tenant.email}</a>}
           </p>
         )}
 
@@ -293,7 +293,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
           {tenant.logo_url ? (
             <img src={tenant.logo_url} alt={tenant.name} className="w-10 h-10 rounded-xl object-cover" />
           ) : (
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-black text-lg">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center text-white font-black text-lg">
               {tenant.name.charAt(0)}
             </div>
           )}
@@ -323,7 +323,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                     onClick={() => setSelectedService(svc)}
                     className={`w-full text-left p-4 rounded-2xl border transition-all ${
                       selectedService?.id === svc.id
-                        ? "bg-blue-500/10 border-blue-500/40"
+                        ? "bg-[#00E5FF]/10 border-[#00E5FF]/30"
                         : "bg-white/[0.03] border-white/[0.07] hover:bg-white/[0.06]"
                     }`}
                   >
@@ -355,7 +355,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                 <select
                   value={selectedStaff}
                   onChange={(e) => setSelectedStaff(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                 >
                   <option value="">Sin preferencia</option>
                   {staff.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -366,7 +366,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
             <button
               disabled={!selectedService}
               onClick={() => setStep(2)}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold py-3 rounded-xl transition-all"
+              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-40 text-black font-semibold py-3 rounded-xl transition-all"
             >
               Continuar <ChevronRight className="w-4 h-4" />
             </button>
@@ -390,7 +390,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                     onClick={() => setSelectedDate(day)}
                     className={`flex-shrink-0 w-14 flex flex-col items-center py-3 rounded-xl border transition-all ${
                       isSelected
-                        ? "bg-gradient-to-br from-blue-600 to-purple-600 border-transparent text-white"
+                        ? "bg-gradient-to-br from-[#00E5FF] to-[#7000FF] border-transparent text-black"
                         : "bg-white/[0.03] border-white/[0.07] text-gray-400 hover:bg-white/[0.06]"
                     }`}
                   >
@@ -420,7 +420,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                         onClick={() => setSelectedTime(slot)}
                         className={`py-2.5 rounded-xl text-sm font-medium border transition-all ${
                           selectedTime === slot
-                            ? "bg-gradient-to-br from-blue-600 to-purple-600 border-transparent text-white"
+                            ? "bg-gradient-to-br from-[#00E5FF] to-[#7000FF] border-transparent text-black"
                             : "bg-white/[0.03] border-white/[0.07] text-gray-300 hover:bg-white/[0.06]"
                         }`}
                       >
@@ -442,7 +442,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
               <button
                 disabled={!selectedDate || !selectedTime}
                 onClick={() => setStep(3)}
-                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold py-3 rounded-xl transition-all"
+                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-40 text-black font-semibold py-3 rounded-xl transition-all"
               >
                 Continuar <ChevronRight className="w-4 h-4" />
               </button>
@@ -469,7 +469,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="María García"
                   autoComplete="name"
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                 />
               </div>
 
@@ -484,7 +484,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                   onChange={(e) => setCustomerPhone(e.target.value)}
                   placeholder="+52 55 1234 5678"
                   autoComplete="tel"
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                 />
               </div>
 
@@ -499,7 +499,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   placeholder="maria@ejemplo.com"
                   autoComplete="email"
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                 />
               </div>
 
@@ -512,7 +512,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="Instrucciones especiales, preferencias..."
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 transition-colors resize-none"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors resize-none"
                 />
               </div>
             </div>
@@ -550,7 +550,7 @@ export default function BookingPage({ params }: { params: Promise<{ slug: string
               <button
                 disabled={!customerName.trim() || submitting}
                 onClick={handleSubmit}
-                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-40 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-40 text-black font-semibold py-3 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20"
               >
                 {submitting ? (
                   <><Loader2 className="w-4 h-4 animate-spin" /> Confirmando...</>

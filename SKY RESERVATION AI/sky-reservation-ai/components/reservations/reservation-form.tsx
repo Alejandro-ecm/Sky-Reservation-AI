@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -285,11 +285,11 @@ export function ReservationForm({
                   placeholder="Buscar cliente..."
                   value={customerSearch}
                   onChange={(e) => setCustomerSearch(e.target.value)}
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 mb-2"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 mb-2"
                 />
                 <select
                   {...register("customer_id")}
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                 >
                   <option value="">Seleccionar cliente</option>
                   {customers.map((c) => (
@@ -310,7 +310,7 @@ export function ReservationForm({
                 </label>
                 <select
                   {...register("service_id")}
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                 >
                   <option value="">Seleccionar servicio</option>
                   {services.map((s) => (
@@ -331,7 +331,7 @@ export function ReservationForm({
                 </label>
                 <select
                   {...register("staff_id")}
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                 >
                   <option value="">Sin asignar</option>
                   {staff.map((s) => (
@@ -352,7 +352,7 @@ export function ReservationForm({
                     type="date"
                     {...register("date")}
                     min={new Date().toISOString().split("T")[0]}
-                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                   />
                   {errors.date && (
                     <p className="text-xs text-red-400 mt-1">{errors.date.message}</p>
@@ -365,7 +365,7 @@ export function ReservationForm({
                   </label>
                   <select
                     {...register("time")}
-                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-blue-500/40"
+                    className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-[#00E5FF]/30"
                   >
                     {timeSlots.map((slot) => (
                       <option key={slot} value={slot}>
@@ -388,7 +388,7 @@ export function ReservationForm({
                   {...register("notes")}
                   rows={2}
                   placeholder="Instrucciones especiales, preferencias..."
-                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/40 resize-none"
+                  className="w-full bg-white/[0.04] border border-white/[0.07] rounded-xl px-4 py-2.5 text-sm text-gray-300 placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 resize-none"
                 />
               </div>
 
@@ -404,7 +404,7 @@ export function ReservationForm({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 text-white text-sm font-medium py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 disabled:opacity-50 text-black text-sm font-medium py-2.5 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20"
                 >
                   {loading ? (
                     <>
