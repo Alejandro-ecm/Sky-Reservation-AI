@@ -1,4 +1,4 @@
-interface BookingConfirmationData {
+interface BookingReminderData {
   customerName: string;
   tenantName: string;
   serviceName: string;
@@ -8,7 +8,7 @@ interface BookingConfirmationData {
   tenantEmail?: string;
 }
 
-export function bookingConfirmationHtml(data: BookingConfirmationData): string {
+export function bookingReminderHtml(data: BookingReminderData): string {
   const date = new Date(data.startTime);
   const dateStr = date.toLocaleDateString("es-MX", {
     weekday: "long",
@@ -35,8 +35,8 @@ export function bookingConfirmationHtml(data: BookingConfirmationData): string {
         <!-- Header -->
         <tr>
           <td style="background:linear-gradient(135deg,#00E5FF,#7000FF);padding:32px;text-align:center">
-            <p style="margin:0;color:rgba(0,0,0,0.6);font-size:13px;letter-spacing:1px;text-transform:uppercase">Reservación Confirmada</p>
-            <h1 style="margin:8px 0 0;color:#000000;font-size:28px;font-weight:800">✅ ¡Todo listo!</h1>
+            <p style="margin:0;color:rgba(0,0,0,0.6);font-size:13px;letter-spacing:1px;text-transform:uppercase">Recordatorio de Cita</p>
+            <h1 style="margin:8px 0 0;color:#000000;font-size:28px;font-weight:800">⏰ Mañana es tu cita</h1>
           </td>
         </tr>
         <!-- Body -->
@@ -44,7 +44,7 @@ export function bookingConfirmationHtml(data: BookingConfirmationData): string {
           <td style="padding:32px">
             <p style="margin:0 0 24px;color:#374151;font-size:15px">Hola <strong>${data.customerName}</strong>,</p>
             <p style="margin:0 0 24px;color:#6b7280;font-size:14px;line-height:1.6">
-              Tu reservación en <strong style="color:#111827">${data.tenantName}</strong> ha sido confirmada. ¡Te esperamos!
+              Te recordamos que mañana tienes una cita en <strong style="color:#111827">${data.tenantName}</strong>. ¡Te esperamos puntual!
             </p>
             <!-- Details card -->
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:24px">
@@ -101,6 +101,6 @@ export function bookingConfirmationHtml(data: BookingConfirmationData): string {
 </html>`;
 }
 
-export function bookingConfirmationSubject(tenantName: string): string {
-  return `✅ Reservación confirmada — ${tenantName}`;
+export function bookingReminderSubject(tenantName: string): string {
+  return `⏰ Recordatorio: tu cita mañana en ${tenantName}`;
 }
