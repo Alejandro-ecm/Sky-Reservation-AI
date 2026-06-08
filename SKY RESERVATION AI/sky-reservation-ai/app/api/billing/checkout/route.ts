@@ -5,6 +5,13 @@ import { STRIPE_PRICES, type PlanKey } from "@/lib/stripe/prices";
 import { createOrRetrieveCustomer } from "@/lib/stripe/helpers";
 
 export async function POST(request: NextRequest) {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return NextResponse.json(
+      { error: "Stripe no está configurado. Ejecuta scripts/setup-stripe.mjs primero." },
+      { status: 503 }
+    );
+  }
+
   try {
     const supabase = await createClient();
     const {
