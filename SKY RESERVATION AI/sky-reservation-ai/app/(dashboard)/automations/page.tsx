@@ -23,6 +23,7 @@ import {
   AlertCircle,
   ToggleLeft,
   ToggleRight,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -50,7 +51,7 @@ const TRIGGER_OPTIONS: {
     label: "Nueva Reservación",
     description: "Al crearse una nueva reserva",
     icon: Calendar,
-    color: "text-blue-400 bg-blue-500/10 border-blue-500/20",
+    color: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
   },
   {
     value: "no_show",
@@ -108,6 +109,14 @@ const ACTION_OPTIONS: {
   },
 ];
 
+const TRIGGER_ACCENT: Record<WorkflowTrigger, string> = {
+  new_reservation: "rgba(99,102,241,0.7)",
+  no_show:         "rgba(239,68,68,0.7)",
+  new_customer:    "rgba(34,197,94,0.7)",
+  follow_up_3day:  "rgba(251,191,36,0.7)",
+  missed_call:     "rgba(168,85,247,0.7)",
+};
+
 function getTriggerOption(trigger: WorkflowTrigger) {
   return TRIGGER_OPTIONS.find((t) => t.value === trigger);
 }
@@ -115,6 +124,52 @@ function getTriggerOption(trigger: WorkflowTrigger) {
 function getActionOption(action: AutomationAction) {
   return ACTION_OPTIONS.find((a) => a.value === action);
 }
+
+// ============================================================
+// QUICK-START TEMPLATES
+// ============================================================
+
+const QUICK_TEMPLATES: {
+  emoji: string;
+  name: string;
+  desc: string;
+  trigger: WorkflowTrigger;
+  action: AutomationAction;
+  defaultName: string;
+}[] = [
+  {
+    emoji: "✅",
+    name: "Confirmación de cita",
+    desc: "WhatsApp inmediato al confirmar reservación",
+    trigger: "new_reservation",
+    action: "send_whatsapp",
+    defaultName: "Confirmación de nueva reservación",
+  },
+  {
+    emoji: "⏰",
+    name: "Recordatorio 24h antes",
+    desc: "Aviso automático el día previo a la cita",
+    trigger: "follow_up_3day",
+    action: "send_whatsapp",
+    defaultName: "Recordatorio de cita próxima",
+  },
+  {
+    emoji: "👻",
+    name: "Cliente no asistió",
+    desc: "Mensaje de seguimiento post no-show",
+    trigger: "no_show",
+    action: "send_whatsapp",
+    defaultName: "Seguimiento por no-show",
+  },
+  {
+    emoji: "💬",
+    name: "Seguimiento post servicio",
+    desc: "Solicita reseña cuando termina el servicio",
+    trigger: "new_customer",
+    action: "send_email",
+    defaultName: "Solicitud de reseña post-visita",
+  },
+];
 
 // ============================================================
 // FORM TYPES
@@ -146,13 +201,18 @@ function StatCard({
   icon: React.ElementType;
   color: string;
 }) {
+  const textColorClass = color.split(" ").find((c) => c.startsWith("text-")) ?? "text-white";
   return (
-    <div className="glass-card p-5">
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 border ${color}`}>
-        <Icon className="w-4.5 h-4.5" />
+    <div className={`relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(79,70,229,0.1)] ${color}`}>
+      {/* Watermark */}
+      <div className={`absolute -bottom-2 -right-2 ${textColorClass} opacity-[0.05] pointer-events-none`}>
+        <Icon className="w-20 h-20" />
       </div>
-      <p className="text-2xl font-black text-white">{value}</p>
-      <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center mb-3 border ${color}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <p className="text-3xl font-bold text-white tracking-tight">{value}</p>
+      <p className="text-xs text-zinc-400 mt-1">{label}</p>
     </div>
   );
 }
@@ -226,6 +286,21 @@ export default function AutomationsPage() {
       emailSubject: (rule.config.emailSubject as string) ?? "",
       emailBody: (rule.config.emailBody as string) ?? "",
       enabled: rule.enabled,
+    });
+    setModalOpen(true);
+  }
+
+  function prefillModal(template: typeof QUICK_TEMPLATES[number]) {
+    setEditingRule(null);
+    form.reset({
+      name: template.defaultName,
+      trigger: template.trigger,
+      action: template.action,
+      webhookUrl: "",
+      whatsappMessage: "Hola {customerName}, tu reservación para {service} el {date} ha sido confirmada.",
+      emailSubject: "",
+      emailBody: "",
+      enabled: true,
     });
     setModalOpen(true);
   }
@@ -359,7 +434,7 @@ export default function AutomationsPage() {
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+          className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20"
         >
           <Plus className="w-4 h-4" />
           Nueva Regla
@@ -384,7 +459,7 @@ export default function AutomationsPage() {
           label="Total Disparos"
           value={totalTriggers}
           icon={Phone}
-          color="text-blue-400 bg-blue-500/10 border-blue-500/20"
+          color="text-indigo-400 bg-indigo-500/10 border-indigo-500/20"
         />
       </div>
 
@@ -402,26 +477,44 @@ export default function AutomationsPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="glass-card p-16 flex flex-col items-center justify-center text-center"
+          className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-10"
         >
-          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4">
-            <Zap className="w-8 h-8 text-blue-400" />
+          <div className="max-w-lg mx-auto text-center mb-8">
+            <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-7 h-7 text-indigo-400" />
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">Comienza con una plantilla</h3>
+            <p className="text-sm text-zinc-500">
+              Automatiza tu negocio en segundos. Elige una plantilla o crea tu propia regla desde cero.
+            </p>
           </div>
-          <h3 className="font-semibold text-white mb-2">Sin automatizaciones</h3>
-          <p className="text-sm text-gray-500 mb-6 max-w-sm">
-            Crea tu primera regla para automatizar flujos de trabajo cuando ocurran
-            eventos en tu negocio.
-          </p>
-          <button
-            onClick={openCreateModal}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            Crear primera regla
-          </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto mb-6">
+            {QUICK_TEMPLATES.map((t) => (
+              <button
+                key={t.name}
+                onClick={() => prefillModal(t)}
+                className="template-card group"
+              >
+                <span className="text-2xl flex-shrink-0">{t.emoji}</span>
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="text-sm font-semibold text-white">{t.name}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">{t.desc}</p>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0" />
+              </button>
+            ))}
+          </div>
+          <div className="text-center">
+            <button
+              onClick={openCreateModal}
+              className="text-xs text-zinc-500 hover:text-zinc-200 border border-white/[0.07] hover:border-white/[0.14] bg-white/[0.02] px-4 py-2 rounded-full transition-all duration-300"
+            >
+              + Crear regla personalizada
+            </button>
+          </div>
         </motion.div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {rules.map((rule, i) => {
             const triggerOpt = getTriggerOption(rule.trigger);
             const actionOpt = getActionOption(rule.action);
@@ -434,10 +527,15 @@ export default function AutomationsPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className={`glass-card p-5 transition-all ${
-                  rule.enabled ? "" : "opacity-60"
+                className={`glass-card relative overflow-hidden p-5 hover:border-white/[0.12] hover:-translate-y-0.5 transition-all duration-300 ${
+                  rule.enabled ? "" : "opacity-55"
                 }`}
               >
+                {/* Colored trigger accent bar */}
+                <div
+                  className="absolute left-0 top-0 bottom-0 w-0.5"
+                  style={{ background: rule.enabled ? (TRIGGER_ACCENT[rule.trigger] ?? "rgba(99,102,241,0.7)") : "rgba(255,255,255,0.08)" }}
+                />
                 <div className="flex items-start gap-4">
                   <div
                     className={`w-10 h-10 rounded-xl border flex items-center justify-center flex-shrink-0 ${
@@ -448,31 +546,27 @@ export default function AutomationsPage() {
                   </div>
 
                   <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-white text-sm mb-2">{rule.name}</h3>
+                    {/* Trigger → Action flow */}
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-semibold text-white">{rule.name}</h3>
-                      <span
-                        className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${
-                          triggerOpt?.color ?? "text-gray-400 bg-white/[0.05] border-white/10"
-                        }`}
-                      >
+                      <span className={`inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-lg border ${triggerOpt?.color ?? "text-zinc-400 bg-white/[0.05] border-white/10"}`}>
+                        <TriggerIcon className="w-3 h-3" />
                         {triggerOpt?.label ?? rule.trigger}
                       </span>
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full border text-gray-400 bg-white/[0.05] border-white/10 flex items-center gap-1">
+                      <ArrowRight className="w-3 h-3 text-zinc-600 flex-shrink-0" />
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-lg border text-indigo-300 bg-indigo-500/10 border-indigo-500/20">
                         <ActionIcon className="w-3 h-3" />
                         {actionOpt?.label ?? rule.action}
                       </span>
-                    </div>
-                    <div className="flex items-center gap-4 mt-1.5 flex-wrap">
-                      <span className="text-xs text-gray-500">
-                        {rule.trigger_count} disparos totales
+                      <span className="text-[11px] text-zinc-600 ml-1">
+                        · {rule.trigger_count ?? 0} ejecuciones
                       </span>
-                      {rule.last_triggered_at && (
-                        <span className="text-xs text-gray-500">
-                          Último:{" "}
-                          {formatRelative(rule.last_triggered_at)}
-                        </span>
-                      )}
                     </div>
+                    {rule.last_triggered_at && (
+                      <p className="text-[10px] text-zinc-600 mt-1.5">
+                        Último disparo: {formatRelative(rule.last_triggered_at)}
+                      </p>
+                    )}
                   </div>
 
                   {/* Actions */}
@@ -487,7 +581,7 @@ export default function AutomationsPage() {
                       {savingId === rule.id ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
                       ) : rule.enabled ? (
-                        <ToggleRight className="w-6 h-6 text-blue-400" />
+                        <ToggleRight className="w-6 h-6 text-indigo-400 drop-shadow-[0_0_6px_rgba(79,70,229,0.8)]" />
                       ) : (
                         <ToggleLeft className="w-6 h-6" />
                       )}
@@ -513,7 +607,7 @@ export default function AutomationsPage() {
                     <button
                       onClick={() => openEditModal(rule)}
                       title="Editar"
-                      className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/[0.04] hover:bg-blue-500/10 border border-white/[0.07] hover:border-blue-500/20 text-gray-400 hover:text-blue-400 transition-colors"
+                      className="w-8 h-8 flex items-center justify-center rounded-xl bg-white/[0.04] hover:bg-indigo-500/10 border border-white/[0.07] hover:border-indigo-500/20 text-gray-400 hover:text-indigo-400 transition-colors"
                     >
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
@@ -558,7 +652,7 @@ export default function AutomationsPage() {
               className="fixed inset-0 z-50 flex items-center justify-center p-4"
             >
               <div
-                className="w-full max-w-lg bg-[#141414] border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+                className="w-full max-w-lg bg-zinc-950/95 backdrop-blur-xl border border-white/[0.1] rounded-2xl shadow-2xl overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
@@ -587,7 +681,7 @@ export default function AutomationsPage() {
                     <input
                       {...form.register("name", { required: true })}
                       placeholder="Ej: Confirmar nueva reservación"
-                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors"
                     />
                   </div>
 
@@ -599,7 +693,7 @@ export default function AutomationsPage() {
                     <div className="relative">
                       <select
                         {...form.register("trigger")}
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors appearance-none"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-colors appearance-none"
                       >
                         {TRIGGER_OPTIONS.map((t) => (
                           <option key={t.value} value={t.value}>
@@ -627,7 +721,7 @@ export default function AutomationsPage() {
                             onClick={() => form.setValue("action", a.value)}
                             className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border text-xs font-medium transition-all ${
                               selected
-                                ? "bg-blue-600/15 border-blue-500/40 text-blue-300"
+                                ? "bg-indigo-600/15 border-indigo-500/40 text-indigo-300"
                                 : "bg-white/[0.03] border-white/[0.07] text-gray-400 hover:border-white/20 hover:text-white"
                             }`}
                           >
@@ -648,7 +742,7 @@ export default function AutomationsPage() {
                       <input
                         {...form.register("webhookUrl", { required: true })}
                         placeholder="https://n8n.tudominio.com/webhook/..."
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors font-mono text-xs"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors font-mono text-xs"
                       />
                     </div>
                   )}
@@ -661,7 +755,7 @@ export default function AutomationsPage() {
                       <textarea
                         {...form.register("whatsappMessage", { required: true })}
                         rows={4}
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors resize-none"
                       />
                       <p className="text-[10px] text-gray-600 mt-1.5">
                         Variables disponibles:{" "}
@@ -681,7 +775,7 @@ export default function AutomationsPage() {
                         <input
                           {...form.register("emailSubject", { required: true })}
                           placeholder="Confirmación de tu reservación"
-                          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors"
                         />
                       </div>
                       <div>
@@ -692,7 +786,7 @@ export default function AutomationsPage() {
                           {...form.register("emailBody", { required: true })}
                           rows={5}
                           placeholder="Hola {customerName}, ..."
-                          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+                          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-indigo-500/50 transition-colors resize-none"
                         />
                       </div>
                     </>
@@ -710,7 +804,7 @@ export default function AutomationsPage() {
                       type="button"
                       onClick={() => form.setValue("enabled", !form.watch("enabled"))}
                       className={`relative w-11 h-6 rounded-full transition-all duration-200 ${
-                        form.watch("enabled") ? "bg-blue-600" : "bg-white/10"
+                        form.watch("enabled") ? "bg-indigo-600" : "bg-white/10"
                       }`}
                     >
                       <div
@@ -733,7 +827,7 @@ export default function AutomationsPage() {
                     <button
                       type="submit"
                       disabled={form.formState.isSubmitting}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20 disabled:opacity-50"
                     >
                       {form.formState.isSubmitting ? (
                         <Loader2 className="w-4 h-4 animate-spin" />

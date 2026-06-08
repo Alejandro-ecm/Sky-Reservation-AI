@@ -137,14 +137,25 @@ function ChatPanel({
 
   if (!conversation) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-        <div className="w-16 h-16 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-4">
-          <MessageCircle className="w-8 h-8 text-green-500" />
+      <div className="flex-1 flex flex-col items-center justify-center text-center p-8 gap-5">
+        {/* Glassmorphic chat preview — visible with fade-out */}
+        <div className="relative w-full max-w-[240px] select-none pointer-events-none">
+          <div
+            className="absolute bottom-0 left-0 right-0 h-14 z-10 rounded-b-xl"
+            style={{ background: "linear-gradient(to top, #050505, transparent)" }}
+          />
+          <div className="space-y-2.5 opacity-50 blur-[0.5px]" aria-hidden>
+            <div className="ml-auto w-44 h-10 bg-emerald-500/40 rounded-2xl rounded-tr-sm" />
+            <div className="w-52 h-10 bg-white/10 rounded-2xl rounded-tl-sm" />
+            <div className="ml-auto w-36 h-10 bg-emerald-500/40 rounded-2xl rounded-tr-sm" />
+            <div className="w-48 h-10 bg-white/10 rounded-2xl rounded-tl-sm" />
+            <div className="ml-auto w-40 h-10 bg-emerald-500/40 rounded-2xl rounded-tr-sm" />
+          </div>
         </div>
-        <p className="text-gray-400 font-medium">Selecciona una conversación</p>
-        <p className="text-gray-600 text-sm mt-1">
-          Los mensajes de WhatsApp aparecerán aquí
-        </p>
+        <div>
+          <p className="text-sm font-bold text-zinc-200">Selecciona una conversación</p>
+          <p className="text-xs text-zinc-600 mt-1">Los mensajes aparecerán aquí en tiempo real</p>
+        </div>
       </div>
     );
   }
@@ -351,23 +362,21 @@ export default function WhatsAppPage() {
       {/* Stats */}
       <motion.div variants={item} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Conversaciones", value: total, icon: MessageCircle, color: "text-green-400", bg: "bg-green-500/10 border-green-500/20" },
-          { label: "Auto-respondidas", value: autoResponded, icon: Bot, color: "text-blue-400", bg: "bg-blue-500/10 border-blue-500/20" },
-          { label: "Tiempo Prom.", value: "< 1s", icon: Clock, color: "text-purple-400", bg: "bg-purple-500/10 border-purple-500/20" },
-          { label: "Activas Ahora", value: activeCount, icon: Activity, color: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20" },
+          { label: "Conversaciones",  value: total,         icon: MessageCircle, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
+          { label: "Auto-respondidas", value: autoResponded, icon: Bot,           color: "text-indigo-400",  bg: "bg-indigo-500/10 border-indigo-500/20" },
+          { label: "Tiempo Prom.",    value: "< 1s",        icon: Clock,         color: "text-purple-400",  bg: "bg-purple-500/10 border-purple-500/20" },
+          { label: "Activas Ahora",   value: activeCount,   icon: Activity,      color: "text-amber-400",   bg: "bg-amber-500/10 border-amber-500/20" },
         ].map((stat) => (
-          <div key={stat.label} className={`glass-card p-4 border ${stat.bg}`}>
-            <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-xl ${stat.bg} border flex items-center justify-center`}>
-                <stat.icon className={`w-4 h-4 ${stat.color}`} />
-              </div>
-              <div>
-                <p className="text-xs text-gray-500">{stat.label}</p>
-                <p className="text-2xl font-black text-white">
-                  {loading ? "—" : stat.value}
-                </p>
-              </div>
+          <div key={stat.label} className={`relative overflow-hidden bg-white/[0.03] backdrop-blur-xl border ${stat.bg} rounded-3xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(79,70,229,0.1)]`}>
+            {/* Watermark icon */}
+            <div className={`absolute -bottom-2 -right-2 ${stat.color} opacity-[0.05] pointer-events-none`}>
+              <stat.icon className="w-20 h-20" />
             </div>
+            <div className={`w-10 h-10 rounded-2xl ${stat.bg} border flex items-center justify-center mb-3`}>
+              <stat.icon className={`w-5 h-5 ${stat.color}`} />
+            </div>
+            <p className="text-3xl font-bold text-white tracking-tight">{loading ? "—" : stat.value}</p>
+            <p className="text-xs text-zinc-400 mt-1">{stat.label}</p>
           </div>
         ))}
       </motion.div>
@@ -375,7 +384,7 @@ export default function WhatsAppPage() {
       {/* Chat Interface */}
       <motion.div
         variants={item}
-        className="glass-card overflow-hidden flex"
+        className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.06] rounded-2xl overflow-hidden flex"
         style={{ height: "600px" }}
       >
         {/* Left Panel — Conversation List */}
@@ -400,12 +409,27 @@ export default function WhatsAppPage() {
                 <Loader2 className="w-5 h-5 text-gray-500 animate-spin" />
               </div>
             ) : filteredConvos.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-                <Users className="w-8 h-8 text-gray-700 mb-3" />
-                <p className="text-sm text-gray-500">Sin conversaciones</p>
-                <p className="text-xs text-gray-600 mt-1">
-                  Los mensajes de clientes aparecerán aquí
-                </p>
+              <div className="flex flex-col items-center justify-center py-10 px-6 text-center gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <MessageCircle className="w-8 h-8 text-emerald-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white mb-1">Conecta WhatsApp en 30 segundos</p>
+                  <p className="text-xs text-zinc-500 leading-relaxed">
+                    Tu IA atenderá clientes, agendará citas y responderá preguntas automáticamente.
+                  </p>
+                </div>
+                <ul className="text-left text-xs text-zinc-400 space-y-2 w-full">
+                  <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> Respuestas automáticas 24/7</li>
+                  <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> Agenda citas por WhatsApp</li>
+                  <li className="flex items-start gap-2"><span className="text-emerald-400 mt-0.5">✓</span> Notifica confirmaciones y recordatorios</li>
+                </ul>
+                <a
+                  href="/settings"
+                  className="w-full flex items-center justify-center gap-2 bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-medium px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/20"
+                >
+                  Configurar WhatsApp →
+                </a>
               </div>
             ) : (
               <AnimatePresence>
