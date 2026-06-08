@@ -109,8 +109,8 @@ export default function DashboardPage() {
         setOverview(json.data ?? null);
       }
       if (tsRes.ok) {
-        const json = (await tsRes.json()) as TimeseriesPoint[];
-        setTimeseries(json);
+        const json = (await tsRes.json()) as { data: TimeseriesPoint[] };
+        setTimeseries(json.data ?? []);
       }
       if (actRes.ok) {
         const json = (await actRes.json()) as { data: RecentReservation[] };
