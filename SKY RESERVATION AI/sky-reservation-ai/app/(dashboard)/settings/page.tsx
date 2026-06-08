@@ -156,6 +156,47 @@ function Skeleton({ className }: { className?: string }) {
   );
 }
 
+function BookingLinkCard({ slug }: { slug: string }) {
+  const appUrl = (typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL) ?? "";
+  const url = `${appUrl}/book/${slug}`;
+
+  function copyLink() {
+    navigator.clipboard.writeText(url).then(() => {
+      import("sonner").then(({ toast }) => toast.success("Link copiado al portapapeles"));
+    });
+  }
+
+  return (
+    <div className="p-4 rounded-xl border border-[#00E5FF]/20 bg-[#00E5FF]/[0.04] flex items-center gap-3 flex-wrap">
+      <div className="w-8 h-8 rounded-lg bg-[#00E5FF]/15 border border-[#00E5FF]/20 flex items-center justify-center flex-shrink-0">
+        <Globe className="w-4 h-4 text-[#00E5FF]" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold text-[#00E5FF] mb-0.5">Link de reservación pública</p>
+        <p className="text-xs text-zinc-400 truncate font-mono">{url}</p>
+      </div>
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <button
+          type="button"
+          onClick={copyLink}
+          className="text-xs text-zinc-400 hover:text-white bg-white/[0.05] hover:bg-white/[0.10] border border-white/[0.08] px-2.5 py-1.5 rounded-lg transition-colors"
+        >
+          Copiar
+        </button>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-xs text-[#00E5FF] hover:text-[#00E5FF]/80 bg-[#00E5FF]/10 hover:bg-[#00E5FF]/15 border border-[#00E5FF]/20 px-2.5 py-1.5 rounded-lg transition-colors"
+        >
+          <ExternalLink className="w-3 h-3" />
+          Abrir
+        </a>
+      </div>
+    </div>
+  );
+}
+
 // ============================================================
 // MAIN PAGE
 // ============================================================
@@ -531,6 +572,11 @@ export default function SettingsPage() {
                       />
                     </div>
                   </div>
+
+                  {/* ── Booking link público ── */}
+                  {tenantData?.slug && (
+                    <BookingLinkCard slug={tenantData.slug} />
+                  )}
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1.5">

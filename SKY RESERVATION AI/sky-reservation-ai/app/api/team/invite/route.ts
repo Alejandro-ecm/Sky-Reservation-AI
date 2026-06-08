@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getServiceSupabase } from "@/lib/stripe/helpers";
+import { withAuthRateLimit } from "@/lib/security/api-guard";
+import { z } from "zod";
 
-export async function POST(request: NextRequest) {
+const inviteSchema = z.object({
+  email: z.string().email("Email inválido"),
+  role: z.enum(["admin", "staff", "viewer"], { message: "Rol inválido" }),
+});
+
+async function handler(request: NextRequest): Promise<NextResponse> {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -19,14 +26,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Solo owners y admins pueden invitar" }, { status: 403 });
     }
 
-    const body = (await request.json()) as { email?: string; role?: string };
-    const email = body.email?.trim().toLowerCase();
-    const role = body.role;
-
-    if (!email) return NextResponse.json({ error: "Email requerido" }, { status: 400 });
-    if (!["admin", "staff", "viewer"].includes(role ?? "")) {
-      return NextResponse.json({ error: "Rol inválido" }, { status: 400 });
+    const parsed = inviteSchema.safeParse(await request.json());
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.errors[0]?.message ?? "Datos inválidos" },
+        { status: 400 }
+      );
     }
+    const { email, role } = parsed.data;
 
     // Check if email is already a member of this tenant
     const service = getServiceSupabase();
@@ -43,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-    const { error: inviteError } = await service.auth.admin.inviteUserByEmail(email, {
+    const { error: inviteError } = await service.auth.admin.inviteUserByEmail(email.trim().toLowerCase(), {
       redirectTo: `${appUrl}/auth/callback?next=/dashboard`,
       data: {
         tenant_id: profile.tenant_id,
@@ -68,3 +75,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Error interno" }, { status: 500 });
   }
 }
+
+export const POST = withAuthRateLimit(handler);

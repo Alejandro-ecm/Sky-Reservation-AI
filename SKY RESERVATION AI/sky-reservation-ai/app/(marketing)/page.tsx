@@ -7,7 +7,7 @@ import {
   Phone, MessageSquare, Calendar, Users, BarChart3, Building2,
   Star, ChevronDown, Check, ArrowRight, Zap, Shield, Globe,
   Menu, X, Sparkles, TrendingUp, Clock, Bot, Play, ChevronRight,
-  DollarSign, HeartHandshake, Infinity, Lock, Cpu, Rocket,
+  DollarSign, HeartHandshake, Infinity as InfinityIcon, Lock, Cpu, Rocket,
 } from "lucide-react";
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
@@ -30,11 +30,11 @@ function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-            <Sparkles className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center shadow-lg shadow-[#00E5FF]/20">
+            <Sparkles className="w-4 h-4 text-black" />
           </div>
           <span className="font-bold text-lg">
-            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Sky</span>
+            <span className="bg-gradient-to-r from-[#00E5FF] to-[#7000FF] bg-clip-text text-transparent">Sky</span>
             <span className="text-white"> AI</span>
           </span>
         </Link>
@@ -422,7 +422,7 @@ const features = [
 
 function FeaturesSection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
 
   return (
     <section id="features" className="py-28 px-6" ref={ref}>
@@ -485,7 +485,7 @@ function HowItWorks() {
     { n: "04", title: "Tú ves los resultados", desc: "Monitorea reservaciones, ingresos y satisfacción en tiempo real. Optimiza con insights IA." },
   ];
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
 
   return (
     <section className="py-28 px-6 bg-white/[0.01]" ref={ref}>
@@ -524,7 +524,7 @@ function HowItWorks() {
 // ─── ROI Calculator Section ───────────────────────────────────────────────────
 function ROISection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
   const comparisons = [
     { label: "Recepcionista humana", cost: "$1,800/mes", items: ["8 horas al día", "Solo habla un idioma", "Se enferma / falta", "Máximo 1 llamada a la vez"], bad: true },
     { label: "Sky Reservation AI", cost: "Desde $49/mes", items: ["24 horas, 7 días", "Español + Inglés", "Nunca falta, nunca descansa", "Miles de llamadas simultáneas"], bad: false },
@@ -604,7 +604,7 @@ const plans = [
 
 function PricingSection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
 
   return (
     <section id="pricing" className="py-28 px-6 bg-white/[0.01]" ref={ref}>
@@ -669,7 +669,7 @@ const testimonials = [
 
 function TestimonialsSection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
 
   return (
     <section className="py-28 px-6" ref={ref}>
@@ -719,7 +719,7 @@ const faqs = [
 function FAQSection() {
   const [open, setOpen] = useState<number | null>(null);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
 
   return (
     <section id="faq" className="py-28 px-6 bg-white/[0.01]" ref={ref}>
@@ -769,7 +769,7 @@ function FAQSection() {
 // ─── CTA ──────────────────────────────────────────────────────────────────────
 function CTASection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px 0px 0px 0px", amount: 0 });
 
   return (
     <section className="py-28 px-6" ref={ref}>
