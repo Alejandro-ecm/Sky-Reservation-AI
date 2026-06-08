@@ -30,11 +30,11 @@ function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
             <Sparkles className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-lg">
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Sky</span>
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Sky</span>
             <span className="text-white"> AI</span>
           </span>
         </Link>
@@ -110,7 +110,7 @@ function Hero() {
       {/* Background */}
       <div className="absolute inset-0 bg-[#030303]" />
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px]" />
       </div>
       {/* Grid */}
@@ -126,7 +126,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium px-3 py-1.5 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium px-3 py-1.5 rounded-full mb-6"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Plataforma #1 para automatización con IA en LATAM
@@ -139,7 +139,7 @@ function Hero() {
             className="text-5xl lg:text-7xl font-black text-white leading-[1.06] tracking-tight mb-6"
           >
             Tu negocio{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
               atiende solo.
             </span>
             <br />
@@ -164,11 +164,11 @@ function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
           >
-            <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-white text-black font-bold text-sm px-6 py-3.5 rounded-xl hover:bg-gray-100 transition-colors shadow-2xl shadow-white/10">
+            <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm px-6 py-3.5 rounded-xl transition-all duration-300 shadow-2xl shadow-indigo-500/30">
               Prueba gratis 14 días
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <a href="#features" className="inline-flex items-center justify-center gap-2 text-sm text-gray-300 bg-white/5 hover:bg-white/10 border border-white/10 px-6 py-3.5 rounded-xl transition-colors">
+            <a href="#features" className="inline-flex items-center justify-center gap-2 text-sm text-gray-300 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] px-6 py-3.5 rounded-xl transition-all duration-300">
               <Play className="w-4 h-4" />
               Ver demo
             </a>
@@ -184,55 +184,104 @@ function Hero() {
           </motion.p>
         </div>
 
-        {/* Right — Live AI Card */}
+        {/* Right — Live AI Card (minimalist premium) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, x: 40 }}
+          initial={{ opacity: 0, scale: 0.94, x: 40 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="flex-1 max-w-sm w-full mx-auto"
         >
-          <div className="bg-[#0e0e0e] border border-white/10 rounded-2xl p-5 shadow-2xl shadow-black/50">
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <Bot className="w-4.5 h-4.5 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-white">Sofía — Sky AI</p>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                  <p className="text-xs text-emerald-400">En llamada ahora</p>
+          {/* Outer glow */}
+          <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/5 blur-xl pointer-events-none" />
+
+          <div className="relative bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-2xl overflow-hidden shadow-2xl shadow-black/70">
+
+            {/* Ambient top glow */}
+            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-16 bg-indigo-500/10 blur-3xl pointer-events-none" />
+
+            {/* ── Header ── */}
+            <div className="relative flex items-center justify-between px-5 py-4 border-b border-white/[0.05]">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-white/[0.08] flex items-center justify-center">
+                    <Bot className="w-3.5 h-3.5 text-indigo-400" />
+                  </div>
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#030303] animate-pulse" />
+                </div>
+                <div>
+                  <p className="text-[13px] font-semibold text-white tracking-tight leading-none mb-1">Sofía — Sky AI</p>
+                  <p className="text-[9px] font-semibold text-emerald-400 tracking-[0.15em] uppercase">En llamada</p>
                 </div>
               </div>
-              <div className="ml-auto text-xs font-mono text-gray-500 bg-white/5 px-2 py-1 rounded-lg">02:47</div>
+              <span className="text-[11px] font-mono tabular-nums text-zinc-600">02:47</span>
             </div>
 
-            {/* Transcript */}
-            <div className="space-y-3 mb-4">
-              <ChatBubble align="left" text="Hola, quiero agendar una cita para corte de cabello" />
-              <ChatBubble align="right" text="¡Hola! Con gusto te ayudo. Tenemos disponibilidad mañana martes a las 3pm o el miércoles a las 11am. ¿Cuál te funciona mejor?" />
-              <ChatBubble align="left" text="El martes a las 3pm está perfecto" />
-              <ChatBubble align="right" text="Perfecto. ¿Me das tu nombre completo para confirmar la cita?" />
+            {/* ── Conversation ── */}
+            <div className="relative px-5 py-5 space-y-4">
+              {/* User */}
+              <div className="flex items-start gap-3">
+                <div className="w-px self-stretch bg-zinc-700/60 flex-shrink-0 mt-0.5" />
+                <p className="text-[11.5px] text-zinc-400 leading-relaxed">
+                  Hola, quiero agendar una cita para corte de cabello
+                </p>
+              </div>
+              {/* AI */}
+              <p className="text-[11.5px] text-zinc-200 leading-relaxed pl-4">
+                ¡Hola! Con gusto te ayudo. Tenemos disponibilidad{" "}
+                <span className="text-indigo-300 font-medium">mañana martes a las 3pm</span>{" "}
+                o el miércoles a las 11am. ¿Cuál te funciona mejor?
+              </p>
+              {/* User */}
+              <div className="flex items-start gap-3">
+                <div className="w-px self-stretch bg-zinc-700/60 flex-shrink-0 mt-0.5" />
+                <p className="text-[11.5px] text-zinc-400 leading-relaxed">
+                  El martes a las 3pm está perfecto
+                </p>
+              </div>
+              {/* AI */}
+              <p className="text-[11.5px] text-zinc-200 leading-relaxed pl-4">
+                Perfecto.{" "}
+                <span className="text-zinc-400">¿Me das tu nombre completo para confirmar la cita?</span>
+              </p>
+
+              {/* Typing cursor */}
+              <div className="flex items-center gap-2 pl-4">
+                <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse" />
+                <span className="w-1.5 h-1.5 bg-indigo-400/60 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
+                <span className="w-1.5 h-1.5 bg-indigo-400/30 rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
+              </div>
             </div>
 
-            {/* Waveform */}
-            <div className="flex items-center gap-1 justify-center py-2">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 bg-blue-500 rounded-full"
-                  animate={{ height: [4, Math.random() * 20 + 4, 4] }}
-                  transition={{ duration: 0.6 + Math.random() * 0.4, repeat: 9999, delay: i * 0.05 }}
-                />
-              ))}
+            {/* ── Waveform ── */}
+            <div className="px-5 pb-4">
+              <div className="flex items-center gap-[2px]" style={{ height: 32 }}>
+                {[3,5,9,14,8,18,12,22,16,10,20,14,8,24,16,11,19,13,7,15,10,5,12,8,4,10,6,3].map((h, i) => (
+                  <motion.div
+                    key={i}
+                    className="rounded-full flex-shrink-0"
+                    style={{
+                      width: 2,
+                      height: h,
+                      background: `rgba(99,102,241,${0.25 + (h / 24) * 0.55})`,
+                    }}
+                    animate={{ scaleY: [0.3, 1, 0.3] }}
+                    transition={{
+                      duration: 0.9 + (i % 5) * 0.18,
+                      repeat: Infinity,
+                      delay: i * 0.06,
+                      ease: "easeInOut",
+                    }}
+                  />
+                ))}
+              </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-2 mt-4">
-              {[["Llamadas hoy", "47"], ["Citas agendadas", "23"], ["Conversión", "68%"]].map(([label, value]) => (
-                <div key={label} className="text-center bg-white/[0.03] rounded-xl p-2 border border-white/[0.06]">
-                  <p className="text-sm font-bold text-white">{value}</p>
-                  <p className="text-xs text-gray-500 leading-tight mt-0.5">{label}</p>
+            {/* ── Stats ── */}
+            <div className="border-t border-white/[0.05] grid grid-cols-3 divide-x divide-white/[0.05]">
+              {[["47", "Llamadas hoy"], ["23", "Citas"], ["68%", "Conversión"]].map(([value, label]) => (
+                <div key={label} className="py-3.5 text-center">
+                  <p className="text-base font-bold text-white tracking-tight">{value}</p>
+                  <p className="text-[9px] text-zinc-600 uppercase tracking-[0.12em] mt-0.5">{label}</p>
                 </div>
               ))}
             </div>
@@ -240,16 +289,6 @@ function Hero() {
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function ChatBubble({ align, text }: { align: "left" | "right"; text: string }) {
-  return (
-    <div className={`flex ${align === "right" ? "justify-end" : "justify-start"}`}>
-      <p className={`text-xs px-3 py-2 rounded-xl max-w-[85%] leading-relaxed ${align === "right" ? "bg-blue-600 text-white" : "bg-white/8 text-gray-300 border border-white/[0.06]"}`}>
-        {text}
-      </p>
-    </div>
   );
 }
 
@@ -279,7 +318,7 @@ function StatsBar() {
 
 // ─── Features ────────────────────────────────────────────────────────────────
 const features = [
-  { icon: Phone, title: "IA Recepcionista de Voz", desc: "Responde llamadas como un humano. Agenda, cancela y reagenda citas automáticamente en tiempo real.", color: "from-blue-500 to-blue-600", tag: "Voice AI" },
+  { icon: Phone, title: "IA Recepcionista de Voz", desc: "Responde llamadas como un humano. Agenda, cancela y reagenda citas automáticamente en tiempo real.", color: "from-indigo-500 to-indigo-600", tag: "Voice AI" },
   { icon: MessageSquare, title: "WhatsApp Inteligente", desc: "Convierte cada mensaje en una reservación. Respuestas en segundos, disponible 24/7, nunca pierde un lead.", color: "from-emerald-500 to-emerald-600", tag: "WhatsApp" },
   { icon: Calendar, title: "Reservaciones Inteligentes", desc: "Calendario dinámico que detecta conflictos, gestiona disponibilidad y confirma citas automáticamente.", color: "from-purple-500 to-purple-600", tag: "Scheduling" },
   { icon: Users, title: "CRM con Lead Scoring IA", desc: "Clasifica clientes automáticamente. Identifica quiénes van a comprar y cuándo necesitan seguimiento.", color: "from-orange-500 to-orange-600", tag: "CRM" },
@@ -297,7 +336,7 @@ function FeaturesSection() {
         <div className="text-center mb-16">
           <motion.p
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-            className="text-sm text-blue-400 font-medium mb-3"
+            className="text-sm text-indigo-400 font-medium mb-3"
           >
             Todo lo que necesitas
           </motion.p>
@@ -327,7 +366,7 @@ function FeaturesSection() {
               className="group relative bg-[#0e0e0e] border border-white/[0.07] rounded-2xl p-6 hover:border-white/[0.15] transition-all duration-300"
             >
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: `radial-gradient(circle at top left, rgba(59,130,246,0.05), transparent 60%)` }}
+                style={{ background: `radial-gradient(circle at top left, rgba(79,70,229,0.05), transparent 60%)` }}
               />
               <span className="text-xs font-medium text-gray-600 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded-full mb-4 inline-block">{f.tag}</span>
               <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-4 shadow-lg`}>
@@ -363,7 +402,7 @@ function HowItWorks() {
             className="text-4xl font-black text-white mb-4"
           >
             Configurado y funcionando en{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">menos de un día</span>
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">menos de un día</span>
           </motion.h2>
         </div>
         <div className="space-y-4">
@@ -375,7 +414,7 @@ function HowItWorks() {
               transition={{ delay: i * 0.12 }}
               className="flex gap-5 p-5 bg-[#0e0e0e] border border-white/[0.07] rounded-2xl hover:border-white/[0.12] transition-colors group"
             >
-              <span className="text-3xl font-black text-white/10 group-hover:text-blue-500/30 transition-colors flex-shrink-0 w-12">{s.n}</span>
+              <span className="text-3xl font-black text-white/10 group-hover:text-indigo-500/30 transition-colors flex-shrink-0 w-12">{s.n}</span>
               <div>
                 <h3 className="font-bold text-white mb-1">{s.title}</h3>
                 <p className="text-sm text-gray-500">{s.desc}</p>
@@ -403,7 +442,7 @@ function ROISection() {
         <div className="text-center mb-14">
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} className="text-4xl font-black text-white mb-4">
             Ahorra hasta{" "}
-            <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">$1,750 al mes</span>
+            <span className="bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent">$1,750 al mes</span>
           </motion.h2>
           <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }} className="text-gray-400">
             Compara el costo real de contratar vs automatizar
@@ -416,7 +455,7 @@ function ROISection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.15 }}
-              className={`p-6 rounded-2xl border ${c.bad ? "bg-[#0e0e0e] border-white/[0.07]" : "bg-gradient-to-br from-blue-600/10 to-purple-600/10 border-blue-500/30"}`}
+              className={`p-6 rounded-2xl border ${c.bad ? "bg-[#0e0e0e] border-white/[0.07]" : "bg-gradient-to-br from-indigo-600/10 to-purple-600/10 border-indigo-500/30"}`}
             >
               <div className="flex items-center justify-between mb-5">
                 <h3 className="font-bold text-white">{c.label}</h3>
@@ -492,10 +531,10 @@ function PricingSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.1 }}
-              className={`relative rounded-2xl p-6 border ${plan.highlight ? "bg-gradient-to-b from-blue-600/10 to-purple-600/5 border-blue-500/40 shadow-2xl shadow-blue-500/10" : "bg-[#0e0e0e] border-white/[0.07]"}`}
+              className={`relative rounded-2xl p-6 border ${plan.highlight ? "bg-gradient-to-b from-indigo-600/10 to-purple-600/5 border-indigo-500/40 shadow-2xl shadow-indigo-500/10" : "bg-[#0e0e0e] border-white/[0.07]"}`}
             >
               {plan.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-4 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-bold px-4 py-1 rounded-full">
                   MÁS POPULAR
                 </div>
               )}
@@ -515,7 +554,7 @@ function PricingSection() {
               </ul>
               <Link
                 href={plan.href}
-                className={`block text-center text-sm font-semibold py-3 rounded-xl transition-colors ${plan.highlight ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:opacity-90" : "bg-white/5 border border-white/10 text-white hover:bg-white/10"}`}
+                className={`block text-center text-sm font-semibold py-3 rounded-xl transition-all duration-300 ${plan.highlight ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-500/20" : "bg-white/[0.04] border border-white/[0.08] text-white hover:bg-white/[0.08]"}`}
               >
                 {plan.cta}
               </Link>
@@ -644,12 +683,12 @@ function CTASection() {
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
-          className="relative bg-gradient-to-br from-blue-600/15 to-purple-600/10 border border-blue-500/20 rounded-3xl p-12 text-center overflow-hidden"
+          className="relative bg-gradient-to-br from-indigo-600/15 to-purple-600/10 border border-indigo-500/20 rounded-3xl p-12 text-center overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5" />
-          <div className="absolute -top-20 -right-20 w-60 h-60 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/5 to-purple-600/5" />
+          <div className="absolute -top-20 -right-20 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl" />
           <div className="relative">
-            <Rocket className="w-12 h-12 text-blue-400 mx-auto mb-5" />
+            <Rocket className="w-12 h-12 text-indigo-400 mx-auto mb-5" />
             <h2 className="text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
               Tu negocio merece<br />trabajar las 24 horas.
             </h2>
@@ -674,27 +713,88 @@ function CTASection() {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
+  const cols = [
+    {
+      title: "Producto",
+      links: [
+        { label: "Características", href: "#features" },
+        { label: "Precios", href: "#pricing" },
+        { label: "FAQ", href: "#faq" },
+        { label: "Demo en vivo", href: "#features" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Política de Privacidad", href: "/privacy" },
+        { label: "Términos de Servicio", href: "/terms" },
+        { label: "API Docs", href: "/docs" },
+      ],
+    },
+    {
+      title: "Contacto",
+      links: [
+        { label: "hola@skyreservation.ai", href: "mailto:hola@skyreservation.ai" },
+        { label: "soporte@skyreservation.ai", href: "mailto:soporte@skyreservation.ai" },
+        { label: "api@skyreservation.ai", href: "mailto:api@skyreservation.ai" },
+      ],
+    },
+  ];
+
   return (
-    <footer className="border-t border-white/[0.06] py-12 px-6">
+    <footer className="border-t border-white/[0.05] pt-16 pb-8 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <Sparkles className="w-3.5 h-3.5 text-white" />
+        {/* Main grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-14">
+          {/* Brand column */}
+          <div className="md:col-span-1">
+            <Link href="/" className="flex items-center gap-2.5 mb-5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-bold text-white text-base">
+                Sky <span className="text-zinc-500">AI</span>
+              </span>
+            </Link>
+            <p className="text-sm text-zinc-500 leading-relaxed mb-5 max-w-[210px]">
+              Automatiza tu negocio con IA. Llamadas, WhatsApp y reservaciones 24/7.
+            </p>
+            <div className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs text-emerald-400 font-medium">Sistema operativo</span>
             </div>
-            <span className="font-bold text-white">Sky <span className="text-gray-500">Reservation AI</span></span>
           </div>
-          <div className="flex items-center gap-8 text-sm text-gray-500">
-            {[
-              { label: "Privacidad", href: "/privacy" },
-              { label: "Términos", href: "/terms" },
-              { label: "API Docs", href: "https://docs.skyreservation.ai" },
-              { label: "Contacto", href: "mailto:hola@skyreservation.ai" },
-            ].map((l) => (
-              <a key={l.label} href={l.href} className="hover:text-white transition-colors">{l.label}</a>
-            ))}
-          </div>
-          <p className="text-xs text-gray-600">© 2026 Sky Technologies LATAM</p>
+
+          {/* Link columns */}
+          {cols.map((col) => (
+            <div key={col.title}>
+              <p className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-5">
+                {col.title}
+              </p>
+              <ul className="space-y-3">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-zinc-500 hover:text-white transition-colors duration-200"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-white/[0.05] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-zinc-600">
+            © 2026 Sky Technologies LATAM. Todos los derechos reservados.
+          </p>
+          <p className="text-xs text-zinc-700">
+            Hecho en México · Tecnología con propósito
+          </p>
         </div>
       </div>
     </footer>
