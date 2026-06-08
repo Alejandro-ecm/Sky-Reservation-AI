@@ -125,7 +125,7 @@ const TRIGGER_LABELS: Record<string, string> = {
 
 const ROLE_COLORS: Record<string, string> = {
   owner: "text-amber-400 bg-amber-500/10 border-amber-500/20",
-  admin: "text-blue-400 bg-blue-500/10 border-blue-500/20",
+  admin: "text-[#00E5FF] bg-[#00E5FF]/10 border-[#00E5FF]/20",
   staff: "text-green-400 bg-green-500/10 border-green-500/20",
   viewer: "text-gray-400 bg-gray-500/10 border-gray-500/20",
 };
@@ -518,7 +518,7 @@ export default function SettingsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
                 activeTab === tab.id
-                  ? "bg-blue-600/15 text-blue-400 border border-blue-500/20"
+                  ? "bg-[#00E5FF]/15 text-[#00E5FF] border border-[#00E5FF]/20"
                   : "text-gray-400 hover:text-white hover:bg-white/5"
               }`}
             >
@@ -563,7 +563,7 @@ export default function SettingsPage() {
                       className="w-16 h-16 rounded-2xl object-contain bg-white/5 border border-white/10 flex-shrink-0"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-black text-white flex-shrink-0">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center text-2xl font-black text-black flex-shrink-0">
                       {tenantData ? getInitials(tenantData.name) : "?"}
                     </div>
                   )}
@@ -577,7 +577,7 @@ export default function SettingsPage() {
                         type="button"
                         disabled={logoUploading}
                         onClick={() => fileInputRef.current?.click()}
-                        className="flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 px-3 py-1.5 rounded-lg disabled:opacity-50"
+                        className="flex items-center gap-1.5 text-xs text-[#00E5FF] hover:text-[#00E5FF]/80 transition-colors bg-[#00E5FF]/10 hover:bg-[#00E5FF]/15 border border-[#00E5FF]/20 px-3 py-1.5 rounded-lg disabled:opacity-50"
                       >
                         {logoUploading ? (
                           <Loader2 className="w-3 h-3 animate-spin" />
@@ -617,7 +617,7 @@ export default function SettingsPage() {
                       <input
                         {...businessForm.register("name", { required: true })}
                         placeholder="Mi Empresa"
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                       />
                     </div>
                     <div>
@@ -644,7 +644,7 @@ export default function SettingsPage() {
                     <input
                       {...businessForm.register("industry")}
                       placeholder="Salud, Belleza, Restaurante, etc."
-                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                     />
                   </div>
 
@@ -656,7 +656,7 @@ export default function SettingsPage() {
                       {...businessForm.register("description")}
                       rows={3}
                       placeholder="Describe brevemente tu negocio..."
-                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors resize-none"
                     />
                   </div>
 
@@ -668,7 +668,7 @@ export default function SettingsPage() {
                       <input
                         {...businessForm.register("phone")}
                         placeholder="+52 55 1234 5678"
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                       />
                     </div>
                     <div>
@@ -679,7 +679,7 @@ export default function SettingsPage() {
                         {...businessForm.register("email")}
                         type="email"
                         placeholder="hola@minegocio.com"
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                       />
                     </div>
                   </div>
@@ -693,7 +693,7 @@ export default function SettingsPage() {
                       <input
                         {...businessForm.register("website")}
                         placeholder="https://minegocio.com"
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                       />
                     </div>
                   </div>
@@ -702,7 +702,7 @@ export default function SettingsPage() {
                     <button
                       type="submit"
                       disabled={businessForm.formState.isSubmitting}
-                      className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                      className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20 disabled:opacity-50"
                     >
                       {businessForm.formState.isSubmitting ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -746,7 +746,7 @@ export default function SettingsPage() {
                         type="button"
                         onClick={() => updateDayField(day, "enabled", !d.enabled)}
                         className={`relative w-10 h-5 rounded-full transition-all flex-shrink-0 ${
-                          d.enabled ? "bg-blue-600" : "bg-white/10"
+                          d.enabled ? "bg-[#00E5FF]" : "bg-white/10"
                         }`}
                       >
                         <div
@@ -770,7 +770,7 @@ export default function SettingsPage() {
                               onChange={(e) =>
                                 updateDayField(day, "open", e.target.value)
                               }
-                              className="bg-white/[0.05] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
+                              className="bg-white/[0.05] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                             />
                             <span className="text-gray-600 text-sm">—</span>
                             <input
@@ -779,7 +779,7 @@ export default function SettingsPage() {
                               onChange={(e) =>
                                 updateDayField(day, "close", e.target.value)
                               }
-                              className="bg-white/[0.05] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
+                              className="bg-white/[0.05] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                             />
                           </div>
                         </>
@@ -800,7 +800,7 @@ export default function SettingsPage() {
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => void saveHours()}
-                  className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+                  className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20"
                 >
                   <Save className="w-4 h-4" />
                   Guardar Horarios
@@ -853,7 +853,7 @@ export default function SettingsPage() {
                                 onClick={() => field.onChange(m.id)}
                                 className={`flex flex-col items-start p-3 rounded-xl border text-xs transition-all ${
                                   field.value === m.id
-                                    ? "bg-blue-600/15 border-blue-500/40 text-blue-300"
+                                    ? "bg-[#00E5FF]/15 border-[#00E5FF]/30 text-[#00E5FF]/80"
                                     : "bg-white/[0.03] border-white/[0.07] text-gray-400 hover:border-white/20"
                                 }`}
                               >
@@ -886,7 +886,7 @@ export default function SettingsPage() {
                                 onClick={() => field.onChange(l.id)}
                                 className={`p-3 rounded-xl border text-sm font-medium transition-all ${
                                   field.value === l.id
-                                    ? "bg-blue-600/15 border-blue-500/40 text-blue-300"
+                                    ? "bg-[#00E5FF]/15 border-[#00E5FF]/30 text-[#00E5FF]/80"
                                     : "bg-white/[0.03] border-white/[0.07] text-gray-400 hover:border-white/20"
                                 }`}
                               >
@@ -937,7 +937,7 @@ export default function SettingsPage() {
                               onClick={() => field.onChange(p.id)}
                               className={`flex flex-col items-center gap-1 p-3 rounded-xl border text-xs font-medium transition-all ${
                                 field.value === p.id
-                                  ? "bg-blue-600/15 border-blue-500/40 text-blue-300"
+                                  ? "bg-[#00E5FF]/15 border-[#00E5FF]/30 text-[#00E5FF]/80"
                                   : "bg-white/[0.03] border-white/[0.07] text-gray-400 hover:border-white/20"
                               }`}
                             >
@@ -957,7 +957,7 @@ export default function SettingsPage() {
                     <textarea
                       {...aiForm.register("firstMessage")}
                       rows={3}
-                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+                      className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors resize-none"
                     />
                   </div>
                 </div>
@@ -1034,7 +1034,7 @@ export default function SettingsPage() {
                   <button
                     type="submit"
                     disabled={aiForm.formState.isSubmitting}
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+                    className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20 disabled:opacity-50"
                   >
                     {aiForm.formState.isSubmitting ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -1082,7 +1082,7 @@ export default function SettingsPage() {
                     value={n8nBaseUrl}
                     onChange={(e) => setN8nBaseUrl(e.target.value)}
                     placeholder="https://n8n.tudominio.com"
-                    className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors font-mono text-xs"
+                    className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors font-mono text-xs"
                   />
                 </div>
               </div>
@@ -1108,7 +1108,7 @@ export default function SettingsPage() {
                           }))
                         }
                         placeholder={`https://n8n.tudominio.com/webhook/${key.replace("_", "-")}`}
-                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors font-mono"
+                        className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors font-mono"
                       />
                     </div>
                   ))}
@@ -1117,14 +1117,14 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between mt-5">
                   <a
                     href="/automations"
-                    className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors"
+                    className="text-xs text-[#00E5FF] hover:text-[#00E5FF]/80 flex items-center gap-1 transition-colors"
                   >
                     Ver todas las reglas de automatización
                     <ChevronRight className="w-3 h-3" />
                   </a>
                   <button
                     onClick={() => void saveAutomationsSettings()}
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20"
+                    className="flex items-center gap-2 bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 text-black text-sm font-medium px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20"
                   >
                     <Save className="w-4 h-4" />
                     Guardar
@@ -1150,7 +1150,7 @@ export default function SettingsPage() {
                 </div>
                 <button
                   onClick={() => setInviteModalOpen(true)}
-                  className="flex items-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-xl transition-colors"
+                  className="flex items-center gap-2 text-sm font-medium text-black bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 px-4 py-2 rounded-xl transition-all shadow-lg shadow-[#00E5FF]/20"
                 >
                   <Plus className="w-4 h-4" />
                   Invitar miembro
@@ -1169,7 +1169,7 @@ export default function SettingsPage() {
                       key={member.id}
                       className="flex items-center gap-4 p-4 bg-white/[0.03] border border-white/[0.05] rounded-xl hover:bg-white/[0.05] transition-colors"
                     >
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00E5FF] to-[#7000FF] flex items-center justify-center text-sm font-bold text-black flex-shrink-0">
                         {getInitials(member.full_name)}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -1251,7 +1251,7 @@ export default function SettingsPage() {
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder="nombre@empresa.com"
-                  className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+                  className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00E5FF]/30 transition-colors"
                 />
               </div>
               <div>
@@ -1272,7 +1272,7 @@ export default function SettingsPage() {
                       onClick={() => setInviteRole(r.id)}
                       className={`p-2 rounded-xl border text-xs font-medium transition-all ${
                         inviteRole === r.id
-                          ? "bg-blue-600/15 border-blue-500/40 text-blue-300"
+                          ? "bg-[#00E5FF]/15 border-[#00E5FF]/30 text-[#00E5FF]/80"
                           : "bg-white/[0.03] border-white/[0.07] text-gray-400"
                       }`}
                     >
@@ -1309,7 +1309,7 @@ export default function SettingsPage() {
                       setInviteSending(false);
                     }
                   }}
-                  className="flex-1 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 text-sm font-medium text-black bg-gradient-to-r from-[#00E5FF] to-[#7000FF] hover:from-[#00E5FF]/90 hover:to-[#7000FF]/90 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {inviteSending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                   {inviteSending ? "Enviando..." : "Enviar Invitación"}
