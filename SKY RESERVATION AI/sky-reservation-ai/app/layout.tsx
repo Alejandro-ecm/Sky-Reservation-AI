@@ -47,6 +47,10 @@ export const metadata: Metadata = {
     description:
       "Automatiza tu negocio con IA. Reservas, llamadas y WhatsApp 24/7.",
   },
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-icon.svg",
+  },
   robots: {
     index: true,
     follow: true,
