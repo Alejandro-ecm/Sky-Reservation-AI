@@ -16,6 +16,7 @@ import {
   PhoneCall,
   Circle,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { formatRelative, formatTime } from "@/lib/utils/format";
 
 // ============================================================
@@ -255,6 +256,7 @@ function ChatPanel({
 // ============================================================
 
 export default function WhatsAppPage() {
+  const router = useRouter();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -337,7 +339,10 @@ export default function WhatsAppPage() {
             Asistente inteligente para mensajes de WhatsApp
           </p>
         </div>
-        <button className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.08] text-gray-300 text-sm font-medium px-4 py-2.5 rounded-xl transition-all">
+        <button
+          onClick={() => router.push("/settings?tab=ai")}
+          className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.07] hover:bg-white/[0.08] text-gray-300 text-sm font-medium px-4 py-2.5 rounded-xl transition-all"
+        >
           <Settings className="w-4 h-4" />
           Configurar AI
         </button>

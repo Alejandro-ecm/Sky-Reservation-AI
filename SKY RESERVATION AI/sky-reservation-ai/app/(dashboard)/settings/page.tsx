@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -168,7 +169,8 @@ const tabs = [
 ];
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState("business");
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState(() => searchParams.get("tab") ?? "business");
   const [loading, setLoading] = useState(true);
   const [tenantData, setTenantData] = useState<TenantData | null>(null);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
@@ -179,6 +181,7 @@ export default function SettingsPage() {
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"admin" | "staff" | "viewer">("staff");
   const [inviteSending, setInviteSending] = useState(false);
+  const [removingMemberId, setRemovingMemberId] = useState<string | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoUploading, setLogoUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -336,6 +339,25 @@ export default function SettingsPage() {
   }
 
   const maxDuration = aiForm.watch("maxCallDurationMinutes");
+
+  async function handleRemoveMember(memberId: string, memberName: string) {
+    if (!confirm(`¿Eliminar a ${memberName} del equipo?`)) return;
+    setRemovingMemberId(memberId);
+    try {
+      const res = await fetch(`/api/team/${memberId}`, { method: "DELETE" });
+      const json = (await res.json()) as { error?: string };
+      if (!res.ok) {
+        toast.error(json.error ?? "Error al eliminar miembro");
+        return;
+      }
+      setTeamMembers((prev) => prev.filter((m) => m.id !== memberId));
+      toast.success("Miembro eliminado del equipo");
+    } catch {
+      toast.error("Error al eliminar miembro");
+    } finally {
+      setRemovingMemberId(null);
+    }
+  }
 
   async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -1066,13 +1088,16 @@ export default function SettingsPage() {
                         </p>
                         {member.role !== "owner" && (
                           <button
-                            className="w-7 h-7 flex items-center justify-center rounded-lg text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            className="w-7 h-7 flex items-center justify-center rounded-lg text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-40"
                             title="Eliminar del equipo"
-                            onClick={() =>
-                              toast.error("Esta funcionalidad estará disponible pronto")
-                            }
+                            disabled={removingMemberId === member.id}
+                            onClick={() => void handleRemoveMember(member.id, member.full_name)}
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            {removingMemberId === member.id ? (
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            ) : (
+                              <Trash2 className="w-3.5 h-3.5" />
+                            )}
                           </button>
                         )}
                       </div>
