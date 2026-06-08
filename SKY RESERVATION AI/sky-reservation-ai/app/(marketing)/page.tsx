@@ -104,188 +104,282 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
+
+const WAVE = [4,7,12,20,30,22,14,9,18,36,28,18,11,32,44,32,20,13,28,42,28,18,9,22,34,22,13,9,18,28,18,9,5];
+
+function AICard() {
+  return (
+    <div className="relative">
+      {/* Multi-layer glow halo */}
+      <div className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl pointer-events-none"
+        style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.4) 0%, rgba(124,58,237,0.2) 50%, transparent 80%)" }} />
+      <div className="absolute -inset-1 rounded-2xl pointer-events-none"
+        style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(124,58,237,0.08), transparent 60%)", borderRadius: 20 }} />
+
+      {/* Card */}
+      <div className="relative rounded-2xl overflow-hidden"
+        style={{
+          background: "linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 100%)",
+          border: "1px solid rgba(255,255,255,0.09)",
+          backdropFilter: "blur(32px)",
+          boxShadow: "0 32px 64px rgba(0,0,0,0.6), 0 0 0 0.5px rgba(255,255,255,0.04) inset",
+        }}>
+
+        {/* ── Status bar ── */}
+        <div className="flex items-center justify-between px-5 py-3.5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.015)" }}>
+          <div className="flex items-center gap-2.5">
+            <div className="relative w-2 h-2">
+              <span className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-75" />
+              <span className="relative block w-2 h-2 bg-red-500 rounded-full"
+                style={{ boxShadow: "0 0 8px rgba(239,68,68,0.9)" }} />
+            </div>
+            <span className="text-[9px] font-bold tracking-[0.22em] text-white/40 uppercase">En vivo</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <div className="w-5 h-5 rounded-lg flex items-center justify-center"
+                style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.2)" }}>
+                <Bot className="w-3 h-3 text-indigo-400" />
+              </div>
+              <span className="text-[10px] font-medium text-zinc-500">Sofía AI</span>
+            </div>
+            <span className="text-[11px] font-mono tabular-nums text-zinc-700">02:47</span>
+          </div>
+        </div>
+
+        {/* ── Waveform hero ── */}
+        <div className="px-5 pt-5 pb-2">
+          <div className="flex items-center justify-center gap-[2.5px]" style={{ height: 56 }}>
+            {WAVE.map((h, i) => (
+              <motion.div
+                key={i}
+                className="rounded-full flex-shrink-0"
+                style={{
+                  width: 2.5,
+                  background: `linear-gradient(to top, rgba(99,102,241,${0.18 + (h/44)*0.65}), rgba(167,139,250,${0.12 + (h/44)*0.5}))`,
+                }}
+                animate={{ scaleY: [0.25, 1, 0.25] }}
+                transition={{
+                  duration: 0.75 + (i % 7) * 0.11,
+                  repeat: Infinity,
+                  delay: i * 0.045,
+                  ease: "easeInOut",
+                }}
+                initial={{ height: h }}
+              />
+            ))}
+          </div>
+          <p className="text-center text-[8.5px] text-zinc-800 mt-2 tracking-[0.18em] uppercase font-medium">
+            Procesando audio · Latencia 180ms
+          </p>
+        </div>
+
+        {/* ── Conversation ── */}
+        <div className="px-5 py-3 space-y-2">
+          <AIMessage role="user" text="Quiero agendar para mañana" />
+          <AIMessage role="ai"   text="Disponible martes 3pm o miércoles 11am" />
+          <AIMessage role="user" text="El martes a las 3pm" />
+          <AIMessage role="ai"   text="Perfecto, agendando tu cita…" highlight />
+        </div>
+
+        {/* ── Booking confirmed ── */}
+        <div className="mx-4 mb-4 px-4 py-3 rounded-xl flex items-center gap-3"
+          style={{ background: "rgba(52,211,153,0.07)", border: "1px solid rgba(52,211,153,0.14)" }}>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+            style={{ background: "rgba(52,211,153,0.12)" }}>
+            <Check className="w-3.5 h-3.5 text-emerald-400" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[11px] font-semibold text-emerald-400 leading-none mb-0.5">Cita confirmada</p>
+            <p className="text-[9.5px] text-zinc-600 truncate">Martes · 3:00 PM · Corte de cabello</p>
+          </div>
+          <span className="text-[8px] text-emerald-500/50 font-bold tracking-wider flex-shrink-0">NUEVO</span>
+        </div>
+
+        {/* ── Stats ── */}
+        <div className="grid grid-cols-3 divide-x"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.05)" }}>
+          {[["47", "Llamadas"], ["23", "Citas hoy"], ["68%", "Conversión"]].map(([v, l]) => (
+            <div key={l} className="py-3.5 text-center">
+              <p className="text-[15px] font-bold tracking-tight text-white">{v}</p>
+              <p className="text-[8.5px] text-zinc-700 uppercase tracking-[0.13em] mt-0.5">{l}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AIMessage({ role, text, highlight }: { role: "user" | "ai"; text: string; highlight?: boolean }) {
+  const isAI = role === "ai";
+  return (
+    <div className={`flex items-start gap-2 ${isAI ? "" : "flex-row-reverse"}`}>
+      <div className={`w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[7px] font-bold mt-0.5 ${
+        isAI ? "bg-indigo-500/15 text-indigo-400 border border-indigo-500/20" : "bg-zinc-800/80 text-zinc-500 border border-white/[0.06]"
+      }`}>
+        {isAI ? "AI" : "C"}
+      </div>
+      <p className={`text-[11px] leading-relaxed max-w-[82%] ${
+        highlight ? "text-emerald-300 font-medium" : isAI ? "text-zinc-200" : "text-zinc-500"
+      }`}>
+        {text}
+      </p>
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-[#030303]" />
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px]" />
-      </div>
-      {/* Grid */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: "linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)", backgroundSize: "60px 60px" }}
-      />
+      {/* ── Background ── */}
+      <div className="absolute inset-0" style={{ background: "#020205" }} />
 
-      <div className="relative max-w-6xl mx-auto px-6 py-24 flex flex-col lg:flex-row items-center gap-16">
-        {/* Left */}
+      {/* Layered gradient mesh */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-15%] left-[-5%] w-[65%] h-[75%] rounded-full"
+          style={{ background: "radial-gradient(ellipse, rgba(79,70,229,0.13) 0%, transparent 65%)" }} />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[55%] h-[65%] rounded-full"
+          style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.09) 0%, transparent 70%)" }} />
+        <div className="absolute top-[50%] right-[30%] w-[25%] h-[30%] rounded-full"
+          style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.05) 0%, transparent 70%)" }} />
+      </div>
+
+      {/* Subtle dot grid */}
+      <div className="absolute inset-0 opacity-[0.018] pointer-events-none"
+        style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+
+      <div className="relative max-w-6xl mx-auto px-6 py-28 flex flex-col lg:flex-row items-center gap-20">
+
+        {/* ── LEFT ── */}
         <div className="flex-1 text-center lg:text-left">
+
+          {/* Badge — gradient border */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-medium px-3 py-1.5 rounded-full mb-6"
+            transition={{ duration: 0.6, ease: [0.16,1,0.3,1] }}
+            className="inline-flex items-center gap-2 text-[11px] font-semibold mb-8 px-3.5 py-2 rounded-full"
+            style={{
+              background: "linear-gradient(135deg, rgba(79,70,229,0.1), rgba(124,58,237,0.07))",
+              border: "1px solid rgba(99,102,241,0.22)",
+              color: "rgba(165,180,252,0.85)",
+            }}
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3 h-3" />
             Plataforma #1 para automatización con IA en LATAM
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl lg:text-7xl font-black text-white leading-[1.06] tracking-tight mb-6"
-          >
-            Tu negocio{" "}
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-              atiende solo.
-            </span>
-            <br />
-            24 horas.
-            <br />
-            <span className="text-gray-300">7 días.</span>
-          </motion.h1>
+          {/* Headline */}
+          <div className="mb-7 overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.08, ease: [0.16,1,0.3,1] }}
+            >
+              <span className="block text-[56px] lg:text-[80px] font-black text-white leading-[0.95] tracking-[-0.04em]">
+                Tu negocio
+              </span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.16, ease: [0.16,1,0.3,1] }}
+            >
+              <span
+                className="block text-[56px] lg:text-[80px] font-black leading-[0.95] tracking-[-0.04em]"
+                style={{
+                  background: "linear-gradient(125deg, #818cf8 0%, #c084fc 45%, #a78bfa 70%, #818cf8 100%)",
+                  backgroundSize: "200% 100%",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                }}
+              >
+                atiende solo.
+              </span>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.26, ease: [0.16,1,0.3,1] }}
+              className="mt-3"
+            >
+              <span className="text-[22px] lg:text-[28px] font-bold text-white/20 tracking-[-0.02em]">
+                24h · 7 días · Sin descanso.
+              </span>
+            </motion.div>
+          </div>
 
+          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-gray-400 mb-8 max-w-lg mx-auto lg:mx-0 leading-relaxed"
+            transition={{ duration: 0.6, delay: 0.32 }}
+            className="text-[16px] lg:text-[17px] text-zinc-500 mb-10 max-w-md mx-auto lg:mx-0 leading-[1.7]"
           >
             IA que responde llamadas, agenda citas y convierte clientes —
-            mientras tú duermes. Sin contratar personal extra.
+            <span className="text-zinc-300"> mientras tú duermes</span>. Sin contratar personal extra.
           </motion.p>
 
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8"
           >
-            <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm px-6 py-3.5 rounded-xl transition-all duration-300 shadow-2xl shadow-indigo-500/30">
-              Prueba gratis 14 días
-              <ArrowRight className="w-4 h-4" />
+            {/* Primary — glowing */}
+            <Link
+              href="/register"
+              className="group relative inline-flex items-center justify-center gap-2 text-[14px] font-bold text-white px-8 py-4 rounded-2xl overflow-hidden transition-all duration-300"
+              style={{ background: "linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)", boxShadow: "0 0 0 0 rgba(99,102,241,0)" }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 40px rgba(99,102,241,0.5), 0 8px 32px rgba(99,102,241,0.3)")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 0 0 rgba(99,102,241,0)")}
+            >
+              <span>Prueba gratis 14 días</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
             </Link>
-            <a href="#features" className="inline-flex items-center justify-center gap-2 text-sm text-gray-300 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] px-6 py-3.5 rounded-xl transition-all duration-300">
-              <Play className="w-4 h-4" />
+
+            {/* Secondary — ghost */}
+            <a
+              href="#features"
+              className="inline-flex items-center justify-center gap-2 text-[14px] font-medium text-zinc-400 hover:text-white px-8 py-4 rounded-2xl transition-all duration-300"
+              style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.16)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)"; (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+            >
+              <Play className="w-3.5 h-3.5" />
               Ver demo
             </a>
           </motion.div>
 
-          <motion.p
+          {/* Trust line */}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-xs text-gray-600 mt-4"
+            transition={{ delay: 0.55 }}
+            className="flex flex-wrap items-center gap-5 justify-center lg:justify-start"
           >
-            Sin tarjeta de crédito · Cancela cuando quieras · Setup en 5 minutos
-          </motion.p>
+            {["Sin tarjeta de crédito", "Cancela cuando quieras", "Setup en 5 minutos"].map((t, i) => (
+              <span key={t} className="flex items-center gap-1.5 text-[11px] text-zinc-700">
+                {i > 0 && <span className="text-zinc-800">·</span>}
+                {t}
+              </span>
+            ))}
+          </motion.div>
         </div>
 
-        {/* Right — Live AI Card (minimalist premium) */}
+        {/* ── RIGHT ── */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.94, x: 40 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-1 max-w-sm w-full mx-auto"
+          initial={{ opacity: 0, scale: 0.88, x: 50, rotateY: -8 }}
+          animate={{ opacity: 1, scale: 1, x: 0, rotateY: 0 }}
+          transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          className="flex-1 max-w-[340px] w-full mx-auto lg:mx-0"
+          style={{ perspective: 1200 }}
         >
-          {/* Outer glow */}
-          <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/5 blur-xl pointer-events-none" />
-
-          <div className="relative bg-white/[0.025] backdrop-blur-2xl border border-white/[0.08] rounded-2xl overflow-hidden shadow-2xl shadow-black/70">
-
-            {/* Ambient top glow */}
-            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-16 bg-indigo-500/10 blur-3xl pointer-events-none" />
-
-            {/* ── Header ── */}
-            <div className="relative flex items-center justify-between px-5 py-4 border-b border-white/[0.05]">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-white/[0.08] flex items-center justify-center">
-                    <Bot className="w-3.5 h-3.5 text-indigo-400" />
-                  </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#030303] animate-pulse" />
-                </div>
-                <div>
-                  <p className="text-[13px] font-semibold text-white tracking-tight leading-none mb-1">Sofía — Sky AI</p>
-                  <p className="text-[9px] font-semibold text-emerald-400 tracking-[0.15em] uppercase">En llamada</p>
-                </div>
-              </div>
-              <span className="text-[11px] font-mono tabular-nums text-zinc-600">02:47</span>
-            </div>
-
-            {/* ── Conversation ── */}
-            <div className="relative px-5 py-5 space-y-4">
-              {/* User */}
-              <div className="flex items-start gap-3">
-                <div className="w-px self-stretch bg-zinc-700/60 flex-shrink-0 mt-0.5" />
-                <p className="text-[11.5px] text-zinc-400 leading-relaxed">
-                  Hola, quiero agendar una cita para corte de cabello
-                </p>
-              </div>
-              {/* AI */}
-              <p className="text-[11.5px] text-zinc-200 leading-relaxed pl-4">
-                ¡Hola! Con gusto te ayudo. Tenemos disponibilidad{" "}
-                <span className="text-indigo-300 font-medium">mañana martes a las 3pm</span>{" "}
-                o el miércoles a las 11am. ¿Cuál te funciona mejor?
-              </p>
-              {/* User */}
-              <div className="flex items-start gap-3">
-                <div className="w-px self-stretch bg-zinc-700/60 flex-shrink-0 mt-0.5" />
-                <p className="text-[11.5px] text-zinc-400 leading-relaxed">
-                  El martes a las 3pm está perfecto
-                </p>
-              </div>
-              {/* AI */}
-              <p className="text-[11.5px] text-zinc-200 leading-relaxed pl-4">
-                Perfecto.{" "}
-                <span className="text-zinc-400">¿Me das tu nombre completo para confirmar la cita?</span>
-              </p>
-
-              {/* Typing cursor */}
-              <div className="flex items-center gap-2 pl-4">
-                <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse" />
-                <span className="w-1.5 h-1.5 bg-indigo-400/60 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }} />
-                <span className="w-1.5 h-1.5 bg-indigo-400/30 rounded-full animate-pulse" style={{ animationDelay: "0.4s" }} />
-              </div>
-            </div>
-
-            {/* ── Waveform ── */}
-            <div className="px-5 pb-4">
-              <div className="flex items-center gap-[2px]" style={{ height: 32 }}>
-                {[3,5,9,14,8,18,12,22,16,10,20,14,8,24,16,11,19,13,7,15,10,5,12,8,4,10,6,3].map((h, i) => (
-                  <motion.div
-                    key={i}
-                    className="rounded-full flex-shrink-0"
-                    style={{
-                      width: 2,
-                      height: h,
-                      background: `rgba(99,102,241,${0.25 + (h / 24) * 0.55})`,
-                    }}
-                    animate={{ scaleY: [0.3, 1, 0.3] }}
-                    transition={{
-                      duration: 0.9 + (i % 5) * 0.18,
-                      repeat: Infinity,
-                      delay: i * 0.06,
-                      ease: "easeInOut",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* ── Stats ── */}
-            <div className="border-t border-white/[0.05] grid grid-cols-3 divide-x divide-white/[0.05]">
-              {[["47", "Llamadas hoy"], ["23", "Citas"], ["68%", "Conversión"]].map(([value, label]) => (
-                <div key={label} className="py-3.5 text-center">
-                  <p className="text-base font-bold text-white tracking-tight">{value}</p>
-                  <p className="text-[9px] text-zinc-600 uppercase tracking-[0.12em] mt-0.5">{label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <AICard />
         </motion.div>
       </div>
     </section>
