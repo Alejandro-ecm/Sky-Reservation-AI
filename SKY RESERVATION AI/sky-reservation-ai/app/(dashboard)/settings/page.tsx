@@ -18,6 +18,9 @@ import {
   X,
   Globe,
   Mail,
+  MessageCircle,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "sonner";
@@ -192,6 +195,62 @@ function BookingLinkCard({ slug }: { slug: string }) {
           <ExternalLink className="w-3 h-3" />
           Abrir
         </a>
+      </div>
+    </div>
+  );
+}
+
+interface WhatsAppStatus {
+  connected: boolean;
+  phoneNumber?: string;
+  displayName?: string;
+  qualityRating?: string;
+}
+
+function WhatsAppConnectionCard() {
+  const [status, setStatus] = useState<WhatsAppStatus | null>(null);
+
+  useEffect(() => {
+    fetch("/api/settings/whatsapp-status")
+      .then((r) => r.json())
+      .then((d: WhatsAppStatus) => setStatus(d))
+      .catch(() => setStatus({ connected: false }));
+  }, []);
+
+  return (
+    <div className="p-4 rounded-xl border border-white/[0.08] bg-white/[0.03] flex items-center gap-3">
+      <div
+        className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+          status?.connected
+            ? "bg-[#00E5FF]/15 border border-[#00E5FF]/20"
+            : "bg-white/[0.05] border border-white/[0.08]"
+        }`}
+      >
+        <MessageCircle
+          className={`w-4 h-4 ${status?.connected ? "text-[#00E5FF]" : "text-gray-500"}`}
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-white">Número WhatsApp conectado</p>
+        {status === null ? (
+          <p className="text-xs text-gray-500 mt-0.5">Verificando…</p>
+        ) : status.connected ? (
+          <p className="text-xs text-[#00E5FF]/80 font-mono mt-0.5">
+            {status.phoneNumber ?? "—"}
+            {status.displayName ? ` · ${status.displayName}` : ""}
+          </p>
+        ) : (
+          <p className="text-xs text-gray-500 mt-0.5">No configurado</p>
+        )}
+      </div>
+      <div className="flex-shrink-0">
+        {status === null ? (
+          <Loader2 className="w-4 h-4 text-gray-600 animate-spin" />
+        ) : status.connected ? (
+          <CheckCircle2 className="w-4 h-4 text-[#00E5FF]" />
+        ) : (
+          <AlertCircle className="w-4 h-4 text-gray-600" />
+        )}
       </div>
     </div>
   );
@@ -911,9 +970,13 @@ export default function SettingsPage() {
                   </p>
 
                   <div className="mb-5">
+                    <WhatsAppConnectionCard />
+                  </div>
+
+                  <div className="mb-5">
                     <label className="block text-sm font-medium text-gray-300 mb-3">
                       Duración máxima de llamada:{" "}
-                      <span className="text-blue-400 font-bold">{maxDuration} min</span>
+                      <span className="text-[#00E5FF] font-bold">{maxDuration} min</span>
                     </label>
                     <Controller
                       name="maxCallDurationMinutes"
@@ -926,7 +989,7 @@ export default function SettingsPage() {
                           step={1}
                           value={field.value}
                           onChange={(e) => field.onChange(parseInt(e.target.value))}
-                          className="w-full accent-blue-500"
+                          className="w-full accent-[#00E5FF]"
                         />
                       )}
                     />
@@ -953,7 +1016,7 @@ export default function SettingsPage() {
                           type="button"
                           onClick={() => field.onChange(!field.value)}
                           className={`relative w-11 h-6 rounded-full transition-all duration-200 ${
-                            field.value ? "bg-blue-600" : "bg-white/10"
+                            field.value ? "bg-[#00E5FF]" : "bg-white/10"
                           }`}
                         >
                           <div
