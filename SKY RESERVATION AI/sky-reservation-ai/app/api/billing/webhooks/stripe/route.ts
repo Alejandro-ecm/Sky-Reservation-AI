@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient as createServiceClient } from "@supabase/supabase-js";
-import { stripe } from "@/lib/stripe/client";
-import { syncStripeSubscription } from "@/lib/stripe/helpers";
+import { getStripe } from "@/lib/stripe/client";
+import { syncStripeSubscription, getServiceSupabase } from "@/lib/stripe/helpers";
 import type Stripe from "stripe";
-
-function getServiceSupabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceKey) throw new Error("Missing Supabase credentials");
-  return createServiceClient(url, serviceKey);
-}
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -33,7 +25,7 @@ export async function POST(request: NextRequest) {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    event = getStripe().webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error(JSON.stringify({
@@ -57,7 +49,7 @@ export async function POST(request: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         if (session.mode !== "subscription" || !session.subscription) break;
 
-        const subscription = await stripe.subscriptions.retrieve(
+        const subscription = await getStripe().subscriptions.retrieve(
           session.subscription as string
         );
         await syncStripeSubscription(subscription);
@@ -91,7 +83,6 @@ export async function POST(request: NextRequest) {
           })
           .eq("tenant_id", tenantId);
 
-        // Revert tenant plan to starter
         await supabase
           .from("tenants")
           .update({ plan: "starter", updated_at: new Date().toISOString() })
@@ -111,7 +102,6 @@ export async function POST(request: NextRequest) {
 
         if (!customerId) break;
 
-        // Find tenant by stripe_customer_id
         const { data: subscription } = await supabase
           .from("subscriptions")
           .select("tenant_id, id")
@@ -159,16 +149,11 @@ export async function POST(request: NextRequest) {
 
         if (!subscription) break;
 
-        // Mark subscription as past_due
         await supabase
           .from("subscriptions")
-          .update({
-            status: "past_due",
-            updated_at: new Date().toISOString(),
-          })
+          .update({ status: "past_due", updated_at: new Date().toISOString() })
           .eq("tenant_id", subscription.tenant_id);
 
-        // Create a failed invoice record (upsert for idempotency on Stripe retries)
         await supabase.from("invoices").upsert(
           {
             tenant_id: subscription.tenant_id,
@@ -206,7 +191,7 @@ export async function POST(request: NextRequest) {
       error_message: err instanceof Error ? err.message : String(err),
       timestamp: new Date().toISOString(),
     }));
-    // Still return 200 to avoid Stripe retrying
+    // Return 200 to prevent Stripe from retrying — error is logged
   }
 
   return NextResponse.json({ received: true });

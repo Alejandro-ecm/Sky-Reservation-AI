@@ -24,6 +24,19 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
+async function safeJson<T>(res: Response): Promise<T | null> {
+  const ct = res.headers.get("content-type") ?? "";
+  if (!ct.includes("application/json")) {
+    console.warn("[billing] Non-JSON response — content-type:", ct, "status:", res.status);
+    return null;
+  }
+  try {
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
 const PLAN_GRADIENT: Record<string, string> = {
   starter: "from-slate-400 to-slate-500",
   pro: "from-blue-400 to-purple-500",
@@ -277,17 +290,19 @@ export default function BillingPage() {
       ]);
 
       if (subRes.ok) {
-        const json = (await subRes.json()) as {
+        const json = await safeJson<{
           data: { subscription: Subscription; limits: PlanLimits; usage: UsageStats };
-        };
-        setSubscription(json.data.subscription);
-        setLimits(json.data.limits);
-        setUsage(json.data.usage);
+        }>(subRes);
+        if (json) {
+          setSubscription(json.data.subscription);
+          setLimits(json.data.limits);
+          setUsage(json.data.usage);
+        }
       }
 
       if (invoicesRes?.ok) {
-        const json = (await invoicesRes.json()) as { data: Invoice[] };
-        setInvoices(json.data ?? []);
+        const json = await safeJson<{ data: Invoice[] }>(invoicesRes);
+        setInvoices(json?.data ?? []);
       }
     } catch (err) {
       console.error("Billing fetch error:", err);
@@ -308,9 +323,9 @@ export default function BillingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ returnUrl: window.location.href }),
       });
-      const json = (await res.json()) as { url?: string; error?: string };
-      if (json.url) window.location.href = json.url;
-      else console.error("Portal error:", json.error);
+      const json = await safeJson<{ url?: string; error?: string }>(res);
+      if (json?.url) window.location.href = json.url;
+      else console.error("Portal error:", json?.error ?? "Non-JSON response");
     } catch (err) {
       console.error("Portal error:", err);
     } finally {
@@ -333,16 +348,16 @@ export default function BillingPage() {
             cancelUrl: `${appUrl}/billing?cancelled=true`,
           }),
         });
-        const json = (await res.json()) as { url?: string; error?: string };
-        if (json.url) window.location.href = json.url;
+        const json = await safeJson<{ url?: string; error?: string }>(res);
+        if (json?.url) window.location.href = json.url;
       } else {
         const res = await fetch("/api/billing/mercadopago/checkout", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ plan }),
         });
-        const json = (await res.json()) as { url?: string; error?: string };
-        if (json.url) window.location.href = json.url;
+        const json = await safeJson<{ url?: string; error?: string }>(res);
+        if (json?.url) window.location.href = json.url;
       }
     } catch (err) {
       console.error("Checkout error:", err);

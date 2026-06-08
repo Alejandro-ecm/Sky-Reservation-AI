@@ -33,7 +33,13 @@ export function validateEnv(): void {
     const message =
       `[Sky Reservation AI] Missing required environment variables: ${missing}\n` +
       `Add them to .env.local (dev) or to Vercel Environment Variables (prod).`;
-    if (process.env.NODE_ENV === "production") {
+
+    // During `next build`, Next.js sets NEXT_PHASE to 'phase-production-build'.
+    // Env vars may legitimately be absent at build time in CI — only throw at
+    // server *runtime* when requests are actually served.
+    const isBuildPhase = process.env.NEXT_PHASE === "phase-production-build";
+
+    if (process.env.NODE_ENV === "production" && !isBuildPhase) {
       throw new Error(message);
     } else {
       console.warn(message);

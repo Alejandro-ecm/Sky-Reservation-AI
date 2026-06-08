@@ -1,7 +1,19 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function updateSession(request: NextRequest) {
+export async function updateSession(request: NextRequest): Promise<NextResponse> {
+  try {
+    return await _updateSession(request);
+  } catch (err) {
+    console.error(
+      "[middleware] updateSession failed — passing request through:",
+      err instanceof Error ? err.message : err
+    );
+    return NextResponse.next({ request });
+  }
+}
+
+async function _updateSession(request: NextRequest): Promise<NextResponse> {
   let supabaseResponse = NextResponse.next({
     request,
   });

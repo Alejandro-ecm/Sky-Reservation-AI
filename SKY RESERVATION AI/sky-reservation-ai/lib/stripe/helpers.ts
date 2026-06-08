@@ -1,13 +1,17 @@
-import { createClient as createServiceClient } from "@supabase/supabase-js";
-import { stripe } from "./client";
+import { createClient as createServiceClient, type SupabaseClient } from "@supabase/supabase-js";
+import { getStripe } from "./client";
 import { STRIPE_PRICES, type PlanKey } from "./prices";
 import type Stripe from "stripe";
 
-function getServiceSupabase() {
+let _serviceClient: SupabaseClient | undefined;
+
+export function getServiceSupabase(): SupabaseClient {
+  if (_serviceClient) return _serviceClient;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceKey) throw new Error("Missing Supabase credentials");
-  return createServiceClient(url, serviceKey);
+  if (!url || !serviceKey) throw new Error("[supabase] Missing service credentials");
+  _serviceClient = createServiceClient(url, serviceKey);
+  return _serviceClient;
 }
 
 // ============================================================
@@ -33,7 +37,7 @@ export async function createOrRetrieveCustomer(
   }
 
   // Create a new Stripe customer
-  const customer = await stripe.customers.create({
+  const customer = await getStripe().customers.create({
     email,
     name,
     metadata: { tenantId },
