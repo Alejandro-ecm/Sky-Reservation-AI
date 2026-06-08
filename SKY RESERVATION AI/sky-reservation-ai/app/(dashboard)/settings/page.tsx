@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Building2,
@@ -83,6 +83,7 @@ interface TenantData {
     ai?: AIFormValues;
     n8n_base_url?: string;
     n8n_webhooks?: Record<string, string>;
+    logo_url?: string;
   };
 }
 
@@ -177,6 +178,9 @@ export default function SettingsPage() {
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"admin" | "staff" | "viewer">("staff");
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoUploading, setLogoUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const businessForm = useForm<BusinessFormValues>();
   const aiForm = useForm<AIFormValues>({
@@ -225,6 +229,10 @@ export default function SettingsPage() {
 
         if (tenant.settings?.n8n_webhooks) {
           setN8nWebhooks(tenant.settings.n8n_webhooks);
+        }
+
+        if (tenant.settings?.logo_url) {
+          setLogoUrl(tenant.settings.logo_url);
         }
       }
     } catch (e) {
@@ -328,6 +336,26 @@ export default function SettingsPage() {
 
   const maxDuration = aiForm.watch("maxCallDurationMinutes");
 
+  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setLogoUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/upload/logo", { method: "POST", body: fd });
+      const json = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok) throw new Error(json.error ?? "Upload failed");
+      setLogoUrl(json.url!);
+      toast.success("Logo actualizado");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error al subir el logo");
+    } finally {
+      setLogoUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
   if (loading) {
     return (
       <div className="space-y-6 max-w-[1200px]">
@@ -395,19 +423,65 @@ export default function SettingsPage() {
                   Información principal de tu empresa
                 </p>
 
-                {/* Avatar / Logo placeholder */}
+                {/* Avatar / Logo */}
                 <div className="flex items-center gap-4 mb-6 p-4 bg-white/[0.03] border border-white/[0.06] rounded-xl">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-black text-white flex-shrink-0">
-                    {tenantData ? getInitials(tenantData.name) : "?"}
-                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp"
+                    className="hidden"
+                    onChange={(e) => void handleLogoUpload(e)}
+                  />
+                  {logoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={logoUrl}
+                      alt="Logo"
+                      className="w-16 h-16 rounded-2xl object-contain bg-white/5 border border-white/10 flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl font-black text-white flex-shrink-0">
+                      {tenantData ? getInitials(tenantData.name) : "?"}
+                    </div>
+                  )}
                   <div>
                     <p className="text-sm font-medium text-white">Logo del negocio</p>
                     <p className="text-xs text-gray-500 mt-0.5 mb-2">
-                      PNG, JPG o SVG. Máximo 2MB.
+                      PNG, JPG, SVG o WebP. Máximo 2MB.
                     </p>
-                    <button className="text-xs text-blue-400 hover:text-blue-300 transition-colors bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-lg">
-                      Subir logo
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        disabled={logoUploading}
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 px-3 py-1.5 rounded-lg disabled:opacity-50"
+                      >
+                        {logoUploading ? (
+                          <Loader2 className="w-3 h-3 animate-spin" />
+                        ) : null}
+                        {logoUploading ? "Subiendo..." : "Subir logo"}
+                      </button>
+                      {logoUrl && (
+                        <button
+                          type="button"
+                          disabled={logoUploading}
+                          onClick={async () => {
+                            await fetch("/api/settings", {
+                              method: "PUT",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                settings: { ...tenantData?.settings, logo_url: null },
+                              }),
+                            });
+                            setLogoUrl(null);
+                            toast.success("Logo eliminado");
+                          }}
+                          className="text-xs text-gray-500 hover:text-red-400 transition-colors px-2 py-1.5 rounded-lg hover:bg-red-500/10"
+                        >
+                          Eliminar
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
