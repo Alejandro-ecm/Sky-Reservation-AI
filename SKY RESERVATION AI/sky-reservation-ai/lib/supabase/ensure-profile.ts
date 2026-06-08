@@ -32,7 +32,31 @@ export async function ensureProfile(
 
   if (profile?.tenant_id) return profile as { tenant_id: string };
 
-  // Profile missing — mirror the DB trigger: create tenant then profile
+  // Invited user — metadata carries tenant_id + role set during inviteUserByEmail
+  const invitedTenantId = user.user_metadata?.tenant_id as string | undefined;
+  const invitedRole = user.user_metadata?.role as string | undefined;
+
+  if (invitedTenantId && invitedRole) {
+    const { data: invitedProfile, error } = await service
+      .from("profiles")
+      .insert({
+        id: user.id,
+        tenant_id: invitedTenantId,
+        email: user.email,
+        full_name: (user.user_metadata?.full_name as string | undefined) ?? user.email?.split("@")[0] ?? "",
+        role: invitedRole,
+      })
+      .select("tenant_id")
+      .single();
+
+    if (error) {
+      console.error("[ensureProfile] invited profile creation failed:", error.message);
+      return null;
+    }
+    return invitedProfile as { tenant_id: string };
+  }
+
+  // New owner — create tenant then profile
   const businessName =
     (user.user_metadata?.business_name as string | undefined) ??
     user.email?.split("@")[0] ??

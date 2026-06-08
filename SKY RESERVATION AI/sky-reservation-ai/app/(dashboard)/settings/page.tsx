@@ -178,6 +178,7 @@ export default function SettingsPage() {
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"admin" | "staff" | "viewer">("staff");
+  const [inviteSending, setInviteSending] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoUploading, setLogoUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1154,16 +1155,30 @@ export default function SettingsPage() {
                   Cancelar
                 </button>
                 <button
-                  onClick={() => {
-                    toast.success(
-                      `Invitación enviada a ${inviteEmail} (${inviteRole}). Funcionalidad de invitaciones por email próximamente.`
-                    );
-                    setInviteModalOpen(false);
-                    setInviteEmail("");
+                  disabled={inviteSending || !inviteEmail.trim()}
+                  onClick={async () => {
+                    setInviteSending(true);
+                    try {
+                      const res = await fetch("/api/team/invite", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ email: inviteEmail, role: inviteRole }),
+                      });
+                      const json = (await res.json()) as { ok?: boolean; error?: string };
+                      if (!res.ok) throw new Error(json.error ?? "Error al enviar invitación");
+                      toast.success(`Invitación enviada a ${inviteEmail}`);
+                      setInviteModalOpen(false);
+                      setInviteEmail("");
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : "Error al enviar invitación");
+                    } finally {
+                      setInviteSending(false);
+                    }
                   }}
-                  className="flex-1 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl transition-all"
+                  className="flex-1 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
-                  Enviar Invitación
+                  {inviteSending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                  {inviteSending ? "Enviando..." : "Enviar Invitación"}
                 </button>
               </div>
             </div>
