@@ -1,5 +1,7 @@
 # Sky Reservation AI
 
+<!-- deploy: trigger Vercel build -->
+
 A production-ready SaaS platform for AI-powered business automation — voice calls, WhatsApp, reservations, CRM, and analytics.
 
 ## Tech Stack
